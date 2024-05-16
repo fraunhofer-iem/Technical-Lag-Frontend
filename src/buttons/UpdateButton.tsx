@@ -9,7 +9,7 @@ interface ButtonProps {
 const UpdateButton: React.FC<ButtonProps> = ({ text, action }) => (
     <button
         type="button"
-        className="tree-button"
+        className="tree-update-button"
         onClick={action}
     >
         {text}

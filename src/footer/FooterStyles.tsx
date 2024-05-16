@@ -6,10 +6,6 @@ export const Box = styled.div`
     left: 0;
 	width: 100%;
     position: fixed;
-
-	@media (max-width: 1000px) {
-		padding: 70px 30px;
-	}
 `;
 
 export const FooterContainer = styled.div`
@@ -30,19 +26,12 @@ export const Column = styled.div<{marginLeft?: string}>`
 
 export const Row = styled.div`
 	display: grid;
-	/*grid-template-columns: repeat(
-		auto-fill,
-        minmax(180px, 1fr)
-	);*/
-    grid-template-columns:1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
 	grid-gap: 1%;
 
-	@media (max-width: 1000px) {
-		grid-template-columns: repeat(
-			auto-fill,
-			minmax(200px, 1fr)
-		);
-	}
+/*	@media (max-width: 1000px) {
+        grid-template-columns: repeat(3, 1fr);
+	}*/
 `;
 
 export const FooterLink = styled.a`
@@ -58,7 +47,7 @@ export const FooterLink = styled.a`
 `;
 
 export const Heading = styled.p`
-	font-size: 24px;
+	font-size: 22px;
 	color: #fff;
 	margin-bottom: 1em;
 	font-weight: bold;

@@ -7,13 +7,13 @@ interface ButtonProps {
 }
 
 const RevertButton: React.FC<ButtonProps> = ({text, action}) => (
-        <button
-            type="button"
-            className="tree-button"
-            onClick={action}
-        >
-            {text}
-        </button>
+    <button
+        type="button"
+        className="tree-revert-button"
+        onClick={action}
+    >
+        {text}
+    </button>
 );
 
 export default RevertButton;

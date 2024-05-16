@@ -3,6 +3,7 @@ import HeaderMenuTab from "./HeaderMenuTabProps.tsx";
 import SearchBar from "./SearchBar.tsx";
 import Body from "../tree/Body.tsx";
 import "./header.css";
+/*import Tree from "../tree/Tree.tsx";*/
 
 const handleSearch = (query: string) => {
     console.log(`Searching for: ${query}`);
@@ -20,9 +21,9 @@ const tabs = [
         content: <><SearchBar onSearch={handleSearch}/></>,
     },
     {
-        key: 'bla',
-        label: 'Bla',
-        content: <><h1>Bla Content</h1></>,
+        key: 'test',
+        label: 'Test',
+        content: <></>,
     },
 ];
 

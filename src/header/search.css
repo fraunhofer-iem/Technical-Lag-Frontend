@@ -1,0 +1,30 @@
+.search-container {
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr; /* 3 columns, middle one is 5 times larger */
+    justify-items: center; /* center the search-bar horizontally */
+}
+
+.search-bar {
+    grid-column: 2; /* place search-bar in the middle column */
+    display: flex; /* make input and button inline */
+    align-items: center; /* vertically center input and button */
+
+    @media (max-width: 1000px) {
+        grid-template-columns: repeat(1, 1fr);
+        margin-top: 5%;
+    }
+
+    @media (max-width: 450px) {
+        grid-template-columns: repeat(1, 1fr);
+        margin-top: 10%;
+    }
+}
+
+.search-input {
+    flex: 4; /* take up more space */
+    margin-right: 10px; /* add gap between input and button */
+}
+
+.search-button {
+    flex: 1; /* take up less space */
+}

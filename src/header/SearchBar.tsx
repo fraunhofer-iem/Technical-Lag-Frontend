@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import "./search.css";
 
 type SearchBarProps = {
     onSearch: (query: string) => void;
@@ -11,11 +12,11 @@ type SearchBarState = {
 class SearchBar extends Component<SearchBarProps, SearchBarState> {
     constructor(props: SearchBarProps) {
         super(props);
-        this.state = { query: '' };
+        this.state = {query: ''};
     }
 
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({ query: event.target.value });
+        this.setState({query: event.target.value});
     };
 
     handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -25,10 +26,14 @@ class SearchBar extends Component<SearchBarProps, SearchBarState> {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <input type="text" value={this.state.query} onChange={this.handleInputChange} placeholder="Search..." />
-                <button type="submit">Search</button>
-            </form>
+            <main className="search-container">
+                <form onSubmit={this.handleSubmit} className="search-bar">
+                    <input type="text" value={this.state.query} onChange={this.handleInputChange}
+                           placeholder="Search..."
+                           className="search-input"/>
+                    <button type="submit" className="search-button">Search</button>
+                </form>
+            </main>
         );
     }
 }

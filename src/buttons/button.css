@@ -1,4 +1,4 @@
-.tree-button {
+.tree-update-button {
     border-radius: 8px;
     border: 1px solid transparent;
     padding: 0.6em 1.2em;
@@ -8,11 +8,35 @@
     background-color: #1a1a1a;
     cursor: pointer;
     transition: border-color 0.25s;
-    margin: 1%;
+    width: 16em;
+    text-align: center;
+    margin-right: 2%;
+}
+
+.tree-revert-button {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    width: 16em;
+    text-align: center;
+    margin-right: 4%;
 }
 
 .tree-button-row {
     grid-column: 2;
+    display: flex;
+    align-items: center;
+
+    @media (max-width: 1000px) {
+        grid-template-columns: repeat(1, 1fr);
+        margin-top: 5%;
+    }
 }
 
 .tree-button button:hover {

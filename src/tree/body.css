@@ -1,0 +1,6 @@
+.main-container {
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr; /* 3 columns, middle one is 5 times larger */
+    grid-gap: 10px;
+    justify-items: center; /* horizontal centering */
+}

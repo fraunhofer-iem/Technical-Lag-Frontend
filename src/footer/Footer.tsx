@@ -19,7 +19,7 @@ const Footer = () => {
                     marginTop: "1px",
                 }}
             >
-                Dependency Updater
+                Libyear-ORT
             </h1>
             <FooterContainer>
                 <Row>
