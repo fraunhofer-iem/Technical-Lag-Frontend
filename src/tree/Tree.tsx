@@ -1,53 +1,69 @@
-import d3, {hierarchy, json, tree} from "d3";
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
+import * as d3 from 'd3';
 
-interface TreeProps {
-    treeData: d3.HierarchyPointNode<any>;
+interface JSONData {
+    [key: string]: any;
 }
 
-const Tree: React.FC<TreeProps> = ({ treeData }) => {
-    const ref = useRef<SVGSVGElement>(null);
+interface Props {
+    jsonData: JSONData;
+}
+
+const TreeComponent: React.FC<Props> = ({ jsonData }) => {
+    const svgRef = useRef<SVGSVGElement>(null);
 
     useEffect(() => {
-        if (!ref.current) return;
+        if (!svgRef.current) return;
 
-        const svg = d3.select(ref.current);
-        const treeLayout = d3.tree<any>().size([500, 300]);
+        const svg = d3.select(svgRef.current);
+        const width = +svg.attr('width');
+        const height = +svg.attr('height');
+        const g = svg.append('g').attr('transform', `translate(40,0)`);
 
-        const root = treeLayout(treeData);
+        const treeLayout = d3.tree<JSONData>().size([height, width - 160]);
 
-        const linkGenerator = d3.linkHorizontal<d3.HierarchyPointNode<any>, any>()
-            .x((d: any) => d.y)
-            .y((d: any) => d.x);
+        const root = d3.hierarchy<JSONData>(jsonData);
 
+        const linkGenerator = (d: any) => {
+            return `M${d.source.y},${d.source.x}L${d.target.y},${d.target.x}`;
+        };
 
+        g.selectAll('.link')
+            .data(treeLayout(root).links())
+            .enter()
+            .append('path')
+            .attr('class', 'link')
+            .attr('d', linkGenerator);
 
-        const nodeTreemap = d3.treemap<any>()
-            .size([500, 300])
-            .paddingInner(10);
-
-        nodeTreemap(root);
-
-        const node = svg.selectAll('.node')
+        const node = g
+            .selectAll<SVGGElement, d3.HierarchyPointNode<JSONData>>('.node')
             .data(root.descendants())
-            .enter().append('g')
+            .enter()
+            .append('g')
             .attr('class', 'node')
-            .attr('transform', (d: any) => `translate(${d.x0}, ${d.y0})`);
+            .attr('transform', (d) => `translate(${d.y},${d.x})`);
 
-        node.append('rect')
-            .attr('width', (d: any) => d.x1 - d.x0)
-            .attr('height', (d: any) => d.y1 - d.y0);
+        node
+            .append('circle')
+            .attr('r', 5)
+            .attr('fill', 'steelblue');
 
-        node.append('text')
-            .attr('x', (d: any) => (d.x1 - d.x0) / 2)
-            .attr('y', (d: any) => (d.y1 - d.y0) / 2 + 5)
-            .text((d: any) => d.data.name);
+        node
+            .append('text')
+            .attr('dy', '0.31em')
+            .attr('x', (d) => (d.children ? -6 : 6))
+            .attr('text-anchor', (d) => (d.children ? 'end' : 'start'))
+            .text((d) => d.data.name)
+            .clone(true)
+            .lower()
+            .attr('stroke', 'white');
 
-    }, [treeData]);
+        return () => {
+            svg.selectAll('*').remove();
+        };
+    }, [jsonData]);
 
-    return (
-        <svg ref={ref} width="500" height="300"></svg>
-    );
+    return <svg ref={svgRef} width="960" height="500"></svg>;
 };
 
-export default Tree;
+export default TreeComponent;

@@ -3,7 +3,8 @@ import HeaderMenuTab from "./HeaderMenuTabProps.tsx";
 import SearchBar from "./SearchBar.tsx";
 import Body from "../tree/Body.tsx";
 import "./header.css";
-/*import Tree from "../tree/Tree.tsx";*/
+import TreeComponent from "../tree/Tree.tsx";
+import treeData from "../assets/tree.data.json"
 
 const handleSearch = (query: string) => {
     console.log(`Searching for: ${query}`);
@@ -23,7 +24,10 @@ const tabs = [
     {
         key: 'test',
         label: 'Test',
-        content: <></>,
+        content:
+            <div>
+                <TreeComponent jsonData={treeData}/>
+            </div>,
     },
 ];
 

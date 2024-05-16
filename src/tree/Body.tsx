@@ -5,17 +5,7 @@ import {FileDrop} from "./DragNDrop.tsx";
 import "../buttons/button.css";
 import "./body.css";
 import "./dragndrop.css";
-/*import chart from "./Tree.tsx";*/
 
-/*const handleDrop = (files: File[]) => {
-        // Assuming you have a function to read the JSON file
-        const fileReader = new FileReader();
-        fileReader.onload = () => {
-            const jsonData = JSON.parse(fileReader.result as string);
-            chart(jsonData); // Call the createTree function with the JSON data
-        };
-        fileReader.readAsText(files[0]); // Read the first file as text
-};*/
 const handleDrop = (files: File[]) => {
     alert("bla" + files);
 }
