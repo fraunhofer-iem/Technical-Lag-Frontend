@@ -1,0 +1,49 @@
+.menu-tabs {
+    display: flex;
+    justify-content: space-around;
+    background-color: black;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.menu-tabs button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px 10px;
+    outline: none;
+    color: #63aa96;
+}
+
+.menu-tabs button.active {
+    font-weight: bold;
+    color: #63aa96;
+}
+
+.menu-content {
+    padding: 7% 1% 1% 1%;
+}
+
+.icon-text {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.icon-text.home {
+    color: #63aa96;
+}
+
+.icon-text.search {
+    color: #63aa96;
+}
+
+.icon-text.home.active,
+.icon-text.search.active {
+    color: #e5f6f2;
+}
