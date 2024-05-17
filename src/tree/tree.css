@@ -1,0 +1,14 @@
+text {
+    text-shadow:
+            -2px -2px 4px #454545,
+            -2px 2px 4px #454545,
+            2px -2px 4px #454545,
+            2px 2px 3px #454545;
+    pointer-events: none;
+}
+
+.svg-container {
+    overflow: auto;
+    width: 95%;
+    height: 60vh;
+}
