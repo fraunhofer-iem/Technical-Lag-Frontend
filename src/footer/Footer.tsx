@@ -1,23 +1,16 @@
 // Filename - components/Footer.js
 
-import {
-    Box,
-    FooterContainer,
-    Row,
-    Column,
-    FooterLink,
-    Heading,
-} from "./FooterStyles";
+import {Box, Column, FooterContainer, FooterLink, Heading, Row,} from "./FooterStyles";
 import "./footer.css";
 
 const Footer = () => {
     return (
         <Box>
-            <h1 className="app-name"                style={{
-                    color: "#019879",
-                    textAlign: "center",
-                    marginTop: "1px",
-                }}
+            <h1 className="app-name" style={{
+                color: "#019879",
+                textAlign: "center",
+                marginTop: "20px",
+            }}
             >
                 Libyear-ORT
             </h1>
@@ -42,33 +35,21 @@ const Footer = () => {
                         <Heading>Social Media</Heading>
                         <FooterLink href="https://www.iem.fraunhofer.de/">
                             <i className="website">
-								<span
-                                    style={{
-                                        marginLeft: "10px",
-                                    }}
-                                >
+								<span>
 									Website
 								</span>
                             </i>
                         </FooterLink>
                         <FooterLink href="https://www.instagram.com/fraunhofer.iem/">
                             <i className="fab fa-instagram">
-								<span
-                                    style={{
-                                        marginLeft: "10px",
-                                    }}
-                                >
+								<span>
 									Instagram
 								</span>
                             </i>
                         </FooterLink>
                         <FooterLink href="https://www.youtube.com/@FraunhoferIEM">
                             <i className="fab fa-youtube">
-								<span
-                                    style={{
-                                        marginLeft: "10px",
-                                    }}
-                                >
+								<span>
 									Youtube
 								</span>
                             </i>
