@@ -1,10 +1,10 @@
 import * as React from "react";
 import UpdateButton from "../buttons/UpdateButton.tsx";
 import RevertButton from "../buttons/RevertButton.tsx";
-import {FileDrop} from "./DragNDrop.tsx";
+import {FileDrop} from "./filehandling/DragNDrop.tsx";
 import "../buttons/button.css";
 import "./body.css";
-import "./dragndrop.css";
+import "./filehandling/dragndrop.css";
 
 const handleDrop = (files: File[]) => {
     alert("bla" + files);
