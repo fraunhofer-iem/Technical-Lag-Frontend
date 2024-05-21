@@ -1,10 +1,11 @@
 import * as React from "react";
 import HeaderMenuTab from "./HeaderMenuTabProps.tsx";
 import SearchBar from "./SearchBar.tsx";
-import Body from "../tree/Body.tsx";
+import Body from "../body/Body.tsx";
 import "./header.css";
-import TreeComponent from "../tree/Tree.tsx";
 import treeData from "../assets/tree.data.json"
+import CollapsibleTreeComponent from "../body/tree/CollapsibleTreeComponent.tsx";
+//import treeData from "../assets/1715692927515-dependencies-stats.json";
 
 const handleSearch = (query: string) => {
     console.log(`Searching for: ${query}`);
@@ -26,7 +27,7 @@ const tabs = [
         label: 'Test',
         content:
             <div>
-                <TreeComponent jsonData={treeData}/>
+                <CollapsibleTreeComponent jsonData={treeData}/>
             </div>,
     },
 ];
