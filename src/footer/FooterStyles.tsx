@@ -6,6 +6,7 @@ export const Box = styled.div`
     left: 0;
 	width: 100%;
     position: fixed;
+    z-index: 1000; /* Ensure it stays above other content */
 `;
 
 export const FooterContainer = styled.div`
@@ -14,7 +15,8 @@ export const FooterContainer = styled.div`
 	justify-content: center;
 	max-width: 96%;
 	margin: 0 auto;
-	background: #63aa96; 
+	background: #63aa96;
+    padding: 10px;
 `;
 
 export const Column = styled.div<{marginLeft?: string}>`
