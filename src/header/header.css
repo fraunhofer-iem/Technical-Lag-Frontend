@@ -26,7 +26,10 @@
 }
 
 .menu-content {
-    padding: 7% 1% 1% 1%;
+    margin-top: 5%;
+    @media (max-width: 1000px) {
+        margin-top: 5%;
+    }
 }
 
 .icon-text {

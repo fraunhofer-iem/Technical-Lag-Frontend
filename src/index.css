@@ -11,6 +11,11 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    /**/
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 a {
@@ -56,4 +61,11 @@ a:hover {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* Prevent body scroll */
 }

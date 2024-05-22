@@ -2,5 +2,8 @@
     display: grid;
     grid-template-columns: 1fr 5fr 1fr; /* 3 columns, middle one is 5 times larger */
     grid-gap: 10px;
-    justify-items: center; /* horizontal centering */
+    flex: 1; /* Take up the remaining space */
+    overflow-y: auto; /* Enable vertical scrolling if needed */
+    padding: 10px; /* Optional: add some padding */
+    box-sizing: border-box; /* Ensure padding is included in the element's total width and height */
 }
