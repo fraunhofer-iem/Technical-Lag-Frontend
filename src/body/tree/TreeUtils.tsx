@@ -54,7 +54,7 @@ const updateNodes = (
     nodes: HierarchyNodeExtended[],
     source: HierarchyNodeExtended,
     idMap: Map<HierarchyNodeExtended, number>,
-    click: (event: MouseEvent, d: HierarchyNodeExtended) => void
+    click: (event: React.MouseEvent, d: HierarchyNodeExtended) => void
 ) => {
     const node = g.selectAll<SVGGElement, HierarchyNodeExtended>('g.node')
         .data(nodes, (d: HierarchyNodeExtended) => idMap.get(d)!.toString());
