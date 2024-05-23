@@ -1,58 +1,21 @@
-// Filename - components/Footer.js
-
-import {Box, Column, FooterContainer, FooterLink, Heading, Row,} from "./FooterStyles";
-import "./footer.css";
+import {Box, Column, FooterContainer, FooterLink, Row,} from "./FooterStyles";
 
 const Footer = () => {
     return (
         <Box>
-            <h1 className="app-name" style={{
-                color: "#019879",
-                textAlign: "center",
-                marginTop: "20px",
-            }}
-            >
-                Libyear-ORT
-            </h1>
             <FooterContainer>
                 <Row>
                     <Column>
-                        <Heading>Legal Notice</Heading>
+                        <p>&copy; Fraunhofer IEM. All rights reserved.</p>
+                    </Column>
+                    <Column>
                         <FooterLink href="#">
                             Security Policy
                         </FooterLink>
+                    </Column>
+                    <Column>
                         <FooterLink href="#">
                             Terms of Service
-                        </FooterLink>
-                    </Column>
-                    <Column>
-                        <Heading>About The App</Heading>
-                        <FooterLink href="#">
-                            Information
-                        </FooterLink>
-                    </Column>
-                    <Column>
-                        <Heading>Social Media</Heading>
-                        <FooterLink href="https://www.iem.fraunhofer.de/">
-                            <i className="website">
-								<span>
-									Website
-								</span>
-                            </i>
-                        </FooterLink>
-                        <FooterLink href="https://www.instagram.com/fraunhofer.iem/">
-                            <i className="fab fa-instagram">
-								<span>
-									Instagram
-								</span>
-                            </i>
-                        </FooterLink>
-                        <FooterLink href="https://www.youtube.com/@FraunhoferIEM">
-                            <i className="fab fa-youtube">
-								<span>
-									Youtube
-								</span>
-                            </i>
                         </FooterLink>
                     </Column>
                 </Row>

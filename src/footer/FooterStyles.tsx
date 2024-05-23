@@ -16,7 +16,7 @@ export const FooterContainer = styled.div`
 	max-width: 96%;
 	margin: 0 auto;
 	background: #63aa96;
-    padding: 10px;
+    padding: 2px;
 `;
 
 export const Column = styled.div<{marginLeft?: string}>`
@@ -30,16 +30,12 @@ export const Row = styled.div`
 	display: grid;
     grid-template-columns: repeat(3, 1fr);
 	grid-gap: 1%;
-
-/*	@media (max-width: 1000px) {
-        grid-template-columns: repeat(3, 1fr);
-	}*/
 `;
 
 export const FooterLink = styled.a`
 	color: #fff;
-	margin-bottom: 0.6em;
-	font-size: 18px;
+	margin-top: 1em;
+	font-size: 16px;
 	text-decoration: none;
 
 	&:hover {
@@ -49,7 +45,7 @@ export const FooterLink = styled.a`
 `;
 
 export const Heading = styled.p`
-	font-size: 22px;
+	font-size: 20px;
 	color: #fff;
 	margin-bottom: 1em;
 	font-weight: bold;
