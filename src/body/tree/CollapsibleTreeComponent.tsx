@@ -54,12 +54,12 @@ const CollapsibleTreeComponent: React.FC<Props> = ({ jsonData }) => {
     }, [jsonData, dimensions]);
 
     return (
-        <div style={{ overflow: 'auto', width: '100%', height: '70vh' }}>
+        <div style={{ overflow: 'auto', width: '100%', height: '75vh' }}>
             <svg
                 ref={svgRef}
                 viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
                 preserveAspectRatio="xMinYMin meet"
-                style={{ width: '100%', height: '95%', overflow: 'visible' }}
+                style={{ width: '100%', height: '100%', overflow: 'visible' }}
             ></svg>
         </div>
     );
