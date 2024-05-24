@@ -81,9 +81,9 @@ const updateNodes = (
         .attr('fill', 'white')
         .attr('font-size', '1.3em');
 
-    nodeEnter
+    nodeEnter.filter((d: any) => d.parent !== null) // Assuming null indicates the root node
         .append('title')
-        .text(d => d.data.name + "\n" + "libversion");
+        .text((d: any) => `${d.data.name}\n${d.data.version}`);
 
     const nodeUpdate = nodeEnter.merge(node);
 
