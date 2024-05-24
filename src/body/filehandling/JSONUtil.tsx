@@ -9,7 +9,6 @@ export const handleDrop = (files: File[], setJsonData: React.Dispatch<React.SetS
         reader.onload = (event) => {
             try {
                 const json = JSON.parse(event.target?.result as string);
-                console.log("Parsed JSON:", json); // Log the entire parsed JSON
 
                 // Verify the presence of the `graph`, `nodes`, `edges`, and `dependencyGraphDtos` properties
                 const transformedData = transformData(json);
@@ -47,7 +46,6 @@ const transformData = (json: any): JSONData => {
     }
 
     const firstGraphDto = dependencyGraphDtos[0];
-    console.log("First Graph DTO:", firstGraphDto);
 
     if (!firstGraphDto.graph || !Array.isArray(firstGraphDto.graph) || firstGraphDto.graph.length === 0) {
         throw new Error("Invalid structure: 'graph' property is missing, not an array, or is empty.");
@@ -61,15 +59,10 @@ const transformData = (json: any): JSONData => {
     const nodes = firstGraph.graph.nodes;
     const edges = firstGraph.graph.edges;
 
-    console.log("Nodes:", nodes);
-    console.log("Edges:", edges);
-
     const artifactMap = new Map<number, any>();
     firstGraphDto.artifacts.forEach((artifact: any, idx: number) => {
         artifactMap.set(idx, artifact);
     });
-
-    console.log("Artifact Map:", artifactMap);
 
     const nodeMap = new Map<number, JSONData>();
 
@@ -93,9 +86,8 @@ const transformData = (json: any): JSONData => {
         nodeMap.set(node.artifactIdx, nodeData);
     });
 
-    console.log("Node Map:", nodeMap);
 
-// Populate the children arrays based on edges
+    // Populate the children arrays based on edges
     edges.forEach((edge: { from: number, to: number }) => {
         const fromNodeEntry = Array.from(nodeMap.entries())[edge.from];
         const toNodeEntry = Array.from(nodeMap.entries())[edge.to];
@@ -109,15 +101,13 @@ const transformData = (json: any): JSONData => {
         } else {
             // Log if either fromNode or toNode is not found
             if (!fromNodeEntry) {
-                console.warn(`From node with index ${edge.from} not found in nodeMap.`);
+                throw new Error(`From node with index ${edge.from} not found in nodeMap.`);
             }
             if (!toNodeEntry) {
-                console.warn(`To node with index ${edge.to} not found in nodeMap.`);
+                throw new Error(`To node with index ${edge.to} not found in nodeMap.`);
             }
         }
     });
-
-    console.log("Transformed Node Map:", nodeMap);
 
     return {name: firstGraphDto.artifactId, version: firstGraphDto.value, children: Array.from(nodeMap.values())};
 };
