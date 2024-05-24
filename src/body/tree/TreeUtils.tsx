@@ -3,7 +3,7 @@ import {HierarchyNodeExtended, JSONData} from './Types';
 import React from "react";
 
 const transitionTime = 500;
-const radius = 15;
+const radius = 12;
 
 export const updateTree = (
     g: d3.Selection<SVGGElement, unknown, null, undefined>,
@@ -35,7 +35,12 @@ export const updateTree = (
         const nodes = treeData.descendants() as HierarchyNodeExtended[];
         const links = treeData.descendants().slice(1) as HierarchyNodeExtended[];
 
-        nodes.forEach(d => d.y = d.depth * 100);
+        nodes.forEach(d => {
+            d.y = d.depth * 140; // Increase depth spacing
+            // @ts-ignore
+            d.x *= 3; // Increase width spacing
+        });
+
 
         updateNodes(g, nodes, source, idMap, click);
         updateLinks(g, links, source);
@@ -70,16 +75,61 @@ const updateNodes = (
     nodeEnter.append('circle')
         .attr('class', 'node')
         .attr('r', radius)
-        .attr('fill', d => d._children ? 'black' : '#999');
+        .attr('fill', d => d._children ? 'black' : '#999')
+        .attr('stroke', "#fff")
+        .attr('stroke-width', "3px");
 
     nodeEnter.append('text')
         .attr('dy', '0.35em')
         .attr('y', d => d.children || d._children ? -25 : 30)
         .attr('text-anchor', 'middle')
-        .text(d => d.data.name.length > 28 ? d.data.name.slice(0, 28) + '...' : d.data.name) // limits the number of characters to 28
+        /*
+                .text(d => d.data.name.length > 28 ? d.data.name.slice(0, 28) + '...' : d.data.name) // limits the number of characters to 28
+        */
+        .text(d => d.data.name) // Full name
         .lower()
+        .attr('font', 'sans-serif')
         .attr('fill', 'white')
-        .attr('font-size', '1.3em');
+        .attr('font-size', '1.0vw')
+        .call(wrap, 150)
+        .on('mouseover', function () {
+        d3.select(this).selectAll('tspan.overflow').classed('overflow', false).style('display', 'inline');
+    })
+        .on('mouseout', function () {
+            d3.select(this).selectAll('tspan.overflow').classed('overflow', true).style('display', 'none');
+        });
+
+    function wrap(text: d3.Selection<SVGTextElement, HierarchyNodeExtended, any, any>, width: number) {
+        text.each(function () {
+            const text = d3.select(this);
+            const words = text.text().split(/\s+/).reverse();
+            let word;
+            let line: string[] = [];
+            let lineNumber = 0;
+            let lineHeight = 1.1; // ems
+            let y = text.attr("y");
+            let dy = parseFloat(text.attr("dy"));
+            let tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+
+
+            while (word = words.pop()) {
+                line.push(word);
+                tspan.text(line.join(" "));
+                const tspanNode = tspan.node();
+                if (tspanNode) {
+                    const tspanWidth = tspanNode.getComputedTextLength();
+                    if (tspanWidth > width) {
+                        line.pop();
+                        tspan.text(line.join(" "));
+                        line = [word];
+                        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+                    }
+                }
+            }
+            // Add class to tspan with overflowing text
+            text.selectAll('tspan:not(:last-child)').classed('overflow', true);
+        });
+    }
 
     nodeEnter.filter((d: any) => d.parent !== null) // Assuming null indicates the root node
         .append('title')
@@ -129,8 +179,8 @@ const updateLinks = (
                 target: o as unknown as d3.HierarchyPointNode<JSONData>
             });
         })
-        .attr('stroke', 'white')
-        .attr('stroke-width', 3)
+        .attr('stroke', '#ccc')
+        .attr('stroke-width', "2px")
         .attr("stroke-opacity", 0.6)
         .attr('fill', 'none');
 
