@@ -1,7 +1,7 @@
 import * as React from "react";
 import HeaderMenuTab from "./HeaderMenuTabProps.tsx";
 import SearchBar from "./SearchBar.tsx";
-import Body from "../body/Body.tsx";
+import Body from "../body/body/Body.tsx";
 import "./header.css";
 import treeData from "../assets/tree.data.json"
 import CollapsibleTreeComponent from "../body/tree/CollapsibleTreeComponent.tsx";

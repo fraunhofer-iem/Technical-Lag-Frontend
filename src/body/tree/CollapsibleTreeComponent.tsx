@@ -1,15 +1,29 @@
-import React, { useEffect, useRef } from 'react';
+import React, {useEffect, useRef} from 'react';
 import * as d3 from 'd3';
-import { JSONData, HierarchyNodeExtended } from './Types';
+import {HierarchyNodeExtended, JSONData} from './Types';
 import useResize from './Resizable';
-import { updateTree } from './TreeUtils';
+import {updateTree} from './TreeUtils';
 import './tree.css';
 
 interface Props {
-    jsonData: JSONData;
+    jsonData: JSONData,
+    setSelectedNodeName: (name: string) => void,
+    setSelectedNodeVersionNumber: (versionNumber: string) => void,
+    setSelectedNodeReleaseDate: (releaseDate: string) => void,
+    setSelectedNodeEcosystem: (ecosystem: string) => void,
+    setSelectedNodeOrtVersion: (ortVersion: string) => void,
+    setSelectedNodeJavaVersion: (javaVersion: string) => void,
 }
 
-const CollapsibleTreeComponent: React.FC<Props> = ({ jsonData }) => {
+const CollapsibleTreeComponent: React.FC<Props> = ({
+                                                       jsonData,
+                                                       setSelectedNodeName,
+                                                       setSelectedNodeVersionNumber,
+                                                       setSelectedNodeReleaseDate,
+                                                       setSelectedNodeEcosystem,
+                                                       setSelectedNodeOrtVersion,
+                                                       setSelectedNodeJavaVersion
+                                                   }) => {
     const svgRef = useRef<SVGSVGElement>(null);
     const dimensions = useResize(svgRef);
 
@@ -27,8 +41,8 @@ const CollapsibleTreeComponent: React.FC<Props> = ({ jsonData }) => {
 
         svg.call(zoom);
 
-        const { width, height } = dimensions;
-        const margin = { top: 50, right: 0, bottom: 50, left: 0 };
+        const {width, height} = dimensions;
+        const margin = {top: 50, right: 0, bottom: 50, left: 0};
         const innerWidth = width - margin.left - margin.right;
         const innerHeight = height - margin.top - margin.bottom;
         const g = svg
@@ -46,20 +60,27 @@ const CollapsibleTreeComponent: React.FC<Props> = ({ jsonData }) => {
             }
         });
 
-        updateTree(g, root, { width: innerWidth, height: innerHeight }, idMap);
+        updateTree(g, root, {
+                width: innerWidth,
+                height: innerHeight
+            }, idMap, setSelectedNodeName, setSelectedNodeVersionNumber,
+            setSelectedNodeReleaseDate, setSelectedNodeEcosystem,
+            setSelectedNodeOrtVersion, setSelectedNodeJavaVersion);
 
         return () => {
             svg.selectAll('*').remove();
         };
-    }, [jsonData, dimensions]);
+    }, [jsonData, dimensions, setSelectedNodeName,
+        setSelectedNodeVersionNumber, setSelectedNodeReleaseDate,
+        setSelectedNodeEcosystem, setSelectedNodeOrtVersion, setSelectedNodeJavaVersion]);
 
     return (
-        <div style={{ overflow: 'auto', width: '100%', height: '75vh' }}>
+        <div style={{overflow: 'auto', width: '100%', height: '75vh'}}>
             <svg
                 ref={svgRef}
                 viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
                 preserveAspectRatio="xMidYMid meet"
-                style={{ width: '100%', height: '100%', overflow: 'visible' }}
+                style={{width: '100%', height: '100%', overflow: 'visible'}}
             ></svg>
         </div>
     );

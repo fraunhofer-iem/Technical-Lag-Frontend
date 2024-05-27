@@ -81,6 +81,8 @@ const transformData = (json: any): JSONData => {
             version: usedVersionIndex !== -1
                 ? artifact.versions[usedVersionIndex].versionNumber
                 : "unknown",
+            releaseDate: usedVersionIndex !== -1
+                ? artifact.versions[usedVersionIndex].releaseDate: "unknown",
             children: []
         };
         nodeMap.set(node.artifactIdx, nodeData);
@@ -109,5 +111,18 @@ const transformData = (json: any): JSONData => {
         }
     });
 
-    return {name: firstGraphDto.artifactId, version: firstGraphDto.value, children: Array.from(nodeMap.values())};
+    const { ecosystem, version, artifactId } = json.dependencyGraphDtos[0];
+    const { ortVersion, javaVersion } = json.environmentInfo;
+
+    // Create a special node for the root
+    const root: JSONData & { ecosystem: string; environmentInfo: { ortVersion: string; javaVersion: string }} = {
+        name: artifactId,
+        version: version,
+        releaseDate: "unknown",
+        children: Array.from(nodeMap.values()),
+        ecosystem: ecosystem,
+        environmentInfo: { ortVersion, javaVersion }
+    };
+
+    return root;
 };

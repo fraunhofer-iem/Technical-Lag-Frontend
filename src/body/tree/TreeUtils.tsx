@@ -9,7 +9,13 @@ export const updateTree = (
     g: d3.Selection<SVGGElement, unknown, null, undefined>,
     root: HierarchyNodeExtended,
     dimensions: { width: number; height: number },
-    idMap: Map<HierarchyNodeExtended, number>
+    idMap: Map<HierarchyNodeExtended, number>,
+    setSelectedFullName: (name: string) => void,
+    setSelectedVersion: (version: string) => void,
+    setSelectedReleaseDate: (releaseDate: string) => void,
+    setSelectedNodeEcosystem: (ecosystem: string) => void,
+    setSelectedNodeOrtVersion: (ortVersion: string) => void,
+    setSelectedNodeJavaVersion: (javaVersion: string) => void,
 ) => {
     const treeLayout = d3.tree<JSONData>().size([dimensions.width, dimensions.height]);
 
@@ -42,7 +48,19 @@ export const updateTree = (
         });
 
 
-        updateNodes(g, nodes, source, idMap, click);
+        updateNodes(
+            g,
+            nodes,
+            source,
+            idMap,
+            click,
+            setSelectedFullName,
+            setSelectedVersion,
+            setSelectedReleaseDate,
+            setSelectedNodeEcosystem,
+            setSelectedNodeOrtVersion,
+            setSelectedNodeJavaVersion
+        );
         updateLinks(g, links, source);
 
         nodes.forEach(d => {
@@ -59,7 +77,13 @@ const updateNodes = (
     nodes: HierarchyNodeExtended[],
     source: HierarchyNodeExtended,
     idMap: Map<HierarchyNodeExtended, number>,
-    click: (event: React.MouseEvent, d: HierarchyNodeExtended) => void
+    click: (event: React.MouseEvent, d: HierarchyNodeExtended) => void,
+    setSelectedFullName: (name: string) => void,
+    setSelectedVersion: (name: string) => void,
+    setSelectedReleaseDate: (name: string) => void,
+    setSelectedNodeEcosystem: (ecosystem: string) => void,
+    setSelectedNodeOrtVersion: (ortVersion: string) => void,
+    setSelectedNodeJavaVersion: (javaVersion: string) => void,
 ) => {
     const node = g.selectAll<SVGGElement, HierarchyNodeExtended>('g.node')
         .data(nodes, (d: HierarchyNodeExtended) => idMap.get(d)!.toString());
@@ -77,59 +101,33 @@ const updateNodes = (
         .attr('r', radius)
         .attr('fill', d => d._children ? 'black' : '#999')
         .attr('stroke', "#fff")
-        .attr('stroke-width', "3px");
+        .attr('stroke-width', "3px")
+        .on('click', (event: React.MouseEvent, d: HierarchyNodeExtended) => {
+            if (event.button === 0) { // Check for left mouse click
+                // Open sidebar here with node information
+                setSelectedFullName(d.data.name);
+                setSelectedVersion(d.data.version);
+                setSelectedReleaseDate(d.data.releaseDate);
+                if (!d.parent) { // Check if the node is the root
+                    setSelectedNodeEcosystem(d.data.ecosystem || "N/A");
+                    setSelectedNodeOrtVersion(d.data.ortVersion || "N/A");
+                    setSelectedNodeJavaVersion(d.data.javaVersion || "N/A");
+                }
+            }
+        });
 
     nodeEnter.append('text')
         .attr('dy', '0.35em')
         .attr('y', d => d.children || d._children ? -25 : 30)
         .attr('text-anchor', 'middle')
-        /*
-                .text(d => d.data.name.length > 28 ? d.data.name.slice(0, 28) + '...' : d.data.name) // limits the number of characters to 28
-        */
-        .text(d => d.data.name) // Full name
+        .text(d => {
+            const fullText = d.data.name;
+            return fullText.length > 10 ? fullText.slice(0, 10) + '...' : fullText; // Truncate text
+        })
         .lower()
         .attr('font', 'sans-serif')
         .attr('fill', 'white')
-        .attr('font-size', '1.0vw')
-        .call(wrap, 150)
-        .on('mouseover', function () {
-        d3.select(this).selectAll('tspan.overflow').classed('overflow', false).style('display', 'inline');
-    })
-        .on('mouseout', function () {
-            d3.select(this).selectAll('tspan.overflow').classed('overflow', true).style('display', 'none');
-        });
-
-    function wrap(text: d3.Selection<SVGTextElement, HierarchyNodeExtended, any, any>, width: number) {
-        text.each(function () {
-            const text = d3.select(this);
-            const words = text.text().split(/\s+/).reverse();
-            let word;
-            let line: string[] = [];
-            let lineNumber = 0;
-            let lineHeight = 1.1; // ems
-            let y = text.attr("y");
-            let dy = parseFloat(text.attr("dy"));
-            let tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-
-
-            while (word = words.pop()) {
-                line.push(word);
-                tspan.text(line.join(" "));
-                const tspanNode = tspan.node();
-                if (tspanNode) {
-                    const tspanWidth = tspanNode.getComputedTextLength();
-                    if (tspanWidth > width) {
-                        line.pop();
-                        tspan.text(line.join(" "));
-                        line = [word];
-                        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-                    }
-                }
-            }
-            // Add class to tspan with overflowing text
-            text.selectAll('tspan:not(:last-child)').classed('overflow', true);
-        });
-    }
+        .attr('font-size', '1.0vw');
 
     nodeEnter.filter((d: any) => d.parent !== null) // Assuming null indicates the root node
         .append('title')
