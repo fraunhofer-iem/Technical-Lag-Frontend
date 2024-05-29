@@ -57,6 +57,11 @@ export const FileDrop: FC<IFileDrop> = ({ onDrop, setIsFileDropped }) => {
             onClick={handleClick}
             role="button"
             tabIndex={0}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    handleClick();
+                }
+            }}
             style={{
                 border: dragIsOver ? "2px solid white" : "1px solid gray",
                 outline: "none",

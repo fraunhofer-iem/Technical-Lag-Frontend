@@ -10,18 +10,18 @@ import UpdateButton from "../../buttons/UpdateButton.tsx";
 import RevertButton from "../../buttons/RevertButton.tsx";
 import BackButton from "../../buttons/BackButton.tsx";
 import {handleDrop} from "../filehandling/JSONUtil.tsx";
-import Sidebar from "../tree/Sidebar.tsx";
+import Sidebar from "../tree/Sidebar/Sidebar.tsx";
 
 const Body: React.FC = () => {
     const [jsonData, setJsonData] = useState<JSONData | null>(null);
     const [isFileDropped, setIsFileDropped] = useState<boolean>(false);
     const [selectedNodeName, setSelectedNodeName] = useState<string>('');
-    const [selectedNodeVersionNumber, setSelectedNodeVersionNumber] = useState<string>('');
-    const [selectedNodeReleaseDate, setSelectedNodeReleaseDate] = useState<string>('');
-    const [selectedEcosystem, setSelectedNodeEcosystem] = useState<string>(''); // Added state for ecosystem
-    const [selectedOrtVersion, setSelectedNodeOrtVersion] = useState<string>(''); // Added state for ORT version
-    const [selectedJavaVersion, setSelectedNodeJavaVersion] = useState<string>(''); // Added state for Java version
-    const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+    const [selectedVersionNumber, setSelectedVersionNumber] = useState<string>('');
+    const [selectedReleaseDate, setSelectedReleaseDate] = useState<string>('');
+    const [selectedEcosystem, setSelectedEcosystem] = useState<string>(''); // Added state for ecosystem
+    const [selectedOrtVersion, setSelectedOrtVersion] = useState<string>(''); // Added state for ORT version
+    const [selectedJavaVersion, setSelectedJavaVersion] = useState<string>(''); // Added state for Java version
+    const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>(false);
 
     // so the tree still exists on a page reload, tree is deleted out of storage if tab is closed
     useEffect(() => {
@@ -53,11 +53,11 @@ const Body: React.FC = () => {
 
     const handleCloseSidebar = () => {
         setSelectedNodeName('');
-        setSelectedNodeVersionNumber('');
-        setSelectedNodeReleaseDate('');
-        setSelectedNodeEcosystem('');
-        setSelectedNodeOrtVersion('');
-        setSelectedNodeJavaVersion('');
+        setSelectedVersionNumber('');
+        setSelectedReleaseDate('');
+        setSelectedEcosystem('');
+        setSelectedOrtVersion('');
+        setSelectedJavaVersion('');
         setIsSidebarVisible(false);
     };
 
@@ -80,24 +80,28 @@ const Body: React.FC = () => {
                         {jsonData && (
                             <CollapsibleTreeComponent
                                 jsonData={jsonData}
-                                setSelectedNodeName={setSelectedNodeName}
-                                setSelectedNodeVersionNumber={setSelectedNodeVersionNumber}
-                                setSelectedNodeReleaseDate={setSelectedNodeReleaseDate}
-                                setSelectedNodeEcosystem={setSelectedNodeEcosystem}
-                                setSelectedNodeOrtVersion={setSelectedNodeOrtVersion}
-                                setSelectedNodeJavaVersion={setSelectedNodeJavaVersion}
+                                setSelectedNode={{
+                                    name: setSelectedNodeName,
+                                    versionNumber: setSelectedVersionNumber,
+                                    releaseDate: setSelectedReleaseDate,
+                                    ecosystem: setSelectedEcosystem,
+                                    ortVersion: setSelectedOrtVersion,
+                                    javaVersion: setSelectedJavaVersion
+                                }}
                             />
                         )}
                     </div>
-                    <Sidebar
-                        fullName={selectedNodeName}
-                        versionNumber={selectedNodeVersionNumber}
-                        releaseDate={selectedNodeReleaseDate}
-                        ecosystem={selectedEcosystem}
-                        ortVersion={selectedOrtVersion}
-                        javaVersion={selectedJavaVersion}
-                        onClose={handleCloseSidebar}
-                    />
+                    {isSidebarVisible && (
+                        <Sidebar
+                            fullName={selectedNodeName}
+                            versionNumber={selectedVersionNumber}
+                            releaseDate={selectedReleaseDate}
+                            ecosystem={selectedEcosystem}
+                            ortVersion={selectedOrtVersion}
+                            javaVersion={selectedJavaVersion}
+                            onClose={handleCloseSidebar}
+                        />
+                    )}
                 </>
             )}
         </main>

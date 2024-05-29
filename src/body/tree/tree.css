@@ -10,5 +10,11 @@ text {
 .svg-container {
     overflow: auto;
     width: 100%;
-    height: 60vh;
+    height: 80vh;
+}
+
+.svg{
+    width: 100%;
+    height: 90%;
+    overflow: visible;
 }
