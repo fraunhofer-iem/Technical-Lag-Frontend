@@ -1,0 +1,36 @@
+.sidebar {
+    position: fixed;
+    right: 0;
+    top: 50px; /* Adjust this value according to header height */
+    width: 200px;
+    height: calc(100% - 50px); /* Subtract header height from viewport height */
+    background-color: #454545;
+    border-left: 1px solid #ddd;
+    padding: 10px;
+    display: block;
+    z-index: 1000; /* Ensure the sidebar is above other elements */
+    color: #ffffff;
+    text-align: left;
+}
+
+.sidebar .close-button {
+    margin-bottom: 10px;
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.sidebar .header {
+    color: #73a796;
+    margin-bottom: 10px;
+}
+
+.sidebar .paragraph {
+    margin-bottom: 5px;
+}
+
+.sidebar .label {
+    color: #73a796;
+}
