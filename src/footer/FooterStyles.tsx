@@ -1,52 +1,56 @@
 import styled from "styled-components";
 
-export const Box = styled.div`
-	background: black;
-	bottom: 0;
+export const Box = styled.div<{ isOpen: boolean }>`
+    background: #464646;
+    bottom: 0;
     left: 0;
-	width: 100%;
+    right: 0;
+    width: 100vw;
     position: fixed;
     z-index: 1000; /* Ensure it stays above other content */
+    height: ${(props) => (props.isOpen? '5vh' : '0')};
+    overflow: hidden;
+    transition: height 0.3s ease-out;
 `;
 
-export const FooterContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	max-width: 96%;
-	margin: 0 auto;
-	background: #63aa96;
-    padding: 2px;
+export const FooterContainer = styled.div<{ isOpen: boolean }>`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50vw;
+    margin: 0 auto;
+    background: #63aa96;
+    padding: 1px;
+    height: ${(props) => (props.isOpen? '5vh' : '0')};
+    z-index: 1000;
+    overflow: hidden;
+    transition: height 0.3s ease-out;
 `;
 
-export const Column = styled.div<{marginLeft?: string}>`
-	display: flex;
-	flex-direction: column;
-	text-align: left;
-	margin-left: ${props => props.marginLeft ?? "30%"};
+export const Column = styled.div<{ marginLeft?: string }>`
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 `;
 
 export const Row = styled.div`
-	display: grid;
+    display: grid;
     grid-template-columns: repeat(3, 1fr);
-	grid-gap: 1%;
+    grid-gap: 1%;
 `;
 
 export const FooterLink = styled.a`
-	color: #fff;
-	margin-top: 1em;
-	font-size: 16px;
-	text-decoration: none;
+    color: #fff;
+    margin: auto;
+    font-size: 12px;
 
-	&:hover {
-		color: green;
-		transition: 300ms ease-in;
-	}
+    &:hover {
+        color: green;
+        transition: 300ms ease-in;
+    }
 `;
 
-export const Heading = styled.p`
-	font-size: 20px;
-	color: #fff;
-	margin-bottom: 1em;
-	font-weight: bold;
-`;
+export const Copyright = styled.p`
+    font-size: 12px;
+    color: #fff;
+`
