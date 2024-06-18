@@ -6,8 +6,6 @@ interface SidebarProps {
     releaseDate: string;
     onClose: () => void;
     ecosystem?: string;
-    ortVersion?: string;
-    javaVersion?: string;
     repoURL: string,
     revision: string;
 }
@@ -18,8 +16,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                                              releaseDate,
                                              onClose,
                                              ecosystem,
-                                             ortVersion,
-                                             javaVersion,
                                              repoURL,
                                              revision
                                          }) => {
@@ -49,10 +45,6 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <>
                     <p style={styles.paragraph}><strong style={styles.label}>Ecosystem:</strong> <span
                         style={{wordBreak: 'break-all'}}>{ecosystem}</span></p>
-                    <p style={styles.paragraph}><strong style={styles.label}>ORT Version:</strong> <span
-                        style={{wordBreak: 'break-all'}}>{ortVersion}</span></p>
-                    <p style={styles.paragraph}><strong style={styles.label}>Java Version:</strong> <span
-                        style={{wordBreak: 'break-all'}}>{javaVersion}</span></p>
                 </>
             )}
             {repoURL && (

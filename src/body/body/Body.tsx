@@ -22,8 +22,6 @@ const Body: React.FC = () => {
     const [selectedNodeReleaseDate, setSelectedNodeReleaseDate] = useState<string>('');
 
     const [appEcosystem, setAppEcosystem] = useState<string>(''); // Added state for ecosystem
-    const [appOrtVersion, setAppOrtVersion] = useState<string>(''); // Added state for ORT version
-    const [appJavaVersion, setAppJavaVersion] = useState<string>(''); // Added state for Java version
     const [appRepoURL, setAppRepoURL] = useState<string>('');
     const [appRevision, setAppRevision] = useState<string>('')
 
@@ -62,8 +60,6 @@ const Body: React.FC = () => {
         setSelectedNodeVersionNumber('');
         setSelectedNodeReleaseDate('');
         setAppEcosystem('');
-        setAppOrtVersion('');
-        setAppJavaVersion('');
         setAppRepoURL('');
         setAppRevision('');
         setIsSidebarVisible(false);
@@ -92,8 +88,6 @@ const Body: React.FC = () => {
                                 setSelectedNodeVersionNumber={setSelectedNodeVersionNumber}
                                 setSelectedNodeReleaseDate={setSelectedNodeReleaseDate}
                                 setAppEcosystem={setAppEcosystem}
-                                setAppOrtVersion={setAppOrtVersion}
-                                setAppJavaVersion={setAppJavaVersion}
                                 setAppRepoURL={setAppRepoURL}
                                 setAppRevision={setAppRevision}
                                 setIsRoot={setIsSelectedNodeRoot}
@@ -106,8 +100,6 @@ const Body: React.FC = () => {
                             versionNumber={selectedNodeVersionNumber}
                             releaseDate={selectedNodeReleaseDate}
                             ecosystem={isSelectedNodeRoot? appEcosystem : ''}
-                            ortVersion={isSelectedNodeRoot? appOrtVersion : ''}
-                            javaVersion={isSelectedNodeRoot? appJavaVersion : ''}
                             repoURL={isSelectedNodeRoot? appRepoURL : ''}
                             revision={isSelectedNodeRoot? appRevision : ''}
                             onClose={handleCloseSidebar}

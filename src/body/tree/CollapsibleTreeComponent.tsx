@@ -11,8 +11,6 @@ interface Props {
     setSelectedNodeVersionNumber: (versionNumber: string) => void,
     setSelectedNodeReleaseDate: (releaseDate: string) => void,
     setAppEcosystem: (ecosystem: string) => void,
-    setAppOrtVersion: (ortVersion: string) => void,
-    setAppJavaVersion: (javaVersion: string) => void,
     setAppRepoURL: (repoURL: string) => void,
     setAppRevision: (revision: string) => void,
     setIsRoot: (root: boolean) => void
@@ -24,8 +22,6 @@ const CollapsibleTreeComponent: React.FC<Props> = ({
                                                        setSelectedNodeVersionNumber,
                                                        setSelectedNodeReleaseDate,
                                                        setAppEcosystem,
-                                                       setAppOrtVersion,
-                                                       setAppJavaVersion,
                                                        setAppRepoURL,
                                                        setAppRevision,
                                                        setIsRoot
@@ -70,15 +66,14 @@ const CollapsibleTreeComponent: React.FC<Props> = ({
                 width: innerWidth,
                 height: innerHeight
             }, idMap, setSelectedNodeName, setSelectedNodeVersionNumber,
-            setSelectedNodeReleaseDate, setAppEcosystem,
-            setAppOrtVersion, setAppJavaVersion, setAppRepoURL, setAppRevision, setIsRoot);
+            setSelectedNodeReleaseDate, setAppEcosystem, setAppRepoURL, setAppRevision, setIsRoot);
 
         return () => {
             svg.selectAll('*').remove();
         };
     }, [jsonData, dimensions, setSelectedNodeName,
         setSelectedNodeVersionNumber, setSelectedNodeReleaseDate,
-        setAppEcosystem, setAppOrtVersion, setAppJavaVersion, setAppRepoURL, setAppRevision, setIsRoot]);
+        setAppEcosystem, setAppRepoURL, setAppRevision, setIsRoot]);
 
     return (
         <div className="svg-container">

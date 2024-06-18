@@ -113,8 +113,6 @@ const transformData = (json: any): JSONData => {
     });
 
     const { ecosystem, version, artifactId } = json.dependencyGraphDtos[0];
-    const ortVersion = json.environmentInfo.ortVersion;
-    const javaVersion = json.environmentInfo.javaVersion;
 
     const repoURL = json.repositoryInfo.url;
     const revision = json.repositoryInfo.revision;
@@ -126,8 +124,6 @@ const transformData = (json: any): JSONData => {
         releaseDate: "unknown",
         children: Array.from(nodeMap.values()),
         ecosystem: ecosystem,
-        ortVersion: ortVersion,
-        javaVersion: javaVersion,
         repoURL: repoURL,
         revision: revision,
         root: true

@@ -14,8 +14,6 @@ export const updateTree = (
     setSelectedNodeVersionNumber: (versionNumber: string) => void,
     setSelectedNodeReleaseDate: (releaseData: string) => void,
     setAppEcosystem: (ecosystem: string) => void,
-    setAppOrtVersion: (ortVersion: string) => void,
-    setAppJavaVersion: (javaVersion: string) => void,
     setAppRepoURL: (repoURL: string) => void,
     setAppRevision: (revision: string) => void,
     setIsRoot: (root: boolean) => void,
@@ -61,8 +59,6 @@ export const updateTree = (
             setSelectedNodeVersionNumber,
             setSelectedNodeReleaseDate,
             setAppEcosystem,
-            setAppOrtVersion,
-            setAppJavaVersion,
             setAppRepoURL,
             setAppRevision,
             setIsRoot,
@@ -88,8 +84,6 @@ const updateNodes = (
     setSelectedNodeVersionNumber: (versionNumber: string) => void,
     setSelectedNodeReleaseDate: (releaseData: string) => void,
     setAppEcosystem: (ecosystem: string) => void,
-    setAppOrtVersion: (ortVersion: string) => void,
-    setAppJavaVersion: (javaVersion: string) => void,
     setAppRepoURL: (repoURL: string) => void,
     setAppRevision: (revision: string) => void,
     setIsRoot: (root: boolean) => void,
@@ -120,8 +114,6 @@ const updateNodes = (
                 if (!d.parent) {
                     setIsRoot(true);
                     setAppEcosystem(d.data.ecosystem ?? "N/A");
-                    setAppOrtVersion(d.data.ortVersion ?? "N/A");
-                    setAppJavaVersion(d.data.javaVersion ?? "N/A");
                     setAppRepoURL(d.data.repoURL ?? "N/A");
                     setAppRevision(d.data.revision ?? "N/A");
                 } else {

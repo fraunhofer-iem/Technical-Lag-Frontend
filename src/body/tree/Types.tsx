@@ -6,8 +6,6 @@ export interface JSONData {
     version: string,
     releaseDate: string,
     ecosystem?: string,
-    ortVersion?: string,
-    javaVersion?: string,
     root: boolean,
     repoURL: string,
     revision: string;
