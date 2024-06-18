@@ -18,7 +18,6 @@
 
 .collapsible-tree{
     grid-column: 1 / -1; /* Span across all columns */
-    display: flex;
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically if you want it to be vertically centered as well */
 }
