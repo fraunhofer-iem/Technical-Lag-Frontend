@@ -7,7 +7,10 @@ export interface JSONData {
     releaseDate: string,
     ecosystem?: string,
     ortVersion?: string,
-    javaVersion?: string;
+    javaVersion?: string,
+    root: boolean,
+    repoURL: string,
+    revision: string;
 }
 
 export interface HierarchyNodeExtended extends d3.HierarchyNode<JSONData> {

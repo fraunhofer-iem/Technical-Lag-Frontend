@@ -5,28 +5,23 @@ import React from "react";
 const transitionTime = 500;
 const radius = 12;
 
-interface Props {
-    setSelectedNode: {
-        name: (name: string) => void,
-        versionNumber: (versionNumber: string) => void,
-        releaseDate: (releaseDate: string) => void,
-        ecosystem: (ecosystem: string) => void,
-        ortVersion: (ortVersion: string) => void,
-        javaVersion: (javaVersion: string) => void,
-    }
-}
-
 export const updateTree = (
     g: d3.Selection<SVGGElement, unknown, null, undefined>,
     root: HierarchyNodeExtended,
     dimensions: { width: number; height: number },
     idMap: Map<HierarchyNodeExtended, number>,
-    setSelectedNode: Props['setSelectedNode'] // Add this line to accept setSelectedNode as a parameter
-
+    setSelectedNodeName: (nodeName: string) => void,
+    setSelectedNodeVersionNumber: (versionNumber: string) => void,
+    setSelectedNodeReleaseDate: (releaseData: string) => void,
+    setAppEcosystem: (ecosystem: string) => void,
+    setAppOrtVersion: (ortVersion: string) => void,
+    setAppJavaVersion: (javaVersion: string) => void,
+    setAppRepoURL: (repoURL: string) => void,
+    setAppRevision: (revision: string) => void,
+    setIsRoot: (root: boolean) => void,
 ) => {
     const treeLayout = d3.tree<JSONData>().size([dimensions.width, dimensions.height]);
 
-    // root in the middle top
     root.x0 = dimensions.height / 2;
     root.y0 = 0;
 
@@ -48,13 +43,12 @@ export const updateTree = (
         const nodes = treeData.descendants() as HierarchyNodeExtended[];
         const links = treeData.descendants().slice(1) as HierarchyNodeExtended[];
 
-/*        const widthSpacingFactor = 3.5; // Adjust this factor to increase horizontal spacing*/
+        const widthSpacingFactor = 3.0; // Adjust this factor to increase horizontal spacing
         const depthSpacingFactor = 200; // Adjust this factor to increase vertical spacing
-
 
         nodes.forEach(d => {
             d.y = d.depth * depthSpacingFactor;
-/*            d.x = (d.x ?? 0) * widthSpacingFactor;*/
+            d.x = (d.x ?? 0) * widthSpacingFactor;
         });
 
         updateNodes(
@@ -63,7 +57,15 @@ export const updateTree = (
             source,
             idMap,
             click,
-            setSelectedNode
+            setSelectedNodeName,
+            setSelectedNodeVersionNumber,
+            setSelectedNodeReleaseDate,
+            setAppEcosystem,
+            setAppOrtVersion,
+            setAppJavaVersion,
+            setAppRepoURL,
+            setAppRevision,
+            setIsRoot,
         );
         updateLinks(g, links, source);
 
@@ -82,7 +84,15 @@ const updateNodes = (
     source: HierarchyNodeExtended,
     idMap: Map<HierarchyNodeExtended, number>,
     click: (event: React.MouseEvent, d: HierarchyNodeExtended) => void,
-    setSelectedNode: Props['setSelectedNode']
+    setSelectedNodeName: (nodeName: string) => void,
+    setSelectedNodeVersionNumber: (versionNumber: string) => void,
+    setSelectedNodeReleaseDate: (releaseData: string) => void,
+    setAppEcosystem: (ecosystem: string) => void,
+    setAppOrtVersion: (ortVersion: string) => void,
+    setAppJavaVersion: (javaVersion: string) => void,
+    setAppRepoURL: (repoURL: string) => void,
+    setAppRevision: (revision: string) => void,
+    setIsRoot: (root: boolean) => void,
 ) => {
     const node = g.selectAll<SVGGElement, HierarchyNodeExtended>('g.node')
         .data(nodes, (d: HierarchyNodeExtended) => idMap.get(d)!.toString());
@@ -104,18 +114,18 @@ const updateNodes = (
         .on('click', (event: React.MouseEvent, d: HierarchyNodeExtended) => {
             if (event.button === 0) { // Check for left mouse click
                 // Open sidebar here with node information
-                setSelectedNode.name(d.data.name);
-                setSelectedNode.versionNumber(d.data.version);
-                setSelectedNode.releaseDate(d.data.releaseDate);
-                const isRoot = !d.parent; // Check if the clicked node is the root
-                if (isRoot) {
-                    setSelectedNode.ecosystem(d.data.ecosystem ?? "N/A");
-                    setSelectedNode.ortVersion(d.data.ortVersion ?? "N/A");
-                    setSelectedNode.javaVersion(d.data.javaVersion ?? "N/A");
+                setSelectedNodeName(d.data.name);
+                setSelectedNodeVersionNumber(d.data.version);
+                setSelectedNodeReleaseDate(d.data.releaseDate);
+                if (!d.parent) {
+                    setIsRoot(true);
+                    setAppEcosystem(d.data.ecosystem ?? "N/A");
+                    setAppOrtVersion(d.data.ortVersion ?? "N/A");
+                    setAppJavaVersion(d.data.javaVersion ?? "N/A");
+                    setAppRepoURL(d.data.repoURL ?? "N/A");
+                    setAppRevision(d.data.revision ?? "N/A");
                 } else {
-                    setSelectedNode.ecosystem('');
-                    setSelectedNode.ortVersion('');
-                    setSelectedNode.javaVersion('');
+                    setIsRoot(false);
                 }
             }
         });

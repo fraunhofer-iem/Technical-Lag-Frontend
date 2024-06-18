@@ -1,5 +1,5 @@
 import * as React from "react";
-import {JSONData} from "../tree/Types.tsx";
+import {JSONData} from "../body/tree/Types.tsx";
 
 export const handleDrop = (files: File[], setJsonData: React.Dispatch<React.SetStateAction<JSONData | null>>, setIsFileDropped: React.Dispatch<React.SetStateAction<boolean>>) => {
     if (files.length > 0) {
@@ -77,6 +77,7 @@ const transformData = (json: any): JSONData => {
         }) => version.versionNumber === node.usedVersion);
 
         const nodeData: JSONData = {
+            repoURL: "", revision: "", root: false,
             name: artifact.artifactId,
             version: usedVersionIndex !== -1
                 ? artifact.versions[usedVersionIndex].versionNumber
@@ -112,16 +113,24 @@ const transformData = (json: any): JSONData => {
     });
 
     const { ecosystem, version, artifactId } = json.dependencyGraphDtos[0];
-    const { ortVersion, javaVersion } = json.environmentInfo;
+    const ortVersion = json.environmentInfo.ortVersion;
+    const javaVersion = json.environmentInfo.javaVersion;
+
+    const repoURL = json.repositoryInfo.url;
+    const revision = json.repositoryInfo.revision;
 
     // Create a special node for the root
-    const root: JSONData & { ecosystem: string; environmentInfo: { ortVersion: string; javaVersion: string }} = {
+    const root: JSONData = {
         name: artifactId,
         version: version,
         releaseDate: "unknown",
         children: Array.from(nodeMap.values()),
         ecosystem: ecosystem,
-        environmentInfo: { ortVersion, javaVersion }
+        ortVersion: ortVersion,
+        javaVersion: javaVersion,
+        repoURL: repoURL,
+        revision: revision,
+        root: true
     };
 
     return root;

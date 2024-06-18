@@ -7,19 +7,28 @@ import './tree.css';
 
 interface Props {
     jsonData: JSONData,
-    setSelectedNode: {
-        name: (name: string) => void,
-        versionNumber: (versionNumber: string) => void,
-        releaseDate: (releaseDate: string) => void,
-        ecosystem: (ecosystem: string) => void,
-        ortVersion: (ortVersion: string) => void,
-        javaVersion: (javaVersion: string) => void,
-    }
+    setSelectedNodeName: (name: string) => void,
+    setSelectedNodeVersionNumber: (versionNumber: string) => void,
+    setSelectedNodeReleaseDate: (releaseDate: string) => void,
+    setAppEcosystem: (ecosystem: string) => void,
+    setAppOrtVersion: (ortVersion: string) => void,
+    setAppJavaVersion: (javaVersion: string) => void,
+    setAppRepoURL: (repoURL: string) => void,
+    setAppRevision: (revision: string) => void,
+    setIsRoot: (root: boolean) => void
 }
 
 const CollapsibleTreeComponent: React.FC<Props> = ({
                                                        jsonData,
-                                                       setSelectedNode
+                                                       setSelectedNodeName,
+                                                       setSelectedNodeVersionNumber,
+                                                       setSelectedNodeReleaseDate,
+                                                       setAppEcosystem,
+                                                       setAppOrtVersion,
+                                                       setAppJavaVersion,
+                                                       setAppRepoURL,
+                                                       setAppRevision,
+                                                       setIsRoot
                                                    }) => {
     const svgRef = useRef<SVGSVGElement>(null);
     const dimensions = useResize(svgRef);
@@ -39,12 +48,7 @@ const CollapsibleTreeComponent: React.FC<Props> = ({
         svg.call(zoom);
 
         const {width, height} = dimensions;
-        const margin = {
-            top: height * 0.12,
-            right: width * 0.02,
-            bottom: 0,
-            left: width * 0.02
-        };
+        const margin = {top: 50, right: 0, bottom: 50, left: 0};
         const innerWidth = width - margin.left - margin.right;
         const innerHeight = height - margin.top - margin.bottom;
         const g = svg
@@ -65,12 +69,16 @@ const CollapsibleTreeComponent: React.FC<Props> = ({
         updateTree(g, root, {
                 width: innerWidth,
                 height: innerHeight
-            }, idMap, setSelectedNode);
+            }, idMap, setSelectedNodeName, setSelectedNodeVersionNumber,
+            setSelectedNodeReleaseDate, setAppEcosystem,
+            setAppOrtVersion, setAppJavaVersion, setAppRepoURL, setAppRevision, setIsRoot);
 
         return () => {
             svg.selectAll('*').remove();
         };
-    }, [jsonData, dimensions, setSelectedNode]);
+    }, [jsonData, dimensions, setSelectedNodeName,
+        setSelectedNodeVersionNumber, setSelectedNodeReleaseDate,
+        setAppEcosystem, setAppOrtVersion, setAppJavaVersion, setAppRepoURL, setAppRevision, setIsRoot]);
 
     return (
         <div className="svg-container">
@@ -78,7 +86,7 @@ const CollapsibleTreeComponent: React.FC<Props> = ({
                 ref={svgRef}
                 viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
                 preserveAspectRatio="xMidYMid meet"
-                className="svg"
+                style={{width: '100%', height: '100%', overflow: 'visible'}}
             ></svg>
         </div>
     );
