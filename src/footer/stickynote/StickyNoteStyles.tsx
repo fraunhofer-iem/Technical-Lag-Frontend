@@ -13,7 +13,8 @@ export const StickyNoteContainer = styled.div<{ isOpen: boolean }>`
 
 export const StickyNote = styled.div`
     background-color: #62a995;
-    border: 1px solid #ffffff;
+    font-size: 14px;
+    color: black;
     border-radius: 5px;
     width: 100px;
     height: 50px;

@@ -7,7 +7,6 @@ export const Box = styled.div<{ isOpen: boolean }>`
     right: 0;
     width: 100vw;
     position: fixed;
-    z-index: 1000; /* Ensure it stays above other content */
     height: ${(props) => (props.isOpen? '5vh' : '0')};
     overflow: hidden;
     transition: height 0.3s ease-out;
@@ -25,6 +24,8 @@ export const FooterContainer = styled.div<{ isOpen: boolean }>`
     z-index: 1000;
     overflow: hidden;
     transition: height 0.3s ease-out;
+    border-top-left-radius: 8px;    
+    border-top-right-radius: 8px;
 `;
 
 export const Column = styled.div<{ marginLeft?: string }>`
