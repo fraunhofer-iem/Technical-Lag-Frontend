@@ -45,8 +45,8 @@ export const FileDrop: FC<IFileDrop> = ({ onDrop, setIsFileDropped }) => {
         setIsFileDropped(true); // Hide the FileDrop and show the tree
     };
 
-    const notDroppedText = "Drop files here";
-    const droppedText = "Drag and drop files here";
+    const notDroppedText = "Drop Files Here";
+    const droppedText = "Drag & Drop Files Here";
 
     return (
         <div
