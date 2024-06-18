@@ -7,7 +7,7 @@ export const Box = styled.div<{ isOpen: boolean }>`
     right: 0;
     width: 100vw;
     position: fixed;
-    height: ${(props) => (props.isOpen? '5vh' : '0')};
+    height: ${(props) => (props.isOpen? '2.5em' : '0')};
     overflow: hidden;
     transition: height 0.3s ease-out;
 `;
@@ -20,7 +20,7 @@ export const FooterContainer = styled.div<{ isOpen: boolean }>`
     margin: 0 auto;
     background: #63aa96;
     padding: 1px;
-    height: ${(props) => (props.isOpen? '5vh' : '0')};
+    height: ${(props) => (props.isOpen? '2.5em' : '0')};
     z-index: 1000;
     overflow: hidden;
     transition: height 0.3s ease-out;
@@ -41,17 +41,19 @@ export const Row = styled.div`
 `;
 
 export const FooterLink = styled.a`
-    color: #fff;
+    color: #000000;
     margin: auto;
     font-size: 12px;
+    font-weight: 500;
 
     &:hover {
-        color: green;
+        color: #ffffff;
         transition: 300ms ease-in;
     }
 `;
 
 export const Copyright = styled.p`
     font-size: 12px;
-    color: #fff;
+    color: #000000;
+    font-weight: 500;
 `

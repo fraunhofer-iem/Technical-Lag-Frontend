@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const StickyNoteContainer = styled.div<{ isOpen: boolean }>`
     position: fixed;
-    bottom: ${(props) => (props.isOpen ? '0vh' : '-5vh')};
+    bottom: ${(props) => (props.isOpen ? '0vh' : '-2em')};
     left: 50%;
     transform: translateX(-50%);
     transition: bottom 0.3s ease-out;
@@ -22,5 +22,5 @@ export const StickyNote = styled.div`
     align-items: baseline;
     justify-content: center;
     cursor: pointer;
-    margin-bottom: 10px;
+    margin-bottom: 1.2em;
 `;
