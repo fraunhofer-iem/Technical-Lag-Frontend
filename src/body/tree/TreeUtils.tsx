@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import {HierarchyNodeExtended, JSONData} from './Types';
 import React from "react";
 
-const transitionTime = 500;
+const transitionTime = 750;
 const radius = 12;
 
 export const updateTree = (
@@ -42,7 +42,7 @@ export const updateTree = (
         const links = treeData.descendants().slice(1) as HierarchyNodeExtended[];
 
         const widthSpacingFactor = 3.0; // Adjust this factor to increase horizontal spacing
-        const depthSpacingFactor = 200; // Adjust this factor to increase vertical spacing
+        const depthSpacingFactor = 180; // Adjust this factor to increase vertical spacing
 
         nodes.forEach(d => {
             d.y = d.depth * depthSpacingFactor;
@@ -104,7 +104,7 @@ const updateNodes = (
         .attr('r', radius)
         .attr('fill', d => d._children ? 'black' : '#999')
         .attr('stroke', "#fff")
-        .attr('stroke-width', "3px")
+        .attr('stroke-width', "2px")
         .on('click', (event: React.MouseEvent, d: HierarchyNodeExtended) => {
             if (event.button === 0) { // Check for left mouse click
                 // Open sidebar here with node information
@@ -124,7 +124,7 @@ const updateNodes = (
 
     nodeEnter.append('text')
         .attr('dy', '0.35em')
-        .attr('y', d => d.children || d._children ? -25 : 30)
+        .attr('y', d => d.children || d._children ? -25 : 25)
         .attr('text-anchor', 'middle')
         .text(d => {
             const fullText = d.data.name;
@@ -133,7 +133,7 @@ const updateNodes = (
         .lower()
         .attr('font', 'sans-serif')
         .attr('fill', 'white')
-        .attr('font-size', '1.0vw');
+        .attr('font-size', '13px');
 
     nodeEnter.filter((d: any) => d.parent !== null) // Assuming null indicates the root node
         .append('title')
@@ -159,7 +159,8 @@ const updateNodes = (
         .attr('r', 1e-6);
 
     nodeExit.select('text')
-        .style('fill-opacity', 1e-6);
+        .style('fill-opacity', 1e-6)
+.attr("stroke-opacity", 0);;
 };
 
 const updateLinks = (
@@ -184,8 +185,8 @@ const updateLinks = (
             });
         })
         .attr('stroke', '#ccc')
-        .attr('stroke-width', "2px")
-        .attr("stroke-opacity", 0.6)
+        .attr('stroke-width', "1.5px")
+        .attr("stroke-opacity", 0.4)
         .attr('fill', 'none');
 
     const linkUpdate = linkEnter.merge(link);
