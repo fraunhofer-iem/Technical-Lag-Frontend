@@ -23,4 +23,5 @@ export const StickyNote = styled.div`
     justify-content: center;
     cursor: pointer;
     margin-bottom: 1.2em;
+    font-weight: 500;
 `;

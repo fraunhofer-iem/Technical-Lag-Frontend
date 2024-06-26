@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import {HierarchyNodeExtended, JSONData} from './Types';
 import useResize from './Resizable';
 import {updateTree} from './TreeUtils';
-import './tree.css';
+import "./tree.css";
 
 interface Props {
     jsonData: JSONData,
@@ -76,7 +76,11 @@ const CollapsibleTreeComponent: React.FC<Props> = ({
         setAppEcosystem, setAppRepoURL, setAppRevision, setIsRoot]);
 
     return (
-        <div className="svg-container">
+        <div>
+            <div id="tooltip" className="tooltip">
+                <strong id="tooltip-title"></strong><br/>
+                <span id="tooltip-content"></span>
+            </div>
             <svg
                 ref={svgRef}
                 viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}

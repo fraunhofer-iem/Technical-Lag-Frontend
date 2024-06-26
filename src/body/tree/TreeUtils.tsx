@@ -70,7 +70,6 @@ export const updateTree = (
             d.y0 = d.y;
         });
     };
-
     update(root);
 };
 
@@ -91,12 +90,26 @@ const updateNodes = (
     const node = g.selectAll<SVGGElement, HierarchyNodeExtended>('g.node')
         .data(nodes, (d: HierarchyNodeExtended) => idMap.get(d)!.toString());
 
+    const tooltip = d3.select<HTMLDivElement, unknown>('#tooltip');
+
     const nodeEnter = node.enter().append('g')
         .attr('class', 'node')
         .attr('transform', () => `translate(${source.x0},${source.y0})`)
         .on('contextmenu', (event: React.MouseEvent, d: HierarchyNodeExtended) => {
             event.preventDefault(); // Prevent the default context menu
             click(event, d);
+        })
+        .on('mouseover', (_event, d) => {
+            tooltip.style('visibility', 'visible');
+            d3.select('#tooltip-title').html(`<strong>${d.data.name}</strong>`);
+            d3.select('#tooltip-content').text(d.data.version);
+        })
+        .on('mousemove', (event) => {
+            tooltip.style('top', `${event.pageY + 10}px`)
+                .style('left', `${event.pageX + 10}px`);
+        })
+        .on('mouseout', () => {
+            tooltip.style('visibility', 'hidden');
         });
 
     nodeEnter.append('circle')
@@ -123,7 +136,7 @@ const updateNodes = (
         });
 
     nodeEnter.append('text')
-        .attr('dy', '0.35em')
+        .attr('dy', '0.31em')
         .attr('y', d => d.children || d._children ? -25 : 25)
         .attr('text-anchor', 'middle')
         .text(d => {
@@ -133,11 +146,16 @@ const updateNodes = (
         .lower()
         .attr('font', 'sans-serif')
         .attr('fill', 'white')
-        .attr('font-size', '13px');
+        .attr('font-size', '13px')
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-width", 3)
+        .attr("stroke", "#212f36")
+        .attr("paint-order", "stroke");
 
-    nodeEnter.filter((d: any) => d.parent !== null) // Assuming null indicates the root node
+/*    nodeEnter.filter((d: any) => d.parent !== null) // Assuming null indicates the root node
         .append('title')
-        .text((d: any) => `${d.data.name}\n${d.data.version}`);
+        .text((d: any) => `${d.data.name}\n${d.data.version}`);*/
+
 
     const nodeUpdate = nodeEnter.merge(node);
 
@@ -160,7 +178,7 @@ const updateNodes = (
 
     nodeExit.select('text')
         .style('fill-opacity', 1e-6)
-.attr("stroke-opacity", 0);;
+.attr("stroke-opacity", 0);
 };
 
 const updateLinks = (

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Box = styled.div<{ isOpen: boolean }>`
-    background: #464646;
+    background: #212f36;
     bottom: 0;
     left: 0;
     right: 0;

@@ -5,7 +5,7 @@
     font-size: 16px;
     font-weight: 500;
     font-family: inherit;
-    background-color: #1a1a1a;
+    background-color: #63aa96;
     cursor: pointer;
     transition: border-color 0.25s;
     width: 10em;
@@ -22,7 +22,7 @@
     font-size: 16px;
     font-weight: 500;
     font-family: inherit;
-    background-color: #1a1a1a;
+    background-color: #63aa96;
     cursor: pointer;
     transition: border-color 0.25s;
     width: 10em;
@@ -37,7 +37,7 @@
     font-size: 16px;
     font-weight: 500;
     font-family: inherit;
-    background-color: #1a1a1a;
+    background-color: #63aa96;
     cursor: pointer;
     transition: border-color 0.25s;
     width: 10em;
@@ -58,10 +58,10 @@
 }
 
 .tree-button button:hover {
-    border-color: #63aa96;
+    border-color: white;
 }
 
 .tree-button button:focus,
 .tree-button button:focus-visible {
-    outline: 4px auto -webkit-focus-ring-color;
+    outline: 20px auto -webkit-focus-ring-color;
 }
