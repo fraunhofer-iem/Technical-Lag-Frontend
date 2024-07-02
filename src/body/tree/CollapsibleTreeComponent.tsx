@@ -54,13 +54,7 @@ const CollapsibleTreeComponent: React.FC<Props> = ({
         updateTree(g, root, {
                 width: innerWidth,
                 height: innerHeight
-            }, idMap, nodeManager.setSelectedNodeName.bind(nodeManager),
-            nodeManager.setSelectedNodeVersionNumber.bind(nodeManager),
-            nodeManager.setSelectedNodeReleaseDate.bind(nodeManager),
-            nodeManager.setAppEcosystem.bind(nodeManager),
-            nodeManager.setAppRepoURL.bind(nodeManager),
-            nodeManager.setAppRevision.bind(nodeManager),
-            nodeManager.setIsRoot.bind(nodeManager));
+            }, idMap, nodeManager);
 
         return () => {
             svg.selectAll('*').remove();

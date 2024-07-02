@@ -2,6 +2,7 @@ import * as d3 from 'd3';
 import {HierarchyNodeExtended, JSONData} from './Types';
 import React from "react";
 import {interpolatePath} from 'd3-interpolate-path';
+import NodeManager from "./NodeManager.tsx";
 
 function handleTransitionTime(event: MouseEvent | React.MouseEvent): number {
     // Type narrowing to ensure compatibility with both event types
@@ -16,13 +17,7 @@ export const updateTree = (
     root: HierarchyNodeExtended,
     dimensions: { width: number; height: number },
     idMap: Map<HierarchyNodeExtended, number>,
-    setSelectedNodeName: (nodeName: string) => void,
-    setSelectedNodeVersionNumber: (versionNumber: string) => void,
-    setSelectedNodeReleaseDate: (releaseData: string) => void,
-    setAppEcosystem: (ecosystem: string) => void,
-    setAppRepoURL: (repoURL: string) => void,
-    setAppRevision: (revision: string) => void,
-    setIsRoot: (root: boolean) => void,
+    nodeManager: NodeManager
 ) => {
     const treeLayout = d3.tree<JSONData>().size([dimensions.width, dimensions.height]);
 
@@ -64,13 +59,7 @@ export const updateTree = (
             source,
             idMap,
             click,
-            setSelectedNodeName,
-            setSelectedNodeVersionNumber,
-            setSelectedNodeReleaseDate,
-            setAppEcosystem,
-            setAppRepoURL,
-            setAppRevision,
-            setIsRoot,
+            nodeManager,
             transitionTime
         );
 
@@ -104,13 +93,7 @@ const updateNodes = (
     source: HierarchyNodeExtended,
     idMap: Map<HierarchyNodeExtended, number>,
     click: (event: React.MouseEvent, d: HierarchyNodeExtended) => void,
-    setSelectedNodeName: (nodeName: string) => void,
-    setSelectedNodeVersionNumber: (versionNumber: string) => void,
-    setSelectedNodeReleaseDate: (releaseData: string) => void,
-    setAppEcosystem: (ecosystem: string) => void,
-    setAppRepoURL: (repoURL: string) => void,
-    setAppRevision: (revision: string) => void,
-    setIsRoot: (root: boolean) => void,
+    nodeManager: NodeManager,
     transitionTime: number
 ) => {
     const node = g.selectAll<SVGGElement, HierarchyNodeExtended>('g.node')
@@ -147,16 +130,16 @@ const updateNodes = (
         .on('click', (event: React.MouseEvent, d: HierarchyNodeExtended) => {
             if (event.button === 0) { // Check for left mouse click
                 // Open sidebar here with node information
-                setSelectedNodeName(d.data.name);
-                setSelectedNodeVersionNumber(d.data.version);
-                setSelectedNodeReleaseDate(d.data.releaseDate);
+                nodeManager.setSelectedNodeName(d.data.name);
+                nodeManager.setSelectedNodeVersionNumber(d.data.version);
+                nodeManager.setSelectedNodeReleaseDate(d.data.releaseDate);
                 if (!d.parent) {
-                    setIsRoot(true);
-                    setAppEcosystem(d.data.ecosystem ?? "N/A");
-                    setAppRepoURL(d.data.repoURL ?? "N/A");
-                    setAppRevision(d.data.revision ?? "N/A");
+                    nodeManager.setIsRoot(true);
+                    nodeManager.setAppEcosystem(d.data.ecosystem ?? "N/A");
+                    nodeManager.setAppRepoURL(d.data.repoURL ?? "N/A");
+                    nodeManager.setAppRevision(d.data.revision ?? "N/A");
                 } else {
-                    setIsRoot(false);
+                    nodeManager.setIsRoot(false);
                 }
             }
         });
