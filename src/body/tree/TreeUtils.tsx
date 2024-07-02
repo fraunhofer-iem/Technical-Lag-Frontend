@@ -237,11 +237,10 @@ const updateLinks = (
         .duration(transitionTime)
         .ease(d3.easeCubicInOut)
         .attrTween('d', function (d) {
-            const currentPath = this.getAttribute('d')!;
             const source = d.parent ? d.parent : d;
 
             // Interpolate between the current path and the new path
-            const interpolate = interpolatePath(currentPath, linkGenerator({source, target: d}) as string);
+            const interpolate = interpolatePath(this.getAttribute('d')!, linkGenerator({source, target: d}) as string);
 
             // Return a function that calculates the interpolated path for the given transition time
             return function (t) {
@@ -252,17 +251,12 @@ const updateLinks = (
     link.exit().transition()
         .duration(transitionTime)
         .ease(d3.easeCubicInOut)
-        .attrTween('d', function(d) {
-            // Store the current path
-            const currentPath = this.getAttribute('d')!;
-
-            // Interpolate between the current path and a path that ends at the source node
-            const interpolate = interpolatePath(currentPath, linkGenerator({source, target: d}) as string);
-
-            // Return a function that calculates the interpolated path for the given transition time
-            return function(t) {
-                return interpolate(t) || '';
-            };
+        .attr('d', () => {
+            const o = {x: source.x, y: source.y};
+            return linkGenerator({
+                source: o as unknown as d3.HierarchyPointNode<JSONData>,
+                target: o as unknown as d3.HierarchyPointNode<JSONData>
+            });
         })
         .remove();
 };

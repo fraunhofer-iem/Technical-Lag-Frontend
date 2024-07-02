@@ -4,27 +4,16 @@ import {HierarchyNodeExtended, JSONData} from './Types';
 import useResize from './Resizable';
 import {updateTree} from './TreeUtils';
 import "./tree.css";
+import NodeManager from './NodeManager'; // Adjust path as needed
 
 interface Props {
     jsonData: JSONData,
-    setSelectedNodeName: (name: string) => void,
-    setSelectedNodeVersionNumber: (versionNumber: string) => void,
-    setSelectedNodeReleaseDate: (releaseDate: string) => void,
-    setAppEcosystem: (ecosystem: string) => void,
-    setAppRepoURL: (repoURL: string) => void,
-    setAppRevision: (revision: string) => void,
-    setIsRoot: (root: boolean) => void
+    nodeManager: NodeManager
 }
 
 const CollapsibleTreeComponent: React.FC<Props> = ({
                                                        jsonData,
-                                                       setSelectedNodeName,
-                                                       setSelectedNodeVersionNumber,
-                                                       setSelectedNodeReleaseDate,
-                                                       setAppEcosystem,
-                                                       setAppRepoURL,
-                                                       setAppRevision,
-                                                       setIsRoot
+                                                       nodeManager
                                                    }) => {
     const svgRef = useRef<SVGSVGElement>(null);
     const dimensions = useResize(svgRef);
@@ -65,15 +54,18 @@ const CollapsibleTreeComponent: React.FC<Props> = ({
         updateTree(g, root, {
                 width: innerWidth,
                 height: innerHeight
-            }, idMap, setSelectedNodeName, setSelectedNodeVersionNumber,
-            setSelectedNodeReleaseDate, setAppEcosystem, setAppRepoURL, setAppRevision, setIsRoot);
+            }, idMap, nodeManager.setSelectedNodeName.bind(nodeManager),
+            nodeManager.setSelectedNodeVersionNumber.bind(nodeManager),
+            nodeManager.setSelectedNodeReleaseDate.bind(nodeManager),
+            nodeManager.setAppEcosystem.bind(nodeManager),
+            nodeManager.setAppRepoURL.bind(nodeManager),
+            nodeManager.setAppRevision.bind(nodeManager),
+            nodeManager.setIsRoot.bind(nodeManager));
 
         return () => {
             svg.selectAll('*').remove();
         };
-    }, [jsonData, dimensions, setSelectedNodeName,
-        setSelectedNodeVersionNumber, setSelectedNodeReleaseDate,
-        setAppEcosystem, setAppRepoURL, setAppRevision, setIsRoot]);
+    }, [jsonData, dimensions, nodeManager]);
 
     return (
         <div>

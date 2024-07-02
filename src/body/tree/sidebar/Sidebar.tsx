@@ -42,10 +42,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 
             {/* Conditionally render additional info for the root node */}
             {ecosystem && (
-                <>
-                    <p style={styles.paragraph}><strong style={styles.label}>Ecosystem:</strong> <span
-                        style={{wordBreak: 'break-all'}}>{ecosystem}</span></p>
-                </>
+                <p style={styles.paragraph}><strong style={styles.label}>Ecosystem:</strong> <span
+                    style={{wordBreak: 'break-all'}}>{ecosystem}</span></p>
             )}
             {repoURL && (
                 <>
@@ -75,7 +73,7 @@ const styles = {
         display: 'block',
         zIndex: 1000,
         color: '#ffffff',
-        textAlign: 'left' as 'left',
+        textAlign: 'left' as const,
         overflowY: 'auto' as const,
         borderBottomLeftRadius: "8px",
         borderTopLeftRadius:"8px",

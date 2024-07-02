@@ -11,19 +11,13 @@ import RevertButton from "../../buttons/RevertButton.tsx";
 import BackButton from "../../buttons/BackButton.tsx";
 import {handleDrop} from "../../json/JSONUtil.tsx";
 import Sidebar from "../tree/sidebar/Sidebar.tsx";
+import NodeManager from "../tree/NodeManager.tsx";
 
 const Body: React.FC = () => {
     const [jsonData, setJsonData] = useState<JSONData | null>(null);
     const [isFileDropped, setIsFileDropped] = useState<boolean>(false);
-    const [isSelectedNodeRoot, setIsSelectedNodeRoot] = useState<boolean>(false);
 
-    const [selectedNodeName, setSelectedNodeName] = useState<string>('');
-    const [selectedNodeVersionNumber, setSelectedNodeVersionNumber] = useState<string>('');
-    const [selectedNodeReleaseDate, setSelectedNodeReleaseDate] = useState<string>('');
-
-    const [appEcosystem, setAppEcosystem] = useState<string>(''); // Added state for ecosystem
-    const [appRepoURL, setAppRepoURL] = useState<string>('');
-    const [appRevision, setAppRevision] = useState<string>('')
+    const nodeManager = new NodeManager(); // Initialize NodeManager instance
 
     const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
@@ -49,19 +43,14 @@ const Body: React.FC = () => {
     };
 
     useEffect(() => {
-        if (selectedNodeName) {
+        if (nodeManager.getState().selectedNodeName) {
             setIsSidebarVisible(true);
         }
-    }, [selectedNodeName]);
+    }, [nodeManager.getState().selectedNodeName]);
 
 
     const handleCloseSidebar = () => {
-        setSelectedNodeName('');
-        setSelectedNodeVersionNumber('');
-        setSelectedNodeReleaseDate('');
-        setAppEcosystem('');
-        setAppRepoURL('');
-        setAppRevision('');
+        nodeManager.resetState();
         setIsSidebarVisible(false);
     };
 
@@ -84,24 +73,18 @@ const Body: React.FC = () => {
                         {jsonData && (
                             <CollapsibleTreeComponent
                                 jsonData={jsonData}
-                                setSelectedNodeName={setSelectedNodeName}
-                                setSelectedNodeVersionNumber={setSelectedNodeVersionNumber}
-                                setSelectedNodeReleaseDate={setSelectedNodeReleaseDate}
-                                setAppEcosystem={setAppEcosystem}
-                                setAppRepoURL={setAppRepoURL}
-                                setAppRevision={setAppRevision}
-                                setIsRoot={setIsSelectedNodeRoot}
+                                nodeManager={nodeManager}
                             />
                         )}
                     </div>
                     {isSidebarVisible && (
                         <Sidebar
-                            fullName={selectedNodeName}
-                            versionNumber={selectedNodeVersionNumber}
-                            releaseDate={selectedNodeReleaseDate}
-                            ecosystem={isSelectedNodeRoot? appEcosystem : ''}
-                            repoURL={isSelectedNodeRoot? appRepoURL : ''}
-                            revision={isSelectedNodeRoot? appRevision : ''}
+                            fullName={nodeManager.getState().selectedNodeName}
+                            versionNumber={nodeManager.getState().selectedNodeVersionNumber}
+                            releaseDate={nodeManager.getState().selectedNodeReleaseDate}
+                            ecosystem={nodeManager.getState().isRoot ? nodeManager.getState().appEcosystem : ''}
+                            repoURL={nodeManager.getState().isRoot ? nodeManager.getState().appRepoURL : ''}
+                            revision={nodeManager.getState().isRoot ? nodeManager.getState().appRevision : ''}
                             onClose={handleCloseSidebar}
                         />)}
                 </>
