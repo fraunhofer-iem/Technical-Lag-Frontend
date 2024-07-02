@@ -1,8 +1,14 @@
 import * as d3 from 'd3';
 import {HierarchyNodeExtended, JSONData} from './Types';
 import React from "react";
+import {interpolatePath} from 'd3-interpolate-path';
 
-const transitionTime = 750;
+function handleTransitionTime(event: MouseEvent | React.MouseEvent): number {
+    // Type narrowing to ensure compatibility with both event types
+    const nativeEvent = event instanceof MouseEvent ? event : event.nativeEvent;
+    return nativeEvent.altKey ? 800 : 250;
+}
+
 const radius = 12;
 
 export const updateTree = (
@@ -32,11 +38,11 @@ export const updateTree = (
                 d.children = d._children;
                 d._children = undefined;
             }
-            update(d);
+            update(d, event);
         }
     };
 
-    const update = (source: HierarchyNodeExtended) => {
+    const update = (source: HierarchyNodeExtended, event: MouseEvent | React.MouseEvent) => {
         const treeData = treeLayout(root);
         const nodes = treeData.descendants() as HierarchyNodeExtended[];
         const links = treeData.descendants().slice(1) as HierarchyNodeExtended[];
@@ -48,6 +54,9 @@ export const updateTree = (
             d.y = d.depth * depthSpacingFactor;
             d.x = (d.x ?? 0) * widthSpacingFactor;
         });
+
+        // Use handleTransitionTime to calculate the transition duration
+        const transitionTime = handleTransitionTime(event);
 
         updateNodes(
             g,
@@ -62,15 +71,31 @@ export const updateTree = (
             setAppRepoURL,
             setAppRevision,
             setIsRoot,
+            transitionTime
         );
-        updateLinks(g, links, source);
 
+        updateLinks(g, links, source, transitionTime);
+
+        // Save the old positions for transition
         nodes.forEach(d => {
             d.x0 = d.x;
             d.y0 = d.y;
         });
     };
-    update(root);
+    // Initialize with a default event
+    const defaultEvent = new MouseEvent('click') as unknown as React.MouseEvent;
+    update(root, defaultEvent);
+
+    // Add tween function for transition
+    g.transition().tween('resize', () => {
+        const initialHeight = +g.attr('height');
+        const finalHeight = dimensions.height;
+
+        return (t: number) => {
+            const height = initialHeight + (finalHeight - initialHeight) * t;
+            g.attr('height', height);
+        };
+    });
 };
 
 const updateNodes = (
@@ -86,6 +111,7 @@ const updateNodes = (
     setAppRepoURL: (repoURL: string) => void,
     setAppRevision: (revision: string) => void,
     setIsRoot: (root: boolean) => void,
+    transitionTime: number
 ) => {
     const node = g.selectAll<SVGGElement, HierarchyNodeExtended>('g.node')
         .data(nodes, (d: HierarchyNodeExtended) => idMap.get(d)!.toString());
@@ -96,7 +122,7 @@ const updateNodes = (
         .attr('class', 'node')
         .attr('transform', () => `translate(${source.x0},${source.y0})`)
         .on('contextmenu', (event: React.MouseEvent, d: HierarchyNodeExtended) => {
-            event.preventDefault(); // Prevent the default context menu
+            event.preventDefault();
             click(event, d);
         })
         .on('mouseover', (_event, d) => {
@@ -152,15 +178,11 @@ const updateNodes = (
         .attr("stroke", "#212f36")
         .attr("paint-order", "stroke");
 
-/*    nodeEnter.filter((d: any) => d.parent !== null) // Assuming null indicates the root node
-        .append('title')
-        .text((d: any) => `${d.data.name}\n${d.data.version}`);*/
-
-
     const nodeUpdate = nodeEnter.merge(node);
 
     nodeUpdate.transition()
         .duration(transitionTime)
+        .ease(d3.easeCubicInOut)
         .attr('transform', d => `translate(${d.x},${d.y})`);
 
     nodeUpdate.select('circle.node')
@@ -170,6 +192,7 @@ const updateNodes = (
     //When collapsed
     const nodeExit = node.exit().transition()
         .duration(transitionTime)
+        .ease(d3.easeCubicInOut)
         .attr('transform', () => `translate(${source.x},${source.y})`)
         .remove();
 
@@ -178,13 +201,14 @@ const updateNodes = (
 
     nodeExit.select('text')
         .style('fill-opacity', 1e-6)
-.attr("stroke-opacity", 0);
+        .attr("stroke-opacity", 0);
 };
 
 const updateLinks = (
     g: d3.Selection<SVGGElement, unknown, null, undefined>,
     links: HierarchyNodeExtended[],
-    source: HierarchyNodeExtended
+    source: HierarchyNodeExtended,
+    transitionTime: number
 ) => {
     const link = g.selectAll<SVGPathElement, HierarchyNodeExtended>('path.link')
         .data(links, d => d.id ? d.id : "");
@@ -211,19 +235,34 @@ const updateLinks = (
 
     linkUpdate.transition()
         .duration(transitionTime)
-        .attr('d', d => {
+        .ease(d3.easeCubicInOut)
+        .attrTween('d', function (d) {
+            const currentPath = this.getAttribute('d')!;
             const source = d.parent ? d.parent : d;
-            return linkGenerator({source, target: d});
+
+            // Interpolate between the current path and the new path
+            const interpolate = interpolatePath(currentPath, linkGenerator({source, target: d}) as string);
+
+            // Return a function that calculates the interpolated path for the given transition time
+            return function (t) {
+                return interpolate(t) || '';
+            };
         });
 
     link.exit().transition()
         .duration(transitionTime)
-        .attr('d', () => {
-            const o = {x: source.x, y: source.y};
-            return linkGenerator({
-                source: o as unknown as d3.HierarchyPointNode<JSONData>,
-                target: o as unknown as d3.HierarchyPointNode<JSONData>
-            });
+        .ease(d3.easeCubicInOut)
+        .attrTween('d', function(d) {
+            // Store the current path
+            const currentPath = this.getAttribute('d')!;
+
+            // Interpolate between the current path and a path that ends at the source node
+            const interpolate = interpolatePath(currentPath, linkGenerator({source, target: d}) as string);
+
+            // Return a function that calculates the interpolated path for the given transition time
+            return function(t) {
+                return interpolate(t) || '';
+            };
         })
         .remove();
 };
