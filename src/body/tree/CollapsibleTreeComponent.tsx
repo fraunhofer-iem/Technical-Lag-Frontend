@@ -25,7 +25,7 @@ const CollapsibleTreeComponent: React.FC<Props> = ({
         svg.selectAll('*').remove();
 
         const zoom = d3.zoom<SVGSVGElement, unknown>()
-            .scaleExtent([0.5, 3])
+            .scaleExtent([0.1, 3])
             .on('zoom', (event) => {
                 g.attr('transform', event.transform);
             });

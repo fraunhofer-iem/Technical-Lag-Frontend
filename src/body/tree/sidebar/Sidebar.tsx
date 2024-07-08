@@ -100,7 +100,8 @@ const styles = {
         margin: 0,
     },
     paragraph: {
-        marginBottom: '5px',
+        marginBottom: '5px', //ggf margin kleiner
+        //Text größe
     },
     label: {
         color: '#73a796',

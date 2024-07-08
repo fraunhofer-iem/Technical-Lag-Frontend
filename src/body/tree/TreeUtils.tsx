@@ -10,7 +10,7 @@ function handleTransitionTime(event: MouseEvent | React.MouseEvent): number {
     return nativeEvent.altKey ? 800 : 250;
 }
 
-const radius = 12;
+const radius = 10;
 
 export const updateTree = (
     g: d3.Selection<SVGGElement, unknown, null, undefined>,
@@ -24,16 +24,31 @@ export const updateTree = (
     root.x0 = dimensions.height / 2;
     root.y0 = 0;
 
-    const click = (event: React.MouseEvent, d: HierarchyNodeExtended) => {
-        if (event.button === 2) {  // 2 is the right mouse button
-            if (d.children) {
-                d._children = d.children;
-                d.children = undefined;
-            } else {
-                d.children = d._children;
-                d._children = undefined;
+    // Function to set hasChildren flag recursively
+    const setHasChildren = (node: HierarchyNodeExtended) => {
+        if (node.children) {
+            node.hasChildren = true;
+            node.children.forEach(child => setHasChildren(child));
+        } else {
+            node.hasChildren = false;
+        }
+    };
+
+    // Initialize hasChildren flags
+    setHasChildren(root);
+
+    const click = (clickEvent: React.MouseEvent, node: HierarchyNodeExtended) => {
+        if (clickEvent.button === 2) {  // 2 is the right mouse button
+            if (node.hasChildren) {
+                if (node.children) {
+                    node._children = node.children;
+                    node.children = undefined;
+                } else {
+                    node.children = node._children;
+                    node._children = undefined;
+                }
+                update(node, clickEvent);
             }
-            update(d, event);
         }
     };
 
@@ -42,8 +57,9 @@ export const updateTree = (
         const nodes = treeData.descendants() as HierarchyNodeExtended[];
         const links = treeData.descendants().slice(1) as HierarchyNodeExtended[];
 
-        const widthSpacingFactor = 3.0; // Adjust this factor to increase horizontal spacing
-        const depthSpacingFactor = 180; // Adjust this factor to increase vertical spacing
+        // Calculate dynamic spacing factors based on the current tree size
+        const widthSpacingFactor = Math.max(10, Math.min(dimensions.width / 10, 35));
+        const depthSpacingFactor = Math.max(100, 500 - root.height * 50);
 
         nodes.forEach(d => {
             d.y = d.depth * depthSpacingFactor;
