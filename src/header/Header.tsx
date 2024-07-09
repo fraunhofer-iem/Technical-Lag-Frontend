@@ -1,7 +1,7 @@
 import * as React from "react";
 import HeaderMenuTab from "./HeaderMenuTabProps.tsx";
 import SearchBar from "./SearchBar.tsx";
-import Body from "../body/body/Body.tsx";
+import TreeChart from "../body/body/TreeChart.tsx";
 import "./header.css";
 
 const handleSearch = (query: string) => {
@@ -12,7 +12,7 @@ const tabs = [
     {
         key: 'home',
         label: 'Home',
-        content: <Body/>,
+        content: <TreeChart/>,
     },
     {
         key: 'search',
