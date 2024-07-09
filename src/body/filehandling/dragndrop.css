@@ -13,12 +13,12 @@
 .drag-n-drop-container {
     grid-row: 2;
     grid-column: 2;
-    justify-content: center; /* Center horizontally */
+    justify-content: center;
     display: flex;
 }
 
 .collapsible-tree{
     grid-column: 1 / -1; /* Span across all columns */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically if you want it to be vertically centered as well */
+    justify-content: center;
+    align-items: center;
 }

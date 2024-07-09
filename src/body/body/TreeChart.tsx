@@ -11,7 +11,6 @@ import BackButton from "../../buttons/BackButton.tsx";
 import {handleDrop} from "../../json/JSONUtil.tsx";
 import Sidebar from "../tree/sidebar/Sidebar.tsx";
 import NodeManager from "../tree/NodeManager.tsx";
-import {createRoot} from "react-dom/client";
 import * as echarts from 'echarts';
 
 
@@ -51,6 +50,34 @@ const TreeChart: React.FC = () => {
     };
 
     const chartRef = useRef<HTMLDivElement>(null);
+    const chartInstance = useRef<echarts.ECharts>();
+
+    useEffect(() => {
+        // Initialize chart instance
+        if (chartRef.current) {
+            chartInstance.current = echarts.init(chartRef.current);
+        }
+
+        // Initialize chart size
+        const resizeHandler = () => {
+            if (chartInstance.current && jsonData) {
+                const width = window.innerWidth * 0.9; // 80% of window width
+                const height = window.innerHeight * 0.9; // 60% of window height
+                chartInstance.current.resize({ width, height });
+            }
+        };
+
+        // Handle resize events
+        window.addEventListener('resize', resizeHandler);
+        resizeHandler(); // Initial resize
+
+        return () => {
+            window.removeEventListener('resize', resizeHandler);
+            if (chartInstance.current) {
+                chartInstance.current.dispose();
+            }
+        };
+    }, [jsonData]);
 
     useEffect(() => {
         if (jsonData && chartRef.current) {
@@ -66,44 +93,79 @@ const TreeChart: React.FC = () => {
                         type: 'tree',
                         data: [jsonData],
 
-                        top: '1%',
-                        left: '7%',
-                        bottom: '1%',
-                        right: '20%',
+                        top: '10%',
+                        left: '10%',
+                        bottom: '10%',
+                        right: '10%',
 
                         symbolSize: 7,
                         initialTreeDepth: 1,
-                        roam:true,
+                        roam: true,
+
                         label: {
+                            show: true,
                             position: 'left',
-                            verticalAlign: 'middle',
                             align: 'right',
+                            lineHeight: 20,
                             fontSize: 12,
-                            distance:5,
-                        },
-                        leaves: {
-                            label: {
-                                position: 'right',
-                                verticalAlign: 'middle',
-                                align: 'left',
+                            distance: 5,
+                            color: '#ffffff',
+                            font:{
+                                family: 'Arial, sans-serif',
+                                weight: 'bold',
+                                style: 'normal',
                             },
+
+                            shadow: {
+                                color: 'rgba(204,204,204, 0.5)',
+                                blur: 2,
+                                offsetX: 1,
+                                offsetY: 1
+                            }
+                        },
+
+                        leaves: {
+                            itemStyle: {
+                                color: '#64ffd0',
+                                borderColor: '#ffffff',
+                                borderWidth: 2,
+                            },
+                            label: {
+                                show: true,
+                                position: 'right',
+                                align: 'left',
+                                lineHeight: 20,
+                                distance: 5,
+                                color: '#ffffff',
+
+                                font:{
+                                    family: 'Arial, sans-serif',
+                                    weight: 'bold',
+                                    style: 'normal',
+                                },
+
+                                shadowColor: 'rgba(204,204,204, 0.5)', // shadow color
+                                shadowBlur: 5, // shadow blur radius
+                                shadowOffsetX: 1, // shadow offset x
+                                shadowOffsetY: 1, // shadow offset y
+                            }
                         },
 
                         itemStyle: {
-                            color: '#64ffd0',  // Color of the nodes
-                            borderColor: '#ffffff',  // Border color of the nodes
+                            color: '#64ffd0',
+                            borderColor: '#ffffff',
                             borderWidth: 2,
                         },
                         lineStyle: {
-                            color: '#ccc',  // Color of the edges
+                            color: '#ccc',
                             width: 1.5,
-                            opacity: 0.5,
+                            opacity: 0.6,
                         },
 
                         emphasis: {
                             focus: 'descendant',
                             itemStyle: {
-                                color: '#427776',  // Color of the nodes when focused
+                                color: '#264241',  // Color of the nodes when focused
                             },
                             lineStyle: {
                                 color: '#838383',  // Color of the edges when focused
@@ -120,13 +182,23 @@ const TreeChart: React.FC = () => {
             // Resize chart with window resize
             const resizeHandler = () => {
                 if (chartInstance) {
-                    chartInstance.resize();
+                    const width = window.innerWidth * 0.9;
+                    const height = window.innerHeight * 0.9;
+                    chartInstance.resize({ width, height });
                 }
             };
 
             window.addEventListener('resize', resizeHandler);
+            resizeHandler(); // Initial resize
 
             chartInstance.setOption(option);
+
+            // Add zoomEnd event listener
+            chartInstance.on('zoomEnd', (params: any) => {
+                const zoomLevel = params.zoom;
+                const labelFontSize = getLabelFontSize(zoomLevel); // calculate font size based on zoom level
+                updateLabelFontSize(chartInstance, labelFontSize);
+            });
 
             return () => {
                 window.removeEventListener('resize', resizeHandler);
@@ -135,24 +207,36 @@ const TreeChart: React.FC = () => {
         }
     }, [jsonData]);
 
-    useEffect(() => {
-        // Set initial size of chart
-        const resizeHandler = () => {
-            if (chartRef.current) {
-                chartRef.current.style.width = `${window.innerWidth}px`;
-                chartRef.current.style.height = `${window.innerHeight}px`;
-            }
-        };
+    // Helper function to calculate label font size based on zoom level
+    function getLabelFontSize(zoomLevel: number) {
+        // You can adjust this logic to fit your needs
+        if (zoomLevel < 0.5) {
+            return 1;
+        } else if (zoomLevel < 1) {
+            return 5;
+        } else if (zoomLevel < 2) {
+            return 20;
+        } else {
+            return 50;
+        }
+    }
 
-        resizeHandler();
-
-        window.addEventListener('resize', resizeHandler);
-
-        return () => {
-            window.removeEventListener('resize', resizeHandler);
-        };
-    }, []);
-
+    function updateLabelFontSize(chartInstance: echarts.ECharts, fontSize: number) {
+        chartInstance.setOption({
+            series: [
+                {
+                    label: {
+                        fontSize,
+                    },
+                    leaves: {
+                        label: {
+                            fontSize,
+                        },
+                    },
+                },
+            ],
+        });
+    }
 
     return (
         <main className="main-container">
@@ -171,16 +255,17 @@ const TreeChart: React.FC = () => {
             )}
             {isFileDropped && (
                 <>
-                <div className="drag-n-drop-container" style={{ width: '100%', height: '100vh' }}>
-                    {!isFileDropped ? (
-                        <div>
-                            <FileDrop onDrop={(files) => handleDrop(files, setJsonData, setIsFileDropped)}
-                                      setIsFileDropped={setIsFileDropped}/>
-                        </div>
-                    ) : (
-                        <div className="drag-n-drop-container" ref={chartRef} style={{width: '100%', height: '100%'}}/>
-                    )}
-                </div>
+                    <div className="drag-n-drop-container" style={{width: '90vw', height: '90vh'}}>
+                        {!isFileDropped ? (
+                            <div>
+                                <FileDrop onDrop={(files) => handleDrop(files, setJsonData, setIsFileDropped)}
+                                          setIsFileDropped={setIsFileDropped}/>
+                            </div>
+                        ) : (
+                            <div className="collapsible-tree" ref={chartRef}
+                                 style={{width: '90%', height: '90%'}}/>
+                        )}
+                    </div>
                     {isSidebarVisible && (
                         <Sidebar
                             fullName={nodeManager.getState().selectedNodeName}
@@ -198,11 +283,4 @@ const TreeChart: React.FC = () => {
     );
 };
 
-const container = document.getElementById('root');
-if (container) {
-    const root = createRoot(container);
-    root.render(<TreeChart/>);
-} else {
-    console.error('Root container not found');
-}
 export default TreeChart;
