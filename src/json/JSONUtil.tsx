@@ -11,12 +11,12 @@ export const handleDrop = (files: File[], setJsonData: React.Dispatch<React.SetS
                 const json = JSON.parse(event.target?.result as string);
                 const transformedData = transformData(json);
                 setJsonData(transformedData);
-                setIsFileDropped(true); // Hide the FileDrop and show the tree
+                setIsFileDropped(true); // Hide the FileDrop and show the chart
                 sessionStorage.setItem("jsonData", JSON.stringify(transformedData));
                 sessionStorage.setItem("isFileDropped", "true");
             } catch (error) {
                 if (error instanceof Error) {
-                    console.error("Error parsing JSON file:", error.message); // Log the error
+                    console.error("Error parsing JSON file:", error.message);
                 } else {
                     console.error("An unknown error occurred.");
                 }

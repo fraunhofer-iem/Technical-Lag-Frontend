@@ -17,7 +17,7 @@
     display: flex;
 }
 
-.collapsible-tree{
+.chart{
     grid-column: 1 / -1; /* Span across all columns */
     justify-content: center;
     align-items: center;
