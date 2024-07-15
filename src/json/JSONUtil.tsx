@@ -114,18 +114,30 @@ const transformData = (json: any): JSONData => {
     // Process statistics and update node stats
     if (projectDto.stats) {
         projectDto.stats.forEach((stat: any) => {
-            const nodeKey = stat.versionType; // Assuming this is the version number
-            const nodeEntry = nodeMap.get(nodeKey);
+            const artifact = projectDto.artifacts.find((artifact: any) =>
+                artifact.versions.some((version: any) => version.versionNumber === stat.versionType)
+            );
 
-            if (nodeEntry) {
-                nodeEntry.stats = {
-                    Minor: stat.stats.Minor,
-                    Major: stat.stats.Major,
-                    Patch: stat.stats.Patch
-                };
-                nodeMap.set(nodeKey, nodeEntry);
+            if (artifact) {
+                const nodeKey = projectDto.artifacts.indexOf(artifact);
+                const nodeEntry = nodeMap.get(nodeKey);
+
+                if (nodeEntry) {
+                    nodeEntry.stats = {
+                        Minor: stat.stats.Minor,
+                        Major: stat.stats.Major,
+                        Patch: stat.stats.Patch
+                    };
+                    nodeMap.set(nodeKey, nodeEntry);
+                } else {
+                    console.warn(`Node with key ${nodeKey} not found in nodeMap.`);
+                }
+            } else {
+                console.warn(`Artifact not found for stat versionType: ${stat.versionType}`);
             }
         });
+    } else {
+        console.warn("No stats found in projectDto.");
     }
 
     // Assign children to root

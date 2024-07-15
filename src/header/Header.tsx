@@ -2,7 +2,7 @@ import * as React from "react";
 import HeaderMenuTab from "./HeaderMenuTabProps.tsx";
 import SearchBar from "./SearchBar.tsx";
 import Chart from "../body/body/Chart.tsx";
-import TestChart from "../body/body/TestChart.tsx";
+import TestSunburst from "../body/body/TestSunburst.tsx";
 import "./header.css";
 
 const handleSearch = (query: string) => {
@@ -21,9 +21,9 @@ const tabs = [
         content: <SearchBar onSearch={handleSearch}/>,
     },
     {
-        key: 'test',
-        label: 'Test',
-        content: <TestChart/>,
+        key: 'sunburst',
+        label: 'Sunburst',
+        content: <TestSunburst/>,
     },
 ];
 

@@ -68,7 +68,7 @@ const generateRandomData = () => {
     return createRandomNodes(0, 8, groupColors); // Adjust the second parameter to change the depth
 };
 
-const TestChart: React.FC = () => {
+const TestSunburst: React.FC = () => {
 
     React.useEffect(() => {
         const storedJsonData = sessionStorage.getItem("jsonData");
@@ -162,4 +162,4 @@ const TestChart: React.FC = () => {
     );
 };
 
-export default TestChart;
+export default TestSunburst;

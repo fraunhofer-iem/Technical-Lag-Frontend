@@ -10,7 +10,6 @@ import RevertButton from "../../buttons/RevertButton.tsx";
 import BackButton from "../../buttons/BackButton.tsx";
 import {handleDrop} from "../../json/JSONUtil.tsx";
 import Sidebar from "../tree/sidebar/Sidebar.tsx";
-import NodeManager from "../tree/NodeManager.tsx";
 import * as echarts from 'echarts';
 
 
@@ -18,7 +17,10 @@ const Chart: React.FC = () => {
     const [jsonData, setJsonData] = React.useState<JSONData | null>(null);
     const [isFileDropped, setIsFileDropped] = useState<boolean>(false);
     const [isSidebarVisible, setIsSidebarVisible] = useState(false);
-    const nodeManager = new NodeManager();
+    const [sidebarData, setSidebarData] = useState<any>(null);
+
+    const chartRef = useRef<HTMLDivElement>(null);
+    const chartInstanceRef = useRef<any>(null);
 
     React.useEffect(() => {
         const storedJsonData = sessionStorage.getItem("jsonData");
@@ -37,60 +39,79 @@ const Chart: React.FC = () => {
         sessionStorage.removeItem("isFileDropped");
     };
 
-    useEffect(() => {
-        if (nodeManager.getState().selectedNodeName) {
-            setIsSidebarVisible(true);
-        }
-    }, [nodeManager.getState().selectedNodeName]);
-
 
     const handleCloseSidebar = () => {
-        nodeManager.resetState();
         setIsSidebarVisible(false);
+        setSidebarData(null);
     };
-
-    const chartRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (jsonData && chartRef.current) {
             console.log("jsonData is set:", jsonData);
 
-            const container = chartRef.current;
-            console.log("Container dimensions:", container.clientWidth, container.clientHeight);
-
             try {
                 const chartInstance = echarts.init(chartRef.current);
+                chartInstanceRef.current = chartInstance;
 
                 const option = {
-                    series: [
-                        {
-                            type: 'tree',
-                            data: [jsonData],
-                            top: '18%',
-                            roam: true,
-                            bottom: '14%',
-                            layout: 'radial',
-                            symbol: 'emptyCircle',
-                            symbolSize: 1,
-                            initialTreeDepth: 1,
-                            animationDurationUpdate: 750,
+                    tooltip: {
+                        formatter: function (info: any) {
+                            const name = info.name;
+                            const version = info.data.version;
 
-                            emphasis: {
-                                focus: 'descendant'
-                            },
-                            tooltip:{
-                               trigger: "item",
-                               triggerOn: "mousemove",
-                            }
+                            return [
+                                '<div class="tooltip-title">' +
+                                echarts.format.encodeHTML(name) +
+                                '</div>',
+                                'Version: ' + version
+                            ].join('');
                         }
-                    ]
+                    },
+                    color: [ '#62a995'],
+                    series: [{
+                        type: 'treemap',
+                        visibleMin: 300,
+                        label: {
+                            show: true,
+                            formatter: '{b}',
+                            color: '#000'
+                        },
+                        upperLabel: {
+                            show: true,
+                            height: 30,
+                            color: '#000'
+                        },
+                        itemStyle: {
+                            borderColor: '#7ed3c5',
+                            borderWidth: 2,
+                            gapWidth: 2
+                        },
+                        colorMappingBy: 'id',
+                        levels: getLevelOption(),
+                        data: [transformJSONDataToTreemap(jsonData)]
+                    }]
                 };
 
                 chartInstance.setOption(option);
-                console.log("Chart option:", option);
                 console.log("Rendered chart");
 
+                chartInstance.on('contextmenu', (params: any) => {
+                    if (params.componentType === 'series' && params.seriesType === 'treemap') {
+                        params.event.event.preventDefault();
+                        const nodeData = params.data;
+                        setSidebarData(nodeData);
+                        setIsSidebarVisible(true);
+                    }
+                });
+
+                const handleResize = () => {
+                    chartInstance.resize();
+                };
+
+                window.addEventListener('resize', handleResize);
+
                 return () => {
+                    window.removeEventListener('resize', handleResize);
                     chartInstance.dispose();
                 };
             } catch (error) {
@@ -100,6 +121,58 @@ const Chart: React.FC = () => {
             console.log("jsonData or chartRef.current is null");
         }
     }, [jsonData]);
+
+    // Helper function to transform JSONData to ECharts treemap data format
+    const transformJSONDataToTreemap = (data: JSONData): any => {
+        return {
+            name: data.name,
+            value: 1, // Placeholder value, adjust according to your data structure
+            version: data.version,
+            releaseDate: data.releaseDate,
+            ecosystem: data.ecosystem,
+            repoURL: data.repoURL,
+            revision: data.revision,
+            stats: data.stats,
+            children: data.children?.map(child => transformJSONDataToTreemap(child))
+        };
+    };
+
+
+    // Function to generate levels option for treemap
+    const getLevelOption = () => {
+        return [
+            {
+                itemStyle: {
+                    borderColor: '#777',
+                    borderWidth: 0,
+                    gapWidth: 1,
+                },
+                upperLabel: {
+                    show: false
+                }
+            },
+            {
+                itemStyle: {
+                    borderColor: '#555',
+                    borderWidth: 5,
+                    gapWidth: 1,
+                },
+                emphasis: {
+                    itemStyle: {
+                        borderColor: '#ddd'
+                    }
+                }
+            },
+            {
+                colorSaturation: [0.35, 0.5],
+                itemStyle: {
+                    borderWidth: 5,
+                    gapWidth: 1,
+                    borderColorSaturation: 0.6,
+                }
+            }
+        ];
+    };
 
     return (
         <main className="main-container">
@@ -118,7 +191,8 @@ const Chart: React.FC = () => {
             )}
             {isFileDropped && (
                 <>
-                    <div className="drag-n-drop-container" style={{width: '90vw', height: '90vh', border: '1px solid red' }}>
+                    <div className="drag-n-drop-container"
+                         style={{width: '90vw', height: '90vh'}}>
                         {!isFileDropped ? (
                             <div>
                                 <FileDrop onDrop={(files) => handleDrop(files, setJsonData, setIsFileDropped)}
@@ -126,17 +200,18 @@ const Chart: React.FC = () => {
                             </div>
                         ) : (
                             <div className="chart" ref={chartRef}
-                                 style={{width: '90%', height: '90%', border: '1px solid red' }}/>
+                                 style={{width: '100%', height: '85%'}}/>
                         )}
                     </div>
                     {isSidebarVisible && (
                         <Sidebar
-                            fullName={nodeManager.getState().selectedNodeName}
-                            versionNumber={nodeManager.getState().selectedNodeVersionNumber}
-                            releaseDate={nodeManager.getState().selectedNodeReleaseDate}
-                            ecosystem={nodeManager.getState().isRoot ? nodeManager.getState().appEcosystem : ''}
-                            repoURL={nodeManager.getState().isRoot ? nodeManager.getState().appRepoURL : ''}
-                            revision={nodeManager.getState().isRoot ? nodeManager.getState().appRevision : ''}
+                            fullName={sidebarData.name}
+                            versionNumber={sidebarData.version}
+                            releaseDate={sidebarData.releaseDate}
+                            ecosystem={sidebarData.name === jsonData?.name ? sidebarData.ecosystem : undefined}
+                            repoURL={sidebarData.name === jsonData?.name ? sidebarData.repoURL : undefined}
+                            revision={sidebarData.name === jsonData?.name ? sidebarData.revision : undefined}
+                            stats={sidebarData.stats}
                             onClose={handleCloseSidebar}
                         />)}
                 </>
