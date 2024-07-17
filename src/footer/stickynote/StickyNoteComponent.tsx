@@ -3,16 +3,16 @@ import Footer from '../Footer.tsx';
 import React, {useState} from "react";
 
 const StickyNoteComponent: React.FC = () => {
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isFooterOpen, setIsFooterOpen] = useState<boolean>(false);
 
     const toggleFooter = () => {
-        setIsOpen(!isOpen);
+        setIsFooterOpen(!isFooterOpen);
     };
 
     return (
-        <StickyNoteContainer isOpen={isOpen}>
+        <StickyNoteContainer $isfooteropen={isFooterOpen}>
             <StickyNote onClick={toggleFooter}>Legal Notice</StickyNote>
-            <Footer isOpen={isOpen} />
+            <Footer isFooterOpen={isFooterOpen} />
         </StickyNoteContainer>
     );
 };

@@ -2,30 +2,28 @@ import {Box, Column, Copyright, FooterContainer, FooterLink, Row,} from "./Foote
 import React from "react";
 
 interface FooterProps {
-    isOpen: boolean;
+    isFooterOpen: boolean;
 }
 
-const Footer: React.FC<FooterProps> = ({isOpen}) => {
-    return (<Box isOpen={isOpen}>
-            <FooterContainer isOpen={isOpen}>
-                {isOpen && (
-                    <>
-                        <Row>
-                            <Column>
-                                <Copyright>&copy; Fraunhofer IEM. All rights reserved.</Copyright>
-                            </Column>
-                            <Column>
-                                <FooterLink href="#">
-                                    Security Policy
-                                </FooterLink>
-                            </Column>
-                            <Column>
-                                <FooterLink href="#">
-                                    Terms of Service
-                                </FooterLink>
-                            </Column>
-                        </Row>
-                    </>
+const Footer: React.FC<FooterProps> = ({isFooterOpen}) => {
+    return (<Box $isfooteropen={isFooterOpen}>
+            <FooterContainer $isfooteropen={isFooterOpen}>
+                {isFooterOpen && (
+                    <Row>
+                        <Column>
+                            <Copyright>&copy; Fraunhofer IEM. All rights reserved.</Copyright>
+                        </Column>
+                        <Column>
+                            <FooterLink href="#">
+                                Security Policy
+                            </FooterLink>
+                        </Column>
+                        <Column>
+                            <FooterLink href="#">
+                                Terms of Service
+                            </FooterLink>
+                        </Column>
+                    </Row>
                 )}
             </FooterContainer>
         </Box>

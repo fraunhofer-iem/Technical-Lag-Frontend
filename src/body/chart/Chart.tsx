@@ -1,15 +1,13 @@
 import * as React from "react";
 import {useEffect, useRef, useState} from "react";
 import {FileDrop} from "../filehandling/DragNDrop.tsx";
-import "../../buttons/button.css";
-import "./body.css";
-import "../filehandling/dragndrop.css";
-import {JSONData} from "../tree/Types.tsx";
-import UpdateButton from "../../buttons/UpdateButton.tsx";
-import RevertButton from "../../buttons/RevertButton.tsx";
-import BackButton from "../../buttons/BackButton.tsx";
+import "../body.css";
+import {JSONData} from "../utils/Types.tsx";
+import UpdateButton from "../buttons/UpdateButton.tsx";
+import RevertButton from "../buttons/RevertButton.tsx";
+import BackButton from "../buttons/BackButton.tsx";
 import {handleDrop} from "../../json/JSONUtil.tsx";
-import Sidebar from "../tree/sidebar/Sidebar.tsx";
+import Sidebar from "../utils/Sidebar.tsx";
 import * as echarts from 'echarts';
 
 
@@ -176,7 +174,7 @@ const Chart: React.FC = () => {
 
     return (
         <main className="main-container">
-            <div className="tree-button-row">
+            <div className="chart-button-row">
                 <BackButton text="New File" action={handleBackButton}/>
                 <UpdateButton text="Calculate Updates" action={() => alert("Button clicked!")}/>
                 <RevertButton text="Revert Updates" action={() => alert("Button clicked!")}/>
@@ -192,7 +190,7 @@ const Chart: React.FC = () => {
             {isFileDropped && (
                 <>
                     <div className="drag-n-drop-container"
-                         style={{width: '90vw', height: '90vh'}}>
+                         style={{width: '95vw', height: '95vh'}}>
                         {!isFileDropped ? (
                             <div>
                                 <FileDrop onDrop={(files) => handleDrop(files, setJsonData, setIsFileDropped)}
@@ -200,7 +198,7 @@ const Chart: React.FC = () => {
                             </div>
                         ) : (
                             <div className="chart" ref={chartRef}
-                                 style={{width: '100%', height: '85%'}}/>
+                                 style={{width: '100%', height: '90%'}}/>
                         )}
                     </div>
                     {isSidebarVisible && (

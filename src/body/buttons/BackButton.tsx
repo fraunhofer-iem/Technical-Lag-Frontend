@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./button.css";
+import "../body.css";
 
 interface ButtonProps {
     text: string;
@@ -9,7 +9,7 @@ interface ButtonProps {
 const BackButton: React.FC<ButtonProps> = ({ text, action }) => (
     <button
         type="button"
-        className="tree-back-button"
+        className="chart-back-button"
         onClick={action}
     >
         {text}

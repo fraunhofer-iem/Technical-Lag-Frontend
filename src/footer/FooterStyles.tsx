@@ -1,18 +1,18 @@
 import styled from "styled-components";
 
-export const Box = styled.div<{ isOpen: boolean }>`
+export const Box = styled.div<{ $isfooteropen: boolean }>`
     background: #212f36;
     bottom: 0;
     left: 0;
     right: 0;
     width: 100vw;
     position: fixed;
-    height: ${(props) => (props.isOpen? '2.5em' : '0')};
+    height: ${(props) => (props.$isfooteropen? '2.5em' : '0')};
     overflow: hidden;
     transition: height 0.3s ease-out;
 `;
 
-export const FooterContainer = styled.div<{ isOpen: boolean }>`
+export const FooterContainer = styled.div<{ $isfooteropen: boolean }>`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,7 +20,7 @@ export const FooterContainer = styled.div<{ isOpen: boolean }>`
     margin: 0 auto;
     background: #63aa96;
     padding: 1px;
-    height: ${(props) => (props.isOpen? '2.5em' : '0')};
+    height: ${(props) => (props.$isfooteropen? '2.5em' : '0')};
     z-index: 1000;
     overflow: hidden;
     transition: height 0.3s ease-out;

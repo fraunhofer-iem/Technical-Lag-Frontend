@@ -1,19 +1,19 @@
 import * as React from "react";
-import "./button.css";
+import "../body.css";
 
 interface ButtonProps {
     text: string;
     action?: () => void;
 }
 
-const UpdateButton: React.FC<ButtonProps> = ({ text, action }) => (
+const RevertButton: React.FC<ButtonProps> = ({text, action}) => (
     <button
         type="button"
-        className="tree-update-button"
+        className="chart-revert-button"
         onClick={action}
     >
         {text}
     </button>
 );
 
-export default UpdateButton;
+export default RevertButton;

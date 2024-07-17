@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-export const StickyNoteContainer = styled.div<{ isOpen: boolean }>`
+export const StickyNoteContainer = styled.div<{ $isfooteropen: boolean }>`
     position: fixed;
-    bottom: ${(props) => (props.isOpen ? '0vh' : '-2em')};
+    bottom: ${(props) => (props.$isfooteropen ? '0vh' : '-2em')};
     left: 50%;
     transform: translateX(-50%);
     transition: bottom 0.3s ease-out;
