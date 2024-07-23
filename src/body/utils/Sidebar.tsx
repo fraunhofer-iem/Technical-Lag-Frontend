@@ -27,47 +27,169 @@ const Sidebar: React.FC<SidebarProps> = ({
         ? new Date(parseInt(releaseDate)).toLocaleString()
         : 'Invalid Date';
 
-    const renderStats = (stats: any) => (
+    const [isTechnicalLagNodeOpen, setIsTechnicalLagNodeOpen] = React.useState(false);
+    const [isTechnicalLagChildrenOpen, setIsTechnicalLagChildrenOpen] = React.useState(false);
+    const [isStatisticsOpen, setIsStatisticsOpen] = React.useState(false);
+    const [versionType, setVersionType] = React.useState('1'); // Default to 'Minor'
+    const [isAccordionHovered, setIsAccordionHovered] = React.useState(false);
+
+
+    const handleVersionTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setVersionType(event.target.value);
+    };
+
+    // Extract data based on the selected version type
+    const getLagData = (type: string) => {
+        const lag = stats?.stats?.technicalLag || {};
+        return {
+            distance: {
+                first: lag.distance?.first?.[type] || '',
+                second: lag.distance?.second?.[type] || '',
+                third: lag.distance?.third?.[type] || ''
+            },
+            releaseFrequency: {
+                releasesPerDay: lag.releaseFrequency?.releasesPerDay || '',
+                releasesPerWeek: lag.releaseFrequency?.releasesPerWeek || '',
+                releasesPerMonth: lag.releaseFrequency?.releasesPerMonth || ''
+            },
+            libDays: lag.libDays || '',
+            version: lag.version || '',
+            numberOfMissedReleases: lag.numberOfMissedReleases || ''
+        };
+    };
+
+    const getChildrenData = (type: string) => {
+        const children = stats?.stats?.children || {};
+        return {
+            libDays: {
+                average: children.libDays?.average?.[type] || '',
+                stdDev: children.libDays?.stdDev?.[type] || ''
+            },
+            missedReleases: {
+                average: children.missedReleases?.average?.[type] || '',
+                stdDev: children.missedReleases?.stdDev?.[type] || ''
+            },
+            distanceFirst: {
+                average: children.distance?.first?.average?.[type] || ''
+            },
+            distanceSecond: {
+                average: children.distance?.second?.average?.[type] || ''
+            },
+            distanceThird: {
+                average: children.distance?.third?.average?.[type] || ''
+            },
+            releaseFrequency: {
+                average: children.releaseFrequency?.average?.[type] || '',
+                stdDev: children.releaseFrequency?.stdDev?.[type] || ''
+            }
+        };
+    };
+
+    const renderStats = () => (
         <div>
-            <p style={styles.header}>Statistics</p>
-            <hr style={styles.horizontalLine}/>
-            <p style={styles.paragraph}><strong style={styles.label}>Technical Lag (libDays):</strong> <span
-                style={{wordBreak: 'break-all'}}>{stats.technicalLag?.libDays ?? 'N/A'}</span>
-            </p>
-            <p style={styles.paragraph}><strong style={styles.label}>Release Frequency
-                (releases/month):</strong> <span
-                style={{wordBreak: 'break-all'}}>{stats.technicalLag?.releaseFrequency?.releasesPerMonth?.toFixed(1) ?? 'N/A'}</span>
-            </p>
-            <p style={styles.paragraph}><strong style={styles.label}>Number of Missed
-                Releases:</strong> <span
-                style={{wordBreak: 'break-all'}}>{stats.technicalLag?.numberOfMissedReleases ?? 'N/A'}</span></p>
-            <p style={styles.paragraph}><strong style={styles.label}>Children Avg LibDays:</strong> <span
-                style={{wordBreak: 'break-all'}}>{stats.libDays?.average ?? 'N/A'}</span></p>
-            <p style={styles.paragraph}><strong style={styles.label}>Children LibDays StdDev:</strong> <span
-                style={{wordBreak: 'break-all'}}>{stats.libDays?.stdDev ?? 'N/A'}</span></p>
-            <p style={styles.paragraph}><strong style={styles.label}>Children Avg Missed
-                Releases:</strong> <span
-                style={{wordBreak: 'break-all'}}>{stats.missedReleases?.average ?? 'N/A'}</span></p>
-            <p style={styles.paragraph}><strong style={styles.label}>Children Missed Releases
-                StdDev:</strong> <span
-                style={{wordBreak: 'break-all'}}>{stats.missedReleases?.stdDev ?? 'N/A'}</span></p>
-            <p style={styles.paragraph}><strong style={styles.label}>Distance First Avg:</strong> <span
-                style={{wordBreak: 'break-all'}}>{stats.distance?.first?.average ?? 'N/A'}</span>
-            </p>
-            <p style={styles.paragraph}><strong style={styles.label}>Distance Second Avg:</strong> <span
-                style={{wordBreak: 'break-all'}}>{stats.distance?.second?.average ?? 'N/A'}</span>
-            </p>
-            <p style={styles.paragraph}><strong style={styles.label}>Distance Third Avg:</strong> <span
-                style={{wordBreak: 'break-all'}}>{stats.distance?.third?.average ?? 'N/A'}</span>
-            </p>
-            <p style={styles.paragraph}><strong style={styles.label}>Release Frequency
-                Avg:</strong> <span
-                style={{wordBreak: 'break-all'}}>{stats.releaseFrequency?.average ?? 'N/A'}</span></p>
-            <p style={styles.paragraph}><strong style={styles.label}>Release Frequency
-                StdDev:</strong> <span
-                style={{wordBreak: 'break-all'}}>{stats.releaseFrequency?.stdDev ?? 'N/A'}</span></p>
+            <br/>
+            <hr style={styles.horizontalLine}></hr>
+            <br/>
+
+            <div onClick={() => setIsStatisticsOpen(!isStatisticsOpen)} onMouseEnter={() => setIsAccordionHovered(true)}
+                 onMouseLeave={() => setIsAccordionHovered(false)}
+                 style={{
+                     ...styles.accordionHeader,
+                     ...(isAccordionHovered ? styles.accordionHeaderHover : {}),
+                 }}>
+                <p>Statistics {isStatisticsOpen ? '-' : '+'} </p>
+            </div>
+
+            {isStatisticsOpen && (
+                <div style={styles.accordionContent}>
+                    <div style={styles.select}>
+                        <strong style={styles.label}>Version Type:&nbsp;
+                            <select value={versionType} onChange={handleVersionTypeChange}>
+                                <option value={"Minor"}>Minor</option>
+                                <option value={"Major"}>Major</option>
+                                <option value={"Patch"}>Patch</option>
+                            </select>
+                        </strong>
+                    </div>
+
+                    <div onClick={() => setIsTechnicalLagNodeOpen(!isTechnicalLagNodeOpen)}
+                         onMouseEnter={() => setIsAccordionHovered(true)}
+                         onMouseLeave={() => setIsAccordionHovered(false)}
+                         style={{
+                             ...styles.accordionHeader,
+                             ...(isAccordionHovered ? styles.accordionHeaderHover : {}),
+                         }}>
+                        <p>Technical Lag Current Node {isTechnicalLagNodeOpen ? '-' : '+'}</p>
+                    </div>
+                    {isTechnicalLagNodeOpen && (
+                        <div style={styles.accordionContent}>
+                            <p style={styles.paragraph}><strong style={styles.label}>Lag in Days:</strong> {getLagData(versionType).libDays}</p>
+                            <p style={styles.paragraph}><strong style={styles.label}>Newest Version:</strong> {getLagData(versionType).version}</p>
+                            <p style={styles.paragraph}><strong style={styles.label}>Missed Releases:</strong> {getLagData(versionType).numberOfMissedReleases}</p>
+                            <div>
+                                <p style={styles.paragraph}><strong style={styles.label}>Distance:</strong></p>
+                                <ul style={styles.list}>
+                                    <li><strong style={styles.label}>First: </strong>{getLagData(versionType).distance.first}</li>
+                                    <li><strong style={styles.label}>Second: </strong>{getLagData(versionType).distance.second}</li>
+                                    <li><strong style={styles.label}>Third: </strong>{getLagData(versionType).distance.third}</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p style={styles.paragraph}><strong style={styles.label}>Release Frequency:</strong></p>
+                                <ul style={styles.list}>
+                                    <li><strong style={styles.label}>Per Day: </strong>{getLagData(versionType).releaseFrequency.releasesPerDay}</li>
+                                    <li><strong style={styles.label}>Per Week: </strong>{getLagData(versionType).releaseFrequency.releasesPerWeek}</li>
+                                    <li><strong style={styles.label}>Per Month: </strong>{getLagData(versionType).releaseFrequency.releasesPerMonth}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    )}
+
+                    <div onClick={() => setIsTechnicalLagChildrenOpen(!isTechnicalLagChildrenOpen)}
+                         onMouseEnter={() => setIsAccordionHovered(true)}
+                         onMouseLeave={() => setIsAccordionHovered(false)}
+                         style={{
+                             ...styles.accordionHeader,
+                             ...(isAccordionHovered ? styles.accordionHeaderHover : {}),
+                         }}>
+                        <p>Technical Lag Children {isTechnicalLagChildrenOpen ? '-' : '+'}</p>
+                    </div>
+                    {isTechnicalLagChildrenOpen && (
+                        <div style={styles.accordionContent}>
+                            <p style={styles.paragraph}><strong style={styles.label}>Lag in Days:</strong></p>
+                            <ul style={styles.list}>
+                                <li><strong style={styles.label}>Avg: </strong>{getChildrenData(versionType).libDays.average}</li>
+                                <li><strong style={styles.label}>Std Dev: </strong>{getChildrenData(versionType).libDays.stdDev}</li>
+                            </ul>
+                            <div>
+                                <p style={styles.paragraph}><strong style={styles.label}>Missed Releases:</strong></p>
+                                <ul style={styles.list}>
+                                    <li><strong style={styles.label}>Avg: </strong>{getChildrenData(versionType).missedReleases.average}</li>
+                                    <li><strong style={styles.label}>Std Dev: </strong>{getChildrenData(versionType).missedReleases.stdDev}</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p style={styles.paragraph}><strong style={styles.label}>Distance:</strong></p>
+                                <ul style={styles.list}>
+                                    <li><strong style={styles.label}>First Avg: </strong>{getChildrenData(versionType).distanceFirst.average}</li>
+                                    <li><strong style={styles.label}>Second Avg: </strong>{getChildrenData(versionType).distanceSecond.average}</li>
+                                    <li><strong style={styles.label}>Third Avg: </strong>{getChildrenData(versionType).distanceThird.average}</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p style={styles.paragraph}><strong style={styles.label}>Release Frequency:</strong></p>
+                                <ul style={styles.list}>
+                                    <li><strong style={styles.label}>Avg: </strong>{getChildrenData(versionType).releaseFrequency.average}</li>
+                                    <li><strong style={styles.label}>Std Dev: </strong>{getChildrenData(versionType).releaseFrequency.stdDev}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
+
 
     return (
         <div style={styles.sidebar}>
@@ -97,7 +219,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 </>
             )}
 
-            {stats && renderStats(stats)}
+            {stats && renderStats()}
         </div>
     );
 };

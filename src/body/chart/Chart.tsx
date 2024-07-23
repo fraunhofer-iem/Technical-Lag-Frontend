@@ -65,7 +65,7 @@ const Chart: React.FC = () => {
                             ].join('');
                         }
                     },
-                    color: [ '#62a995'],
+                    color: ['#62a995'],
                     series: [{
                         type: 'treemap',
                         visibleMin: 300,
@@ -124,7 +124,9 @@ const Chart: React.FC = () => {
     const transformJSONDataToTreemap = (data: JSONData): any => {
         return {
             name: data.name,
+/*
             value: 1, // Placeholder value, adjust according to your data structure
+*/
             version: data.version,
             releaseDate: data.releaseDate,
             ecosystem: data.ecosystem,

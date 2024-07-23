@@ -43,18 +43,58 @@ const styles = {
         fontWeight: 'bold',
         margin: 0,
     },
+    subheader: {
+        fontSize: '15px',
+        color: '#73a796',
+        fontWeight: 'bold',
+        margin: 0,
+        marginTop: '2em',
+    },
     paragraph: {
         marginBottom: '1em',
         marginTop: '1em',
         fontSize: '14px',
+    },
+    list: {
+        marginBottom: '1em',
+        marginTop: '1em',
+        fontSize: '14px',
+    },
+    accordionHeader: {
+        cursor: 'pointer',
+        fontSize: '16px',
+        color: '#73a796',
+        fontWeight: 'bold',
+        margin: '0.2em 0',
+        padding: '0.5em',
+        border: '1px solid #73a796',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    accordionContent: {
+        margin: '0.5em 0',
+        padding: '0.5em',
+        border: '1px solid #73a796',
+    },
+   accordionHeaderActive: {
+        backgroundColor: '#5e5e5e', // Active background color
+    },
+    accordionHeaderHover: {
+        backgroundColor: '#5e5e5e', // Hover background color
     },
     label: {
         color: '#73a796',
     },
     horizontalLine: {
         border: 0,
-        height: '1px',
+        height: '2px',
         backgroundColor: '#73a796',
+    },
+    select:{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 };
 

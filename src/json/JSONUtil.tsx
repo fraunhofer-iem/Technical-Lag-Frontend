@@ -53,7 +53,8 @@ const transformData = (json: any): JSONData => {
         ecosystem: ecosystem,
         repoURL: repoURL,
         revision: revision,
-        root: true
+        root: true,
+        stats: []
     };
 
     // Create artifact map
@@ -64,8 +65,6 @@ const transformData = (json: any): JSONData => {
 
     // Create node map
     const nodeMap = new Map<number, JSONData>();
-
-    const allStats: any[] = []; // Collect statistics for the root
 
     // Process nodes
     projectDto.graph.forEach((graphItem: any) => {
@@ -85,19 +84,14 @@ const transformData = (json: any): JSONData => {
                 version: usedVersionIndex !== -1 ? artifact.versions[usedVersionIndex].versionNumber : "unknown",
                 releaseDate: usedVersionIndex !== -1 ? artifact.versions[usedVersionIndex].releaseDate : "unknown",
                 children: [],
-                stats: node.stats ? simplifyStats(node.stats) : undefined
+                stats: node.stats ? simplifyStats(node.stats) : []
             };
-
-            if (node.stats) {
-                allStats.push(...node.stats);
-            }
 
             nodeMap.set(node.artifactIdx, nodeData);
         });
     });
 
-    root.stats = allStats.length > 0 ? simplifyStats(allStats) : undefined;
-
+    root.stats = [];
 
     // Populate children based on edges
     projectDto.graph.forEach((graphItem: any) => {
@@ -129,126 +123,86 @@ const transformData = (json: any): JSONData => {
     return root;
 };
 
-const simplifyStats = (statsArray: any[]): Stats => {
-    if (statsArray.length === 0) {
-        // Return default values if no statistics are available
-        return {
-            technicalLag: {
-                libDays: 0,
-                distance: { first: 0, second: 0, third: 0 },
-                releaseFrequency: { releasesPerMonth: 0 },
-                numberOfMissedReleases: 0
-            },
-            versionType: { minor: "N/A", major: "N/A", patch: "N/A" },
-            libDays: { average: 0, stdDev: 0 },
-            missedReleases: { average: 0, stdDev: 0 },
-            distance: {
-                first: { average: 0 },
-                second: { average: 0 },
-                third: { average: 0 }
-            },
-            releaseFrequency: { average: 0, stdDev: 0 }
-        };
-    }
+const simplifyStats = (statsArray: any[]): Stats[] => {
+    const statsMap: { [key: string]: any } = {};
 
-    // Initialize accumulators for each version type
-    const versionStats: { [key: string]: any } = {
-        Minor: {
-            libDays: { average: 0, stdDev: 0 },
-            missedReleases: { average: 0, stdDev: 0 },
-            distance: { first: { average: 0 }, second: { average: 0 }, third: { average: 0 } },
-            releaseFrequency: { average: 0, stdDev: 0 }
-        },
-        Major: {
-            libDays: { average: 0, stdDev: 0 },
-            missedReleases: { average: 0, stdDev: 0 },
-            distance: { first: { average: 0 }, second: { average: 0 }, third: { average: 0 } },
-            releaseFrequency: { average: 0, stdDev: 0 }
-        },
-        Patch: {
-            libDays: { average: 0, stdDev: 0 },
-            missedReleases: { average: 0, stdDev: 0 },
-            distance: { first: { average: 0 }, second: { average: 0 }, third: { average: 0 } },
-            releaseFrequency: { average: 0, stdDev: 0 }
-        }
-    };
-
-    // Function to extract stats for a given version type
-    const extractStats = (versionType: string, stats: any) => {
-        const typeStats = stats[versionType] || {};
-
-        return {
-            libDays: typeStats.libDays || { average: 0, stdDev: 0 },
-            missedReleases: typeStats.missedReleases || { average: 0, stdDev: 0 },
-            distance: {
-                first: typeStats.distance?.first || { average: 0 },
-                second: typeStats.distance?.second || { average: 0 },
-                third: typeStats.distance?.third || { average: 0 }
-            },
-            releaseFrequency: typeStats.releaseFrequency || { average: 0, stdDev: 0 }
-        };
-    };
-
-    // Process stats array and aggregate the data
+    // Process each stat entry in the array
     statsArray.forEach(stat => {
-        const versionType = stat.versionType;
-        const statsData = extractStats(versionType, stat.stats);
-
-        // Accumulate values
-        versionStats[versionType].libDays.average += statsData.libDays.average;
-        versionStats[versionType].libDays.stdDev += statsData.libDays.stdDev;
-        versionStats[versionType].missedReleases.average += statsData.missedReleases.average;
-        versionStats[versionType].missedReleases.stdDev += statsData.missedReleases.stdDev;
-        versionStats[versionType].distance.first.average += statsData.distance.first.average;
-        versionStats[versionType].distance.second.average += statsData.distance.second.average;
-        versionStats[versionType].distance.third.average += statsData.distance.third.average;
-        versionStats[versionType].releaseFrequency.average += statsData.releaseFrequency.average;
-        versionStats[versionType].releaseFrequency.stdDev += statsData.releaseFrequency.stdDev;
+        statsMap[stat.versionType] = {
+            technicalLag: {
+                libDays: stat.stats.technicalLag.libDays,
+                distance: {
+                    first: stat.stats.technicalLag.distance.first,
+                    second: stat.stats.technicalLag.distance.second,
+                    third: stat.stats.technicalLag.distance.third
+                },
+                version: stat.stats.technicalLag.version,
+                releaseFrequency: {
+                    releasesPerDay: stat.stats.technicalLag.releaseFrequency.releasesPerDay,
+                    releasesPerWeek: stat.stats.technicalLag.releaseFrequency.releasesPerWeek,
+                    releasesPerMonth: stat.stats.technicalLag.releaseFrequency.releasesPerMonth
+                },
+                numberOfMissedReleases: stat.stats.technicalLag.numberOfMissedReleases
+            },
+            children: {
+                libDays: {
+                    average: stat.stats.libDays.average,
+                    variance: stat.stats.libDays.variance,
+                    stdDev: stat.stats.libDays.stdDev
+                },
+                missedReleases: {
+                    average: stat.stats.missedReleases.average,
+                    variance: stat.stats.missedReleases.variance,
+                    stdDev: stat.stats.missedReleases.stdDev
+                },
+                distance: {
+                    first: {
+                        average: stat.stats.distance.first.average,
+                        variance: stat.stats.distance.first.variance,
+                        stdDev: stat.stats.distance.first.stdDev
+                    },
+                    second: {
+                        average: stat.stats.distance.second.average,
+                        variance: stat.stats.distance.second.variance,
+                        stdDev: stat.stats.distance.second.stdDev
+                    },
+                    third: {
+                        average: stat.stats.distance.third.average,
+                        variance: stat.stats.distance.third.variance,
+                        stdDev: stat.stats.distance.third.stdDev
+                    }
+                },
+                releaseFrequency: {
+                    average: stat.stats.releaseFrequency.average,
+                    variance: stat.stats.releaseFrequency.variance,
+                    stdDev: stat.stats.releaseFrequency.stdDev
+                }
+            }
+        };
     });
 
-    // Normalize or average the results
-    // Here you can add logic for calculating averages if needed
-
-    return {
-        technicalLag: {
-            libDays: versionStats.Minor.libDays.average, // example, adapt as needed
-            distance: {
-                first: versionStats.Minor.distance.first.average,
-                second: versionStats.Minor.distance.second.average,
-                third: versionStats.Minor.distance.third.average
+    // Ensure all three version types are represented
+    return ['Minor', 'Major', 'Patch'].map(versionType => {
+        const stats = statsMap[versionType] || {
+            technicalLag: {
+                libDays: 0,
+                distance: {first: 0, second: 0, third: 0},
+                version: "unknown",
+                releaseFrequency: {releasesPerDay: 0, releasesPerWeek: 0, releasesPerMonth: 0},
+                numberOfMissedReleases: 0
             },
-            releaseFrequency: {
-                releasesPerMonth: versionStats.Minor.releaseFrequency.average
-            },
-            numberOfMissedReleases: 2 // Example, replace with actual logic to determine the number of missed releases
-        },
-        versionType: {
-            minor: "Minor",
-            major: "Major",
-            patch: "Patch"
-        },
-        libDays: {
-            average: versionStats.Minor.libDays.average,
-            stdDev: versionStats.Minor.libDays.stdDev
-        },
-        missedReleases: {
-            average: versionStats.Minor.missedReleases.average,
-            stdDev: versionStats.Minor.missedReleases.stdDev
-        },
-        distance: {
-            first: {
-                average: versionStats.Minor.distance.first.average
-            },
-            second: {
-                average: versionStats.Minor.distance.second.average
-            },
-            third: {
-                average: versionStats.Minor.distance.third.average
+            children: {
+                libDays: {average: 0, variance: 0, stdDev: 0},
+                missedReleases: {average: 0, variance: 0, stdDev: 0},
+                distance: {
+                    first: {average: 0, variance: 0, stdDev: 0},
+                    second: {average: 0, variance: 0, stdDev: 0},
+                    third: {average: 0, variance: 0, stdDev: 0}
+                },
+                releaseFrequency: {average: 0, variance: 0, stdDev: 0}
             }
-        },
-        releaseFrequency: {
-            average: versionStats.Minor.releaseFrequency.average,
-            stdDev: versionStats.Minor.releaseFrequency.stdDev
-        }
-    };
+        };
+
+        return {versionType: versionType as 'Minor' | 'Major' | 'Patch', stats} as Stats;
+    });
 };
