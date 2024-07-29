@@ -23,7 +23,7 @@ interface ReleaseFrequency {
 export interface TechnicalLagNode {
     libDays: number;
     distance: Distance;
-    version: string;
+    version: string; //For each Versiontype
     releaseFrequency: ReleaseFrequency;
     numberOfMissedReleases: number;
 }

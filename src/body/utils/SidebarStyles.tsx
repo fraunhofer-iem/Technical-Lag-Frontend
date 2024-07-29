@@ -3,14 +3,14 @@ const styles = {
         position: 'fixed' as const,
         right: 0,
         top: '10%',
-        width: '22%',
+        width: '22em',
         height: '80vh',
         backgroundColor: '#333333',
         borderLeft: '2px solid #000',
         borderTop: '2px solid #000',
         borderBottom: '2px solid #000',
         borderRight: "none",
-        padding: '10px',
+        padding: '2em',
         display: 'block',
         zIndex: 1000,
         color: '#ffffff',
@@ -19,69 +19,103 @@ const styles = {
         borderBottomLeftRadius: "8px",
         borderTopLeftRadius: "8px",
 
-        '@media (min-width: 1200px)': {
-            width: '30%',
+        '@media (minWidth: 1200px)': {
+            width: '30em',
         },
     },
     closeButton: {
-        marginRight: '20px',
-        backgroundColor: 'transparent',
+        position: 'relative' as const,
+        border: 'none',
+        padding: '0',
+        width: '1.5em',
+        height: '1.5em',
+        borderRadius: '50%',
+        background: 'transparent',
         color: '#ffffff',
-        fontSize: '16px',
-        fontWeight: 'bold',
+        font: 'inherit',
+        textIndent: '100%',
         cursor: 'pointer',
+        outline: 'solid 0 transparent',
+        boxShadow: '0 0 0 2px rgba(255, 255, 255, 0.5)', // Light white shadow for focus
+        transition: 'background 0.3s ease',
+        '&:hover': {
+            background: 'rgba(255, 255, 255, 0.2)', // Light background on hover
+        },
+    },
+    closeButtonBeforeAfter: {
+        position: 'absolute' as const,
+        top: '20%',
+        left: 'calc(50% - .0625em)',
+        width: '.1em', // Smaller width
+        height: '60%', // Smaller height
+        borderRadius: '.1em', // Smaller radius
+        background: 'currentcolor',
+        content: "''",
+    },
+    closeButtonBefore: {
+        transform: 'rotate(45deg)',
+    },
+    closeButtonAfter: {
+        transform: 'rotate(-45deg)',
     },
     headerContainer: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'left',
-        marginBottom: '10px',
+        justifyContent: 'space-between',
+        marginBottom: '1em',
     },
     header: {
-        fontSize: '20px',
+        fontSize: '22px',
         color: '#73a796',
         fontWeight: 'bold',
         margin: 0,
-    },
-    subheader: {
-        fontSize: '15px',
-        color: '#73a796',
-        fontWeight: 'bold',
-        margin: 0,
-        marginTop: '2em',
     },
     paragraph: {
-        marginBottom: '1em',
-        marginTop: '1em',
+        margin: '1em 0',
         fontSize: '14px',
     },
     list: {
-        marginBottom: '1em',
-        marginTop: '1em',
+        margin: '1em 0',
         fontSize: '14px',
     },
     accordionHeader: {
         cursor: 'pointer',
         fontSize: '16px',
-        color: '#73a796',
+        color: '#fff',
         fontWeight: 'bold',
-        margin: '0.2em 0',
-        padding: '0.5em',
+        margin: '0.5em 0',
+        padding: '0.8em 1em',
         border: '1px solid #73a796',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        width: '100%',
+        backgroundColor: '#444',
+        borderRadius: '4px',
+        transition: 'background-color 0.3s, color 0.3s',
     },
     accordionContent: {
-        margin: '0.5em 0',
-        padding: '0.5em',
-        border: '1px solid #73a796',
+        margin: '0 0 1em 0',
+        padding: '0.8em 1em',
+        borderLeft: '1px solid #73a796',
     },
-   accordionHeaderActive: {
-        backgroundColor: '#5e5e5e', // Active background color
+   accordionHeaderStatisticsActive: {
+        backgroundColor: '#5e5e5e',
     },
-    accordionHeaderHover: {
-        backgroundColor: '#5e5e5e', // Hover background color
+    accordionHeaderNodeActive: {
+        backgroundColor: '#5e5e5e',
+    },
+    accordionHeaderChildrenActive: {
+        backgroundColor: '#5e5e5e',
+    },
+    accordionHeaderStatisticsHover: {
+        backgroundColor: '#666',
+    },
+    accordionHeaderNodeHover: {
+        backgroundColor: '#666',
+    },
+    accordionHeaderChildrenHover: {
+        backgroundColor: '#666',
     },
     label: {
         color: '#73a796',
@@ -95,6 +129,7 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        marginBottom: '1em',
     },
 };
 

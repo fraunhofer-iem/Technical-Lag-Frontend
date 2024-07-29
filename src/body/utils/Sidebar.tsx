@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './SidebarStyles';
+import {Stats} from "./Types.tsx";
 
 interface SidebarProps {
     fullName: string;
@@ -9,7 +10,7 @@ interface SidebarProps {
     ecosystem?: string;
     repoURL?: string,
     revision?: string;
-    stats?: any;
+    stats?: Stats[];
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -27,176 +28,258 @@ const Sidebar: React.FC<SidebarProps> = ({
         ? new Date(parseInt(releaseDate)).toLocaleString()
         : 'Invalid Date';
 
+    const formatNumber = (num: number | undefined) => {
+        if (num === undefined) return '0.00';
+        return num.toFixed(2);
+    };
+
+
     const [isTechnicalLagNodeOpen, setIsTechnicalLagNodeOpen] = React.useState(false);
     const [isTechnicalLagChildrenOpen, setIsTechnicalLagChildrenOpen] = React.useState(false);
     const [isStatisticsOpen, setIsStatisticsOpen] = React.useState(false);
-    const [versionType, setVersionType] = React.useState('1'); // Default to 'Minor'
-    const [isAccordionHovered, setIsAccordionHovered] = React.useState(false);
 
+    type VersionType = 'Minor' | 'Major' | 'Patch';
+    const [versionType, setVersionType] = React.useState<VersionType>('Major');
+
+    const [isAccordionStatisticsHovered, setIsAccordionStatisticsHovered] = React.useState(false);
+    const [isAccordionNodeHovered, setIsAccordionNodeHovered] = React.useState(false);
+    const [isAccordionChildrenHovered, setIsAccordionChildrenHovered] = React.useState(false);
+
+    const [isAccordionStatisticsActive, setIsAccordionStatisticsActive] = React.useState(false);
+    const [isAccordionNodeActive, setIsAccordionNodeActive] = React.useState(false);
+    const [isAccordionChildrenActive, setIsAccordionChildrenActive] = React.useState(false);
 
     const handleVersionTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setVersionType(event.target.value);
+        setVersionType(event.target.value as VersionType);
+    };
+
+    const getStatsByVersionType = (versionType: VersionType) => {
+        const defaultStats = {
+            technicalLag: {
+                libDays: 0,
+                distance: {first: 0, second: 0, third: 0},
+                version: '',
+                releaseFrequency: {releasesPerDay: 0, releasesPerWeek: 0, releasesPerMonth: 0},
+                numberOfMissedReleases: 0
+            },
+            children: {
+                libDays: {average: 0, stdDev: 0},
+                missedReleases: {average: 0, stdDev: 0},
+                distance: {first: {average: 0}, second: {average: 0}, third: {average: 0}},
+                releaseFrequency: {average: 0, stdDev: 0}
+            }
+        };
+
+        return stats?.find(s => s.versionType === versionType)?.stats || defaultStats;
     };
 
     // Extract data based on the selected version type
-    const getLagData = (type: string) => {
-        const lag = stats?.stats?.technicalLag || {};
+    const getLagData = (versionType: VersionType) => {
+        const lag = getStatsByVersionType(versionType).technicalLag;
         return {
             distance: {
-                first: lag.distance?.first?.[type] || '',
-                second: lag.distance?.second?.[type] || '',
-                third: lag.distance?.third?.[type] || ''
+                first: lag.distance?.first,
+                second: lag.distance?.second,
+                third: lag.distance?.third
             },
             releaseFrequency: {
-                releasesPerDay: lag.releaseFrequency?.releasesPerDay || '',
-                releasesPerWeek: lag.releaseFrequency?.releasesPerWeek || '',
-                releasesPerMonth: lag.releaseFrequency?.releasesPerMonth || ''
+                releasesPerMonth: lag.releaseFrequency?.releasesPerMonth
             },
-            libDays: lag.libDays || '',
-            version: lag.version || '',
-            numberOfMissedReleases: lag.numberOfMissedReleases || ''
+            libDays: lag.libDays,
+            version: lag.version,
+            numberOfMissedReleases: lag.numberOfMissedReleases
         };
     };
 
-    const getChildrenData = (type: string) => {
-        const children = stats?.stats?.children || {};
+    const getChildrenData = (versionType: VersionType) => {
+        const childLag = getStatsByVersionType(versionType).children;
         return {
             libDays: {
-                average: children.libDays?.average?.[type] || '',
-                stdDev: children.libDays?.stdDev?.[type] || ''
+                average: childLag.libDays?.average,
+                stdDev: childLag.libDays?.stdDev
             },
             missedReleases: {
-                average: children.missedReleases?.average?.[type] || '',
-                stdDev: children.missedReleases?.stdDev?.[type] || ''
+                average: childLag.missedReleases?.average,
+                stdDev: childLag.missedReleases?.stdDev
             },
             distanceFirst: {
-                average: children.distance?.first?.average?.[type] || ''
+                average: childLag.distance?.first?.average
             },
             distanceSecond: {
-                average: children.distance?.second?.average?.[type] || ''
+                average: childLag.distance?.second?.average
             },
             distanceThird: {
-                average: children.distance?.third?.average?.[type] || ''
+                average: childLag.distance?.third?.average
             },
             releaseFrequency: {
-                average: children.releaseFrequency?.average?.[type] || '',
-                stdDev: children.releaseFrequency?.stdDev?.[type] || ''
+                average: childLag.releaseFrequency?.average,
+                stdDev: childLag.releaseFrequency?.stdDev
             }
         };
     };
 
-    const renderStats = () => (
-        <div>
-            <br/>
-            <hr style={styles.horizontalLine}></hr>
-            <br/>
+    const renderDistance = () => {
+        const lagData = getLagData(versionType).distance;
+        switch (versionType) {
+            case 'Major':
+                return lagData.first;
+            case 'Minor':
+                return lagData.second;
+            case 'Patch':
+                return lagData.third;
+            default:
+                return 0;
+        }
+    };
 
-            <div onClick={() => setIsStatisticsOpen(!isStatisticsOpen)} onMouseEnter={() => setIsAccordionHovered(true)}
-                 onMouseLeave={() => setIsAccordionHovered(false)}
-                 style={{
-                     ...styles.accordionHeader,
-                     ...(isAccordionHovered ? styles.accordionHeaderHover : {}),
-                 }}>
-                <p>Statistics {isStatisticsOpen ? '-' : '+'} </p>
+    const renderStats = () => {
+        const lagData = getLagData(versionType);
+        const childrenData = getChildrenData(versionType);
+
+        return (
+            <div>
+                <br/>
+                <hr style={styles.horizontalLine}/>
+                <br/>
+
+                <button onClick={() => {
+                    setIsStatisticsOpen(!isStatisticsOpen);
+                    setIsAccordionStatisticsActive(!isAccordionStatisticsActive);
+                }}
+                        onMouseEnter={() => setIsAccordionStatisticsHovered(true)}
+                        onMouseLeave={() => setIsAccordionStatisticsHovered(false)}
+                        style={{
+                            ...styles.accordionHeader,
+                            ...(isAccordionStatisticsHovered ? styles.accordionHeaderStatisticsHover : {}),
+                            ...(isAccordionStatisticsActive ? styles.accordionHeaderStatisticsActive : {})
+                        }}>
+                    <p>Technical Lag Statistics {isStatisticsOpen ? '-' : '+'}</p>
+                </button>
+
+                {isStatisticsOpen && (
+                    <div style={styles.accordionContent}>
+                        <div style={styles.select}>
+                            <strong style={styles.label}>Version Type:&nbsp;{' '}
+                                <select value={versionType} onChange={handleVersionTypeChange}>
+                                    <option value={"Major"}>Major</option>
+                                    <option value={"Minor"}>Minor</option>
+                                    <option value={"Patch"}>Patch</option>
+                                </select>
+                            </strong>
+                        </div>
+
+                        <button onClick={() => {
+                            setIsTechnicalLagNodeOpen(!isTechnicalLagNodeOpen);
+                            setIsAccordionNodeActive(!isAccordionNodeActive);
+                        }}
+                                onMouseEnter={() => setIsAccordionNodeHovered(true)}
+                                onMouseLeave={() => setIsAccordionNodeHovered(false)}
+                                style={{
+                                    ...styles.accordionHeader,
+                                    ...(isAccordionNodeHovered ? styles.accordionHeaderNodeHover : {}),
+                                    ...(isAccordionNodeActive ? styles.accordionHeaderNodeActive : {})
+                                }}>
+                            <p>Current Node {isTechnicalLagNodeOpen ? '-' : '+'}</p>
+                        </button>
+                        {isTechnicalLagNodeOpen && (
+                            <div style={styles.accordionContent}>
+                                <p style={styles.paragraph}><strong style={styles.label}>Lag in
+                                    Days:</strong> {formatNumber(lagData.libDays)}</p>
+                                <p style={styles.paragraph}><strong style={styles.label}>Newest
+                                    Version:</strong> {lagData.version}</p>
+                                <p style={styles.paragraph}><strong style={styles.label}>Missed
+                                    Releases:</strong> {formatNumber(lagData.numberOfMissedReleases)}</p>
+                                <p style={styles.paragraph}><strong
+                                    style={styles.label}>Distance:&nbsp;</strong>{formatNumber(renderDistance())}
+                                </p>
+                                <p style={styles.paragraph}><strong style={styles.label}>Release
+                                    Frequency:</strong> {formatNumber(lagData.releaseFrequency.releasesPerMonth)} per
+                                    Month
+                                </p>
+                            </div>
+                        )}
+
+                        <button onClick={() => {
+                            setIsTechnicalLagChildrenOpen(!isTechnicalLagChildrenOpen);
+                            setIsAccordionChildrenActive(!isAccordionChildrenActive);
+                        }}
+                                onMouseEnter={() => setIsAccordionChildrenHovered(true)}
+                                onMouseLeave={() => setIsAccordionChildrenHovered(false)}
+                                style={{
+                                    ...styles.accordionHeader,
+                                    ...(isAccordionChildrenHovered ? styles.accordionHeaderChildrenHover : {}),
+                                    ...(isAccordionChildrenActive ? styles.accordionHeaderChildrenActive : {})
+                                }}>
+                            <p>Children {isTechnicalLagChildrenOpen ? '-' : '+'}</p>
+                        </button>
+                        {isTechnicalLagChildrenOpen && (
+                            <div style={styles.accordionContent}>
+                                <p style={styles.paragraph}><strong style={styles.label}>Lag in Days:</strong></p>
+                                <ul style={styles.list}>
+                                    <li><strong
+                                        style={styles.label}>Avg:</strong> {formatNumber(childrenData.libDays.average)}
+                                    </li>
+                                    <li><strong style={styles.label}>Std
+                                        Dev:</strong> {formatNumber(childrenData.libDays.stdDev)}</li>
+                                </ul>
+                                <div>
+                                    <p style={styles.paragraph}><strong style={styles.label}>Missed Releases:</strong>
+                                    </p>
+                                    <ul style={styles.list}>
+                                        <li><strong
+                                            style={styles.label}>Avg:</strong> {formatNumber(childrenData.missedReleases.average)}
+                                        </li>
+                                        <li><strong style={styles.label}>Std
+                                            Dev:</strong> {formatNumber(childrenData.missedReleases.stdDev)}</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <p style={styles.paragraph}><strong style={styles.label}>Distance:</strong></p>
+                                    <ul style={styles.list}>
+                                        <li><strong style={styles.label}>First
+                                            Avg:</strong> {formatNumber(childrenData.distanceFirst.average)}</li>
+                                        <li><strong style={styles.label}>Second
+                                            Avg:</strong> {formatNumber(childrenData.distanceSecond.average)}</li>
+                                        <li><strong style={styles.label}>Third
+                                            Avg:</strong> {formatNumber(childrenData.distanceThird.average)}</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <p style={styles.paragraph}><strong style={styles.label}>Release Frequency:</strong>
+                                    </p>
+                                    <ul style={styles.list}>
+                                        <li><strong
+                                            style={styles.label}>Avg:</strong> {formatNumber(childrenData.releaseFrequency.average)}
+                                        </li>
+                                        <li><strong style={styles.label}>Std
+                                            Dev:</strong> {formatNumber(childrenData.releaseFrequency.stdDev)}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
-
-            {isStatisticsOpen && (
-                <div style={styles.accordionContent}>
-                    <div style={styles.select}>
-                        <strong style={styles.label}>Version Type:&nbsp;
-                            <select value={versionType} onChange={handleVersionTypeChange}>
-                                <option value={"Minor"}>Minor</option>
-                                <option value={"Major"}>Major</option>
-                                <option value={"Patch"}>Patch</option>
-                            </select>
-                        </strong>
-                    </div>
-
-                    <div onClick={() => setIsTechnicalLagNodeOpen(!isTechnicalLagNodeOpen)}
-                         onMouseEnter={() => setIsAccordionHovered(true)}
-                         onMouseLeave={() => setIsAccordionHovered(false)}
-                         style={{
-                             ...styles.accordionHeader,
-                             ...(isAccordionHovered ? styles.accordionHeaderHover : {}),
-                         }}>
-                        <p>Technical Lag Current Node {isTechnicalLagNodeOpen ? '-' : '+'}</p>
-                    </div>
-                    {isTechnicalLagNodeOpen && (
-                        <div style={styles.accordionContent}>
-                            <p style={styles.paragraph}><strong style={styles.label}>Lag in Days:</strong> {getLagData(versionType).libDays}</p>
-                            <p style={styles.paragraph}><strong style={styles.label}>Newest Version:</strong> {getLagData(versionType).version}</p>
-                            <p style={styles.paragraph}><strong style={styles.label}>Missed Releases:</strong> {getLagData(versionType).numberOfMissedReleases}</p>
-                            <div>
-                                <p style={styles.paragraph}><strong style={styles.label}>Distance:</strong></p>
-                                <ul style={styles.list}>
-                                    <li><strong style={styles.label}>First: </strong>{getLagData(versionType).distance.first}</li>
-                                    <li><strong style={styles.label}>Second: </strong>{getLagData(versionType).distance.second}</li>
-                                    <li><strong style={styles.label}>Third: </strong>{getLagData(versionType).distance.third}</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <p style={styles.paragraph}><strong style={styles.label}>Release Frequency:</strong></p>
-                                <ul style={styles.list}>
-                                    <li><strong style={styles.label}>Per Day: </strong>{getLagData(versionType).releaseFrequency.releasesPerDay}</li>
-                                    <li><strong style={styles.label}>Per Week: </strong>{getLagData(versionType).releaseFrequency.releasesPerWeek}</li>
-                                    <li><strong style={styles.label}>Per Month: </strong>{getLagData(versionType).releaseFrequency.releasesPerMonth}</li>
-                                </ul>
-                            </div>
-                        </div>
-                    )}
-
-                    <div onClick={() => setIsTechnicalLagChildrenOpen(!isTechnicalLagChildrenOpen)}
-                         onMouseEnter={() => setIsAccordionHovered(true)}
-                         onMouseLeave={() => setIsAccordionHovered(false)}
-                         style={{
-                             ...styles.accordionHeader,
-                             ...(isAccordionHovered ? styles.accordionHeaderHover : {}),
-                         }}>
-                        <p>Technical Lag Children {isTechnicalLagChildrenOpen ? '-' : '+'}</p>
-                    </div>
-                    {isTechnicalLagChildrenOpen && (
-                        <div style={styles.accordionContent}>
-                            <p style={styles.paragraph}><strong style={styles.label}>Lag in Days:</strong></p>
-                            <ul style={styles.list}>
-                                <li><strong style={styles.label}>Avg: </strong>{getChildrenData(versionType).libDays.average}</li>
-                                <li><strong style={styles.label}>Std Dev: </strong>{getChildrenData(versionType).libDays.stdDev}</li>
-                            </ul>
-                            <div>
-                                <p style={styles.paragraph}><strong style={styles.label}>Missed Releases:</strong></p>
-                                <ul style={styles.list}>
-                                    <li><strong style={styles.label}>Avg: </strong>{getChildrenData(versionType).missedReleases.average}</li>
-                                    <li><strong style={styles.label}>Std Dev: </strong>{getChildrenData(versionType).missedReleases.stdDev}</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <p style={styles.paragraph}><strong style={styles.label}>Distance:</strong></p>
-                                <ul style={styles.list}>
-                                    <li><strong style={styles.label}>First Avg: </strong>{getChildrenData(versionType).distanceFirst.average}</li>
-                                    <li><strong style={styles.label}>Second Avg: </strong>{getChildrenData(versionType).distanceSecond.average}</li>
-                                    <li><strong style={styles.label}>Third Avg: </strong>{getChildrenData(versionType).distanceThird.average}</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <p style={styles.paragraph}><strong style={styles.label}>Release Frequency:</strong></p>
-                                <ul style={styles.list}>
-                                    <li><strong style={styles.label}>Avg: </strong>{getChildrenData(versionType).releaseFrequency.average}</li>
-                                    <li><strong style={styles.label}>Std Dev: </strong>{getChildrenData(versionType).releaseFrequency.stdDev}</li>
-                                </ul>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            )}
-        </div>
-    );
+        );
+    };
 
 
     return (
         <div style={styles.sidebar}>
+
+
             <div style={styles.headerContainer}>
-                <button onClick={onClose} style={styles.closeButton}>X</button>
+                <button
+                    onClick={onClose}
+                    style={styles.closeButton}
+                >
+                    <span style={{...styles.closeButtonBeforeAfter, ...styles.closeButtonBefore}}/>
+                    <span style={{...styles.closeButtonBeforeAfter, ...styles.closeButtonAfter}}/>
+                </button>
                 <p style={styles.header}>Node Information</p>
             </div>
+
+
             <hr style={styles.horizontalLine}/>
             {fullName && (
                 <>

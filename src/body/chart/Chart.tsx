@@ -124,9 +124,7 @@ const Chart: React.FC = () => {
     const transformJSONDataToTreemap = (data: JSONData): any => {
         return {
             name: data.name,
-/*
             value: 1, // Placeholder value, adjust according to your data structure
-*/
             version: data.version,
             releaseDate: data.releaseDate,
             ecosystem: data.ecosystem,
