@@ -58,7 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             technicalLag: {
                 libDays: 0,
                 distance: {first: 0, second: 0, third: 0},
-                version: '',
+                version: 'N/A ',
                 releaseFrequency: {releasesPerDay: 0, releasesPerWeek: 0, releasesPerMonth: 0},
                 numberOfMissedReleases: 0
             },

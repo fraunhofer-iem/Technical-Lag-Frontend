@@ -3,12 +3,11 @@ import {useEffect, useRef, useState} from "react";
 import {FileDrop} from "../filehandling/DragNDrop.tsx";
 import "../body.css";
 import {JSONData} from "../utils/Types.tsx";
-import UpdateButton from "../buttons/UpdateButton.tsx";
-import RevertButton from "../buttons/RevertButton.tsx";
 import BackButton from "../buttons/BackButton.tsx";
 import {handleDrop} from "../../json/JSONUtil.tsx";
 import Sidebar from "../utils/Sidebar.tsx";
 import * as echarts from 'echarts';
+import FilterButton from "../buttons/FilterButton.tsx";
 
 
 const Chart: React.FC = () => {
@@ -35,6 +34,10 @@ const Chart: React.FC = () => {
         setJsonData(null);
         sessionStorage.removeItem("jsonData");
         sessionStorage.removeItem("isFileDropped");
+    };
+
+    const handleSearchButton = () => {
+
     };
 
 
@@ -176,8 +179,7 @@ const Chart: React.FC = () => {
         <main className="main-container">
             <div className="chart-button-row">
                 <BackButton text="New File" action={handleBackButton}/>
-                <UpdateButton text="Calculate Updates" action={() => alert("Button clicked!")}/>
-                <RevertButton text="Revert Updates" action={() => alert("Button clicked!")}/>
+                <FilterButton text="Filter" action={handleSearchButton}/>
             </div>
             {!isFileDropped && (
                 <div className="drag-n-drop-container">

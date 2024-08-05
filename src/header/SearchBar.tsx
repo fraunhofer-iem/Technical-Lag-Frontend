@@ -9,6 +9,12 @@ type SearchBarState = {
     query: string;
 };
 
+/*const handleSearch = (query: string) => {
+    console.log(`Searching for: ${query}`);
+};*/
+
+/*<SearchBar onSearch={handleSearch}/>*/
+
 class SearchBar extends Component<SearchBarProps, SearchBarState> {
     constructor(props: SearchBarProps) {
         super(props);

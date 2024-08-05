@@ -1,12 +1,9 @@
 import * as React from "react";
 import HeaderMenuTab from "./HeaderMenuTabProps.tsx";
-import SearchBar from "./SearchBar.tsx";
 import Chart from "../body/chart/Chart.tsx";
+import ModifiableChart from "../body/chart/ModifiableChart.tsx";
 import "./header.css";
 
-const handleSearch = (query: string) => {
-    console.log(`Searching for: ${query}`);
-};
 
 const tabs = [
     {
@@ -15,9 +12,9 @@ const tabs = [
         content: <Chart/>,
     },
     {
-        key: 'search',
-        label: 'Search',
-        content: <SearchBar onSearch={handleSearch}/>,
+        key: 'modifiablechart',
+        label: 'Modify Chart',
+        content: <ModifiableChart/>,
     },
 ];
 
