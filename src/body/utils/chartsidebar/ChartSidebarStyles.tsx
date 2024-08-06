@@ -36,19 +36,19 @@ const styles = {
         textIndent: '100%',
         cursor: 'pointer',
         outline: 'solid 0 transparent',
-        boxShadow: '0 0 0 2px rgba(255, 255, 255, 0.5)', // Light white shadow for focus
+        boxShadow: '0 0 0 2px rgba(255, 255, 255, 0.5)',
         transition: 'background 0.3s ease',
         '&:hover': {
-            background: 'rgba(255, 255, 255, 0.2)', // Light background on hover
+            background: 'rgba(255, 255, 255, 0.2)',
         },
     },
     closeButtonBeforeAfter: {
         position: 'absolute' as const,
         top: '20%',
         left: 'calc(50% - .0625em)',
-        width: '.1em', // Smaller width
-        height: '60%', // Smaller height
-        borderRadius: '.1em', // Smaller radius
+        width: '.1em',
+        height: '60%',
+        borderRadius: '.1em',
         background: 'currentcolor',
         content: "''",
     },

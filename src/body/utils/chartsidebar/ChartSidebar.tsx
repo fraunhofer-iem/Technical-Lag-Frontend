@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './SidebarStyles';
-import {Stats} from "./Types.tsx";
+import styles from './ChartSidebarStyles.tsx';
+import {Stats} from "../Types.tsx";
 
 interface SidebarProps {
     fullName: string;
@@ -13,7 +13,7 @@ interface SidebarProps {
     stats?: Stats[];
 }
 
-const Sidebar: React.FC<SidebarProps> = ({
+const ChartSidebar: React.FC<SidebarProps> = ({
                                              fullName,
                                              versionNumber,
                                              releaseDate,
@@ -307,4 +307,4 @@ const Sidebar: React.FC<SidebarProps> = ({
     );
 };
 
-export default Sidebar;
+export default ChartSidebar;
