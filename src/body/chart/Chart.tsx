@@ -9,8 +9,9 @@ import ChartSidebar from "../utils/chartsidebar/ChartSidebar.tsx";
 import FilterButton from "../buttons/FilterButton.tsx";
 import FilterSidebar from "../utils/filtersidebar/FilterSidebar.tsx";
 import {initChart} from "./ChartTreeMap.tsx";
-import {useChartSidebar} from "./ChartSidebarUtils.tsx";
-import {useFilterSidebar} from "./FilterSidebarUtils.tsx";
+import {useChartSidebar} from "./sidebars/ChartSidebarUtils.tsx";
+import {useFilterSidebar} from "./sidebars/FilterSidebarUtils.tsx";
+import * as echarts from 'echarts';
 
 
 const Chart: React.FC = () => {
@@ -18,7 +19,7 @@ const Chart: React.FC = () => {
     const [isFileDropped, setIsFileDropped] = useState<boolean>(false);
 
     const chartRef = useRef<HTMLDivElement>(null);
-    const chartInstanceRef = useRef<any>(null);
+    const chartInstanceRef = useRef<echarts.ECharts | null>(null);
 
     React.useEffect(() => {
         const storedJsonData = sessionStorage.getItem("jsonData");
@@ -58,7 +59,29 @@ const Chart: React.FC = () => {
         if (jsonData && chartRef.current) {
             console.log("jsonData is set:", jsonData);
 
-            chartInstanceRef.current = initChart(chartRef.current, jsonData, setChartSidebarData, setIsChartSidebarVisible);
+            chartInstanceRef.current = initChart(
+                chartRef.current,
+                jsonData,
+                setChartSidebarData,
+                setIsChartSidebarVisible
+            );
+
+            const handleResize = () => {
+                if (chartInstanceRef.current) {
+                    chartInstanceRef.current.resize();
+                }
+            };
+
+            window.addEventListener('resize', handleResize);
+
+            return () => {
+                window.removeEventListener('resize', handleResize);
+
+                if (chartInstanceRef.current) {
+                    chartInstanceRef.current.dispose();
+                    chartInstanceRef.current = null;
+                }
+            };
         }
     }, [jsonData]);
 
@@ -92,20 +115,19 @@ const Chart: React.FC = () => {
                     </div>
                     {isChartSidebarVisible && (
                         <ChartSidebar
-                            fullName={chartSidebarData.name}
-                            versionNumber={chartSidebarData.version}
-                            releaseDate={chartSidebarData.releaseDate}
-                            ecosystem={chartSidebarData.name === jsonData?.name ? chartSidebarData.ecosystem : undefined}
-                            repoURL={chartSidebarData.name === jsonData?.name ? chartSidebarData.repoURL : undefined}
-                            revision={chartSidebarData.name === jsonData?.name ? chartSidebarData.revision : undefined}
-                            stats={chartSidebarData.stats}
+                            fullName={chartSidebarData?.name || ""}
+                            versionNumber={chartSidebarData?.version || ""}
+                            releaseDate={chartSidebarData?.releaseDate || ""}
+                            ecosystem={chartSidebarData?.name === jsonData?.name ? chartSidebarData?.ecosystem : undefined}
+                            repoURL={chartSidebarData?.name === jsonData?.name ? chartSidebarData?.repoURL : undefined}
+                            revision={chartSidebarData?.name === jsonData?.name ? chartSidebarData?.revision : undefined}
+                            stats={chartSidebarData?.stats}
                             onClose={handleCloseChartSidebar}
                         />)}
                     {isFilterSidebarVisible && (
                         <FilterSidebar
                             onClose={handleCloseFilterSidebar}
                             onSearch={handleSearch}
-                            /*                            onFilterChange={handleFilterChange}*/
                             searchResults={searchResults}
                             onResultClick={(node) => zoomToNode(node)}
                         />)}

@@ -1,9 +1,19 @@
-import { useState } from "react";
-import { JSONData } from "../utils/Types";
+import React, { useState } from "react";
+import { JSONData } from "../../utils/Types.tsx";
+import echarts from "echarts";
 
-export const useFilterSidebar = (jsonData: JSONData | null, chartInstanceRef: any) => {
+interface SearchResult extends JSONData {
+    path: string[];
+}
+
+interface Node {
+    name: string;
+    path: string[];
+}
+
+export const useFilterSidebar = (jsonData: JSONData | null, chartInstanceRef: React.RefObject<echarts.ECharts | null>) => {
     const [isFilterSidebarVisible, setIsFilterSidebarVisible] = useState(false);
-    const [searchResults, setSearchResults] = useState<any[]>([]);
+    const [searchResults, setSearchResults] = useState<SearchResult []>([]);
 
     const handleFilterButton = () => {
         setIsFilterSidebarVisible(true);
@@ -22,7 +32,7 @@ export const useFilterSidebar = (jsonData: JSONData | null, chartInstanceRef: an
         }
     };
 
-    const zoomToNode = (node: any) => {
+    const zoomToNode = (node: Node) => {
         if (chartInstanceRef.current && node) {
             console.log("Zooming to node:", node);
             chartInstanceRef.current.dispatchAction({
@@ -43,8 +53,8 @@ export const useFilterSidebar = (jsonData: JSONData | null, chartInstanceRef: an
         setSearchResults([]);
     };
 
-    const searchNodesByName = (data: any, name: string, path: string[] = []): any[] => {
-        let results: any[] = [];
+    const searchNodesByName = (data: any, name: string, path: string[] = []): SearchResult[] => {
+        let results: SearchResult[] = [];
         const currentPath = [...path, data.name];
 
         if (data.name.toLowerCase().includes(name.toLowerCase())) {

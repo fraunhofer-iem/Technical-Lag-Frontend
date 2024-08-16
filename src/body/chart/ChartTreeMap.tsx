@@ -1,7 +1,27 @@
 import * as echarts from 'echarts';
 import {JSONData} from "../utils/Types.tsx";
+import * as React from "react";
+import { ChartSidebarData } from "./sidebars/ChartSidebarUtils.tsx";
+import type { TreemapSeriesOption } from 'echarts/charts';
 
-export const initChart = (chartRef: HTMLDivElement, jsonData: JSONData, setChartSidebarData: any, setIsChartSidebarVisible: any) => {
+interface TreemapNode {
+    name: string;
+    value: number;
+    version?: string;
+    releaseDate?: string;
+    ecosystem?: string;
+    repoURL?: string;
+    revision?: string;
+    stats?: object;
+    children?: TreemapNode[];
+}
+
+export const initChart = (
+    chartRef: HTMLDivElement,
+    jsonData: JSONData,
+    setChartSidebarData: React.Dispatch<React.SetStateAction<ChartSidebarData  | null>>,
+    setIsChartSidebarVisible: React.Dispatch<React.SetStateAction<boolean>>
+): echarts.ECharts | null => {
     try {
         const chartInstance = echarts.init(chartRef);
 
@@ -55,23 +75,16 @@ export const initChart = (chartRef: HTMLDivElement, jsonData: JSONData, setChart
             }
         });
 
-        const handleResize = () => {
-            chartInstance.resize();
-        };
+        return chartInstance;
 
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-            chartInstance.dispose();
-        };
     } catch (error) {
         console.error("Error initializing the chart:", error);
+        return null;
     }
 };
 
 // Helper function to transform JSONData to ECharts treemap data format
-const transformJSONDataToTreemap = (data: JSONData): any => {
+const transformJSONDataToTreemap = (data: JSONData): TreemapNode  => {
     return {
         name: data.name,
         value: 1, // Placeholder value, adjust according to your data structure
@@ -81,12 +94,12 @@ const transformJSONDataToTreemap = (data: JSONData): any => {
         repoURL: data.repoURL,
         revision: data.revision,
         stats: data.stats,
-        children: data.children?.map(child => transformJSONDataToTreemap(child))
+        children: data.children?.map(child => transformJSONDataToTreemap(child)) // Recursively map children
     };
 };
 
 // Function to generate levels option for treemap
-const getLevelOption = () => {
+const getLevelOption = (): TreemapSeriesOption['levels'] => {
     return [
         {
             itemStyle: {
