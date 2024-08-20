@@ -20,7 +20,8 @@ const HeaderMenuTab: React.FC<HeaderMenuTabProps> = ({tabs}) => {
                     <button key={tab.key} className={pageKey === tab.key ? 'active' : ''}
                             onClick={() => handleTabClick(tab.key)}>
             <span className={`icon-text ${tab.key}`}>
-              {tab.key === 'home' && <FontAwesomeIcon icon={faChartBar}/>}
+              {tab.key === 'normdep' && <FontAwesomeIcon icon={faChartBar}/>}
+                {tab.key === 'devdep' && <FontAwesomeIcon icon={faChartBar}/>}
                 {tab.key === 'modifiablechart' && <FontAwesomeIcon icon={faWandMagicSparkles}/>}
                 {tab.label}
             </span>

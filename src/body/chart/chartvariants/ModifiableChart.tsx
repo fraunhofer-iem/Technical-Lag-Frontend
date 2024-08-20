@@ -1,9 +1,9 @@
-import UpdateButton from "../buttons/UpdateButton.tsx";
-import RevertButton from "../buttons/RevertButton.tsx";
+import UpdateButton from "../../buttons/UpdateButton.tsx";
+import RevertButton from "../../buttons/RevertButton.tsx";
 import * as React from "react";
 
 const ModifiableChart: React.FC = () => {
-    //Todo
+    //Todo Choose which chart version so normdep or devdep and then modify
 
 
     return (

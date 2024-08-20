@@ -1,15 +1,20 @@
 import * as React from "react";
 import HeaderMenuTab from "./HeaderMenuTabProps.tsx";
-import Chart from "../body/chart/Chart.tsx";
-import ModifiableChart from "../body/chart/ModifiableChart.tsx";
+import DependenciesChart from "../body/chart/chartvariants/DependenciesChart.tsx";
+import DevDependenciesChart from "../body/chart/chartvariants/DevDependenciesChart.tsx";
+import ModifiableChart from "../body/chart/chartvariants/ModifiableChart.tsx";
 import "./header.css";
-
 
 const tabs = [
     {
-        key: 'home',
-        label: 'Home',
-        content: <Chart/>,
+        key: 'normdep',
+        label: 'Normal Dependencies',
+        content: <DependenciesChart/>,
+    },
+    {
+        key: 'devdep',
+        label: 'Dev Dependencies',
+        content: <DevDependenciesChart/>,
     },
     {
         key: 'modifiablechart',

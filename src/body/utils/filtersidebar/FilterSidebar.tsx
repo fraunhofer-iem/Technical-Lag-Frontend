@@ -43,7 +43,7 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
             <hr style={styles.horizontalLine}/>
             <div style={styles.content}>
                 <div style={styles.field}>
-                    <label style={styles.label}>Search by Node Name<input type="text" value={searchTerm}
+                    <label style={styles.label}>Search by Node Name<input type="text" value={searchTerm} placeholder="Search..."
                                                                           onChange={(e) => setSearchTerm(e.target.value)}
                                                                           style={styles.input}/></label>
                     <button onClick={handleSearch} style={styles.searchButton}>Search</button>
@@ -52,7 +52,7 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
                     <ul style={styles.resultsList}>
                         {searchResults.map((result, index) => (
                             <li key={index} style={styles.resultItem} onClick={() => onResultClick(result)}>
-                                {result.name}
+                                {["..", ...result.path.slice(1)].join(" / ")}
                             </li>
                         ))}
                     </ul>

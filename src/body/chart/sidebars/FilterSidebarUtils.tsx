@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { JSONData } from "../../utils/Types.tsx";
+import { JSONodeData } from "../../utils/Types.tsx";
 import echarts from "echarts";
 
-interface SearchResult extends JSONData {
+interface SearchResult extends JSONodeData {
     path: string[];
 }
 
@@ -11,7 +11,7 @@ interface Node {
     path: string[];
 }
 
-export const useFilterSidebar = (jsonData: JSONData | null, chartInstanceRef: React.RefObject<echarts.ECharts | null>) => {
+export const useFilterSidebar = (jsonData: JSONodeData | null, chartInstanceRef: React.RefObject<echarts.ECharts | null>) => {
     const [isFilterSidebarVisible, setIsFilterSidebarVisible] = useState(false);
     const [searchResults, setSearchResults] = useState<SearchResult []>([]);
 

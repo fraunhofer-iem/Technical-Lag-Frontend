@@ -1,8 +1,8 @@
 import * as React from "react";
-import {JSONData, Stats} from "../body/utils/Types.tsx";
+import {JSONodeData, Stats, Scopes} from "../body/utils/Types.tsx";
 
 
-export const handleDrop = (files: File[], setJsonData: React.Dispatch<React.SetStateAction<JSONData | null>>, setIsFileDropped: React.Dispatch<React.SetStateAction<boolean>>) => {
+export const handleDrop = (files: File[], setJsonData: React.Dispatch<React.SetStateAction<JSONodeData | null>>, setIsFileDropped: React.Dispatch<React.SetStateAction<boolean>>) => {
     if (files.length > 0) {
         const file = files[0];
         const reader = new FileReader();
@@ -34,7 +34,7 @@ export const handleDrop = (files: File[], setJsonData: React.Dispatch<React.SetS
     }
 };
 
-const transformData = (json: any): JSONData => {
+const transformData = (json: any): JSONodeData => {
     const projectDto = json.projectDtos[0];
 
     // Extract repository information
@@ -45,16 +45,16 @@ const transformData = (json: any): JSONData => {
     const {ecosystem, version, artifactId} = projectDto;
 
     // Create root node
-    const root: JSONData = {
+    const root: JSONodeData = {
         name: artifactId,
         version: version,
         releaseDate: "unknown",
-        children: [],
         ecosystem: ecosystem,
         repoURL: repoURL,
         revision: revision,
         root: true,
-        stats: []
+        stats: [],
+        scopes: []
     };
 
     // Create artifact map
@@ -64,10 +64,16 @@ const transformData = (json: any): JSONData => {
     });
 
     // Create node map
-    const nodeMap = new Map<number, JSONData>();
+    const nodeMap = new Map<number, JSONodeData>();
 
     // Process nodes
     projectDto.graph.forEach((graphItem: any) => {
+        const scope: Scopes = {
+            scope: graphItem.scope,
+            data: []
+        };
+
+        // devDependency und normal Dependency nodes aufteilen in verschiedene Maps
         graphItem.graph.nodes.forEach((node: any) => {
             const artifact = artifactMap.get(node.artifactIdx);
             if (!artifact) {
@@ -76,34 +82,71 @@ const transformData = (json: any): JSONData => {
             }
             const usedVersionIndex = artifact.versions.findIndex((versionItem: any) => versionItem.versionNumber === node.usedVersion);
 
-            const nodeData: JSONData = {
+            const nodeData: JSONodeData = {
                 repoURL: repoURL,
                 revision: revision,
                 root: false,
                 name: artifact.artifactId,
                 version: usedVersionIndex !== -1 ? artifact.versions[usedVersionIndex].versionNumber : "unknown",
                 releaseDate: usedVersionIndex !== -1 ? artifact.versions[usedVersionIndex].releaseDate : "unknown",
-                children: [],
+                scopes: [scope], // Initialize with current scope
                 stats: node.stats ? simplifyStats(node.stats) : []
             };
 
             nodeMap.set(node.artifactIdx, nodeData);
         });
+        scope.data = Array.from(nodeMap.values()).filter(node => node.scopes[0].scope === scope.scope);
+        root.scopes.push(scope);
     });
 
-    root.stats = [];
-
-    // Populate children based on edges
+    // Process edges to establish relationships
     projectDto.graph.forEach((graphItem: any) => {
+        const scope = graphItem.scope as Scopes;
+
         graphItem.graph.edges.forEach((edge: any) => {
             const fromNodeEntry = nodeMap.get(edge.from);
             const toNodeEntry = nodeMap.get(edge.to);
 
             if (fromNodeEntry && toNodeEntry) {
-                if (!fromNodeEntry.children) {
-                    fromNodeEntry.children = [];
+                // Add to scopes if not already present
+                if (!fromNodeEntry.scopes.some(s => s.scope === scope.scope)) {
+                    fromNodeEntry.scopes.push({ scope: scope.scope, data: [] });
                 }
-                fromNodeEntry.children.push(toNodeEntry);
+                if (!toNodeEntry.scopes.some(s => s.scope === scope.scope)) {
+                    toNodeEntry.scopes.push({ scope: scope.scope, data: [] });
+                }
+
+                // Update the `scopes` of fromNodeEntry to include toNodeEntry
+                fromNodeEntry.scopes.find(s => s.scope === scope.scope)?.data.push(toNodeEntry);
+                nodeMap.set(edge.from, fromNodeEntry);
+            } else {
+                // Log if either fromNode or toNode is not found
+                if (!fromNodeEntry) {
+                    throw new Error(`From node with index ${edge.from} not found in nodeMap.`);
+                }
+                if (!toNodeEntry) {
+                    throw new Error(`To node with index ${edge.to} not found in nodeMap.`);
+                }
+            }
+        });
+    });
+
+    console.log("Root Node:", root);
+    return root;
+
+    /*// Populate children based on edges
+    projectDto.graph.forEach((graphItem: any) => {
+        const scope = graphItem.scope as Scopes;
+
+        graphItem.graph.edges.forEach((edge: any) => {
+            const fromNodeEntry = nodeMap.get(edge.from);
+            const toNodeEntry = nodeMap.get(edge.to);
+
+            if (fromNodeEntry && toNodeEntry) {
+                if (!fromNodeEntry.scopes.includes(scope)) {
+                    fromNodeEntry.scopes.push(scope);
+                }
+                fromNodeEntry.children?.push(toNodeEntry);
                 nodeMap.set(edge.from, fromNodeEntry);
             } else {
                 // Log if either fromNode or toNode is not found
@@ -120,7 +163,9 @@ const transformData = (json: any): JSONData => {
     // Assign children to root
     root.children = Array.from(nodeMap.values());
 
-    return root;
+    console.log("Root Node:", root);
+    console.log("Node Map:", nodeMap);
+    return root;*/
 };
 
 const simplifyStats = (statsArray: any[]): Stats[] => {
