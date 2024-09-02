@@ -3,13 +3,12 @@ import styled from "styled-components";
 export const Box = styled.div<{ $isfooteropen: boolean }>`
     background: #212f36;
     bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100vw;
     position: fixed;
     height: ${(props) => (props.$isfooteropen? '2.5em' : '0')};
     overflow: hidden;
     transition: height 0.3s ease-out;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 `;
 
 export const FooterContainer = styled.div<{ $isfooteropen: boolean }>`
