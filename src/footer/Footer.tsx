@@ -1,5 +1,6 @@
 import {Box, Column, Copyright, FooterContainer, FooterLink, Row,} from "./FooterStyles";
 import React from "react";
+import {Link} from "react-router-dom";
 
 interface FooterProps {
     isFooterOpen: boolean;
@@ -14,12 +15,12 @@ const Footer: React.FC<FooterProps> = ({isFooterOpen}) => {
                             <Copyright>&copy; Fraunhofer IEM. All rights reserved.</Copyright>
                         </Column>
                         <Column>
-                            <FooterLink href="#">
-                                Security Policy
+                            <FooterLink  as={Link} to="/privacy-policy">
+                                Privacy Policy
                             </FooterLink>
                         </Column>
                         <Column>
-                            <FooterLink href="#">
+                            <FooterLink as={Link} to="/terms-of-service">
                                 Terms of Service
                             </FooterLink>
                         </Column>

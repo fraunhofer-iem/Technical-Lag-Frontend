@@ -15,7 +15,7 @@ export const FooterContainer = styled.div<{ $isfooteropen: boolean }>`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 50vw;
+    width: 60vw;
     margin: 0 auto;
     background: #63aa96;
     padding: 1px;
@@ -40,10 +40,10 @@ export const Row = styled.div`
 `;
 
 export const FooterLink = styled.a`
-    color: #000000;
+    color: #ffffff;
     margin: auto;
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 13px;
+    font-weight: 400;
 
     &:hover {
         color: #ffffff;
@@ -53,6 +53,6 @@ export const FooterLink = styled.a`
 
 export const Copyright = styled.p`
     font-size: 12px;
-    color: #000000;
-    font-weight: 500;
+    color: #ffffff;
+    font-weight: 400;
 `
