@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 export const Box = styled.div<{ $isfooteropen: boolean }>`
-    background: var(--footer-background);
+    background: var(--footer-bg);
     color: var(--footer-text-color);
     bottom: 0;
     position: fixed;
-    height: ${(props) => (props.$isfooteropen? '2.5em' : '0')};
+    height: ${(props) => (props.$isfooteropen ? '2.5em' : '0')};
     overflow: hidden;
     transition: height 0.3s ease-out;
     border-top-left-radius: 8px;
@@ -18,14 +18,14 @@ export const FooterContainer = styled.div<{ $isfooteropen: boolean }>`
     justify-content: center;
     width: 60vw;
     margin: 0 auto;
-    background: var(--footer-background);
+    background: var(--footer-bg);
     color: var(--footer-text-color);
     padding: 1px;
-    height: ${(props) => (props.$isfooteropen? '2.5em' : '0')};
+    height: ${(props) => (props.$isfooteropen ? '2.5em' : '0')};
     z-index: 1000;
     overflow: hidden;
     transition: height 0.3s ease-out;
-    border-top-left-radius: 8px;    
+    border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 `;
 

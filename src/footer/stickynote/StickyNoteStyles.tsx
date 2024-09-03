@@ -12,7 +12,7 @@ export const StickyNoteContainer = styled.div<{ $isfooteropen: boolean }>`
 `;
 
 export const StickyNote = styled.div`
-    background: var(--footer-background);
+    background: var(--footer-bg);
     font-size: 14px;
     color: var(--footer-text-color);
     border-radius: 5px;

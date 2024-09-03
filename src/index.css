@@ -1,23 +1,25 @@
 :root {
     --color-scheme: light dark;
-    --text-color: rgba(255, 255, 255, 0.87);
+    --txt-color: rgba(255, 255, 255, 0.87);
 
-    --button-background-light: #72a695;
-    --button-background-dark: #333333;
-    --button-text-color-light: #ffffff;
-    --button-text-color-dark: #72a695;
-    --button-hover-light: #213547;
-    --button-hover-dark: #ffffff;
+    --btn-bg-light: #72a695;
+    --btn-bg-dark: #333333;
+    --btn-txt-color-light: #ffffff;
+    --btn-txt-color-dark: #72a695;
+    --btn-hover-light: #213547;
+    --btn-hover-dark: #ffffff;
+    --btn-bg-hover-light: #9eddcc;
+    --btn-bg-hover-dark: #868686;
 
-    --background-color: #212f36;
-    --background-image: url('./assets/images/darkmode/tactile_noise.webp');
+    --bg-color: #212f36;
+    --bg-img: url('./assets/images/darkmode/tactile_noise.webp');
     background-position: center;
     background-size: cover;
 
-    --footer-background-light: #63aa96;
-    --footer-background-dark: #333333;
-    --footer-text-color-light: #ffffff;
-    --footer-text-color-dark: #72a695;
+    --footer-bg-light: #63aa96;
+    --footer-bg-dark: #333333;
+    --footer-txt-color-light: #ffffff;
+    --footer-txt-color-dark: #72a695;
     --footer-link-hover-light: #213547;
     --footer-link-hover-dark: #ffffff;
 
@@ -37,33 +39,35 @@
 
 /* Light Mode Styles */
 body.light-mode {
-    --text-color: #213547;
+    --txt-color: #213547;
 
-    --button-background: var(--button-background-light);
-    --button-text-color: var(--button-text-color-light);
-    --button-text-hover: var(--button-hover-light);
+    --btn-bg: var(--btn-bg-light);
+    --btn-txt-color: var(--btn-txt-color-light);
+    --btn-txt-hover: var(--btn-hover-light);
+    --btn-bg-hover: var(--btn-bg-hover-light);
 
-    --background-color: #ffffff;
-    --background-image: url('./assets/images/lightmode/dot_grid.webp');
+    --bg-color: #ffffff;
+    --bg-img: url('./assets/images/lightmode/dot_grid.webp');
 
-    --footer-background: var(--footer-background-light);
-    --footer-text-color: var(--footer-text-color-light);
+    --footer-bg: var(--footer-bg-light);
+    --footer-text-color: var(--footer-txt-color-light);
     --footer-link-hover: var(--footer-link-hover-light);
 }
 
 /* Dark Mode Styles */
 body.dark-mode {
-    --text-color: #ffffff;
+    --txt-color: #ffffff;
 
-    --button-background: var(--button-background-dark);
-    --button-text-color: var(--button-text-color-dark);
-    --button-text-hover: var(--button-hover-dark);
+    --btn-bg: var(--btn-bg-dark);
+    --btn-txt-color: var(--btn-txt-color-dark);
+    --btn-txt-hover: var(--btn-hover-dark);
+    --btn-bg-hover: var(--btn-bg-hover-dark);
 
-    --background-color: #121212;
-    --background-image: url('./assets/images/darkmode/tactile_noise.webp');
+    --bg-color: #121212;
+    --bg-img: url('./assets/images/darkmode/tactile_noise.webp');
 
-    --footer-background: var(--footer-background-dark);
-    --footer-text-color: var(--footer-text-color-dark);
+    --footer-bg: var(--footer-bg-dark);
+    --footer-text-color: var(--footer-txt-color-dark);
     --footer-link-hover: var(--footer-link-hover-dark);
 }
 
@@ -73,9 +77,9 @@ body, html {
     height: 100%;
     overflow: hidden; /* Prevent body scroll */
 
-    background-color: var(--background-color);
-    color: var(--text-color);
-    background-image: var(--background-image);
+    background-color: var(--bg-color);
+    color: var(--txt-color);
+    background-image: var(--bg-img);
     transition: background-color 0.3s ease, color 0.3s ease, background-image 0.3s ease;
 }
 
@@ -91,10 +95,10 @@ a:hover {
 
 @media (prefers-color-scheme: light) {
     :root {
-        --background-color: #ffffff;
-        --text-color: #213547;
-        --button-background: #72a695;
-        --button-text-color: #ffffff;
+        --bg-color: #ffffff;
+        --txt-color: #213547;
+        --btn-bg: #72a695;
+        --btn-txt-color: #ffffff;
     }
 
     a:hover {

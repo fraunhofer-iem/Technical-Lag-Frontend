@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {DarkModeButtonStyles} from "./DarkModeButtonStyles.tsx";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faMoon, faSun} from "@fortawesome/free-solid-svg-icons";
+import {HelpButtonStyles} from "../help/HelpButtonStyles.tsx";
 
 const DarkModeButton: React.FC = () => {
     const [isDMButtonHovered, setIsDMButtonHovered] = useState<boolean>(false);
@@ -7,8 +10,8 @@ const DarkModeButton: React.FC = () => {
 
     const darkModeButtonStyle = {
         ...DarkModeButtonStyles.darkModeButton,
-        backgroundColor: isDMButtonHovered ? 'var(--button-hover-background)' : 'var(--button-background)',
-        color: isDMButtonHovered ? 'var(--button-hover-text-color)' : 'var(--button-text-color)',
+        backgroundColor: isDMButtonHovered ? 'var(--btn-bg-hover)' : 'var(--btn-bg)',
+        color: isDMButtonHovered ? 'var(--btn-hover-txt-color)' : 'var(--btn-txt-color)',
         fontWeight: isDMButtonHovered ? 'bold' : 'normal',
     };
 
@@ -37,7 +40,8 @@ const DarkModeButton: React.FC = () => {
     return (<button style={darkModeButtonStyle} onClick={toggleDarkMode}
                     onMouseEnter={() => setIsDMButtonHovered(true)}
                     onMouseLeave={() => setIsDMButtonHovered(false)}>
-            Switch to {darkMode ? 'Light' : 'Dark'} Mode
+            {darkMode ? <FontAwesomeIcon icon={faSun} style={HelpButtonStyles.icon}/> :
+                <FontAwesomeIcon icon={faMoon} style={HelpButtonStyles.icon}/>}
         </button>
     );
 }

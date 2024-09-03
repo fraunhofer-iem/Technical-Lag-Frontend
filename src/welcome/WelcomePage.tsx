@@ -15,8 +15,8 @@ const WelcomePage: React.FC = () => {
     // Define button styles based on hover state
     const getStartedButtonStyle = {
         ...WelcomePageStyles.getStartedButton,
-        backgroundColor: isStartButtonHovered ? 'var(--button-hover-background)' : 'var(--button-background)',
-        color: isStartButtonHovered ? 'var(--button-hover-text-color)' : 'var(--button-text-color)',
+        backgroundColor: isStartButtonHovered ? 'var(--btn-bg-hover)' : 'var(--btn-bg)',
+        color: isStartButtonHovered ? 'var(--btn-txt-hover)' : 'var(--btn-txt-color)',
         fontWeight: isStartButtonHovered ? 'bold' : 'normal',
     };
 

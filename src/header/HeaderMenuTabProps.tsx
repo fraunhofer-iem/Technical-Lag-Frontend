@@ -21,7 +21,7 @@ const HeaderMenuTab: React.FC<HeaderMenuTabProps> = ({tabs}) => {
                             onClick={() => handleTabClick(tab.key)}>
             <span className={`icon-text ${tab.key}`}>
               {tab.key === 'normdep' && <FontAwesomeIcon icon={faChartBar}/>}
-                {tab.key === 'devdep' && <FontAwesomeIcon icon={faChartBar}/>}
+{/*                {tab.key === 'devdep' && <FontAwesomeIcon icon={faChartBar}/>}*/}
                 {tab.key === 'modifiablechart' && <FontAwesomeIcon icon={faWandMagicSparkles}/>}
                 {tab.label}
             </span>
