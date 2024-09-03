@@ -1,10 +1,13 @@
 :root {
-    /* Default (Dark Mode) */
     --color-scheme: light dark;
     --text-color: rgba(255, 255, 255, 0.87);
 
-    --button-background: #333333;
-    --button-text-color: #72a695;
+    --button-background-light: #72a695;
+    --button-background-dark: #333333;
+    --button-text-color-light: #ffffff;
+    --button-text-color-dark: #72a695;
+    --button-hover-light: #213547;
+    --button-hover-dark: #ffffff;
 
     --background-color: #212f36;
     --background-image: url('./assets/images/darkmode/tactile_noise.webp');
@@ -36,8 +39,9 @@
 body.light-mode {
     --text-color: #213547;
 
-    --button-background: #72a695;
-    --button-text-color: #ffffff;
+    --button-background: var(--button-background-light);
+    --button-text-color: var(--button-text-color-light);
+    --button-text-hover: var(--button-hover-light);
 
     --background-color: #ffffff;
     --background-image: url('./assets/images/lightmode/dot_grid.webp');
@@ -51,8 +55,9 @@ body.light-mode {
 body.dark-mode {
     --text-color: #ffffff;
 
-    --button-background: #333333;
-    --button-text-color: #72a695;
+    --button-background: var(--button-background-dark);
+    --button-text-color: var(--button-text-color-dark);
+    --button-text-hover: var(--button-hover-dark);
 
     --background-color: #121212;
     --background-image: url('./assets/images/darkmode/tactile_noise.webp');
@@ -82,16 +87,6 @@ a {
 
 a:hover {
     color: #535bf2;
-}
-
-button {
-    background-color: var(--button-background);
-    color: var(--button-text-color);
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 @media (prefers-color-scheme: light) {
