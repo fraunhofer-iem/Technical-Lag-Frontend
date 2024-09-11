@@ -1,14 +1,14 @@
 import * as echarts from 'echarts';
-import {JSONodeData} from "../../utils/Types.tsx";
+import {Graph} from "../../../jsonutils/JSONStructureInterfaces.tsx";
 import * as React from "react";
-import {ChartSidebarData} from "../sidebars/ChartSidebarUtils.tsx";
+import {ChartSidebarData} from "../../utils/sidebarutils/ChartSidebarUtils.tsx";
 import type {TreemapSeriesOption} from 'echarts/charts';
 import {transformJSONDataToTreemap, TreemapGenerator} from './TreemapGenerator';
 
-export class DependenciesTreemap implements TreemapGenerator {
+export class NormalDependenciesTreemap implements TreemapGenerator {
     initChart(
         chartRef: HTMLDivElement,
-        jsonData: JSONodeData,
+        graph: Graph,
         setChartSidebarData: React.Dispatch<React.SetStateAction<ChartSidebarData | null>>,
         setIsChartSidebarVisible: React.Dispatch<React.SetStateAction<boolean>>
     ): echarts.ECharts | null {
@@ -43,7 +43,7 @@ export class DependenciesTreemap implements TreemapGenerator {
                     },
                     colorMappingBy: 'id',
                     levels: this.getLevelOption(),
-                    data: [transformJSONDataToTreemap(jsonData, 'dependencies')]
+                    data: [transformJSONDataToTreemap(graph)]
                 }]
             };
 

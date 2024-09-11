@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './ChartSidebarStyles.tsx';
-import {Stats} from "../Types.tsx";
+import {Stats} from "../../../jsonutils/JSONStructureInterfaces.tsx";
 
 interface SidebarProps {
     fullName: string;

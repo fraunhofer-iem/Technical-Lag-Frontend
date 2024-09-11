@@ -31,16 +31,14 @@ const HelpButton: React.FC = () => {
             <button
                 style={helpButtonStyle}
                 onClick={handleHelpClick}
+                data-tooltip-content="Need Help? Click me!"
+                data-tooltip-id="help-button"
                 onMouseEnter={() => setIsHelpButtonHovered(true)}
                 onMouseLeave={() => setIsHelpButtonHovered(false)}
             >
                 <FontAwesomeIcon icon={faQuestion} style={HelpButtonStyles.icon}/>
             </button>
-            <ReactToolTip
-                id="helpButton"
-                place="top"
-                content="Need Help? Click me!"
-            />
+            <ReactToolTip id="help-button" place="left" variant="info"/>
         </div>
     );
 };

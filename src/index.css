@@ -2,26 +2,71 @@
     --color-scheme: light dark;
     --txt-color: rgba(255, 255, 255, 0.87);
 
+    /*Basic Button Styles*/
     --btn-bg-light: #72a695;
-    --btn-bg-dark: #333333;
-    --btn-txt-color-light: #ffffff;
+    --btn-bg-dark: #333;
+
+    --btn-txt-color-light: #fff;
     --btn-txt-color-dark: #72a695;
-    --btn-hover-light: #213547;
-    --btn-hover-dark: #ffffff;
-    --btn-bg-hover-light: #9eddcc;
+    --btn-txt-hover-light: #213547;
+    --btn-txt-hover-dark: #fff;
+
+    --btn-bg-hover-light: #6cbea8;
     --btn-bg-hover-dark: #868686;
 
+    /*Norm, Dev, Update, Revert and Filter Button Styles*/
+    --graphbtns-bg-light: #34a19d;
+    --graphbtns-bg-dark: #1f81be;
+
+    --graphbtns-txt-color-light: #fff;
+    --graphbtns-txt-color-dark: #000;
+    --graphbtns-txt-hover-light: #000;
+    --graphbtns-txt-hover-dark: #fff;
+
+    --graphbtns-bg-hover-light: #68b9b2;
+    --graphbtns-bg-hover-dark: #25b9e0;
+
+    /*New File Button Styles*/
+    --nfbtn-bg-light: #00346a;
+    --nfbtn-bg-dark: #00346a;
+
+    --nfbtn-txt-color-light: #fff;
+    --nfbtn-txt-color-dark: #fff;
+    --nfbtn-txt-hover-light: #fff;
+    --nfbtn-txt-hover-dark: #fff;
+
+    --nfbtn-bg-hover-light: #005993;
+    --nfbtn-bg-hover-dark: #005993;
+
+    /*Background Styles*/
     --bg-color: #212f36;
     --bg-img: url('./assets/images/darkmode/tactile_noise.webp');
     background-position: center;
     background-size: cover;
 
+    /*Drag n' Drop field Styles*/
+    --drop-bg-hover-light: #9eddcc;
+    --drop-bg-hover-dark: #4e4e4e;
+    --drop-bg-light: #72a695;
+    --drop-bg-dark: #333;
+
+    --drop-txt-color-light: #fff;
+    --drop-txt-color-dark: #72a695;
+    --drop-txt-hover-light: #213547;
+    --drop-txt-hover-dark: #fff;
+
+    --drop-border-hover-light: #000;
+    --drop-border-hover-dark: #fff;
+    --drop-border-light:transparent;
+    --drop-border-dark:transparent;
+
+    /*Footer styles*/
     --footer-bg-light: #63aa96;
-    --footer-bg-dark: #333333;
-    --footer-txt-color-light: #ffffff;
+    --footer-bg-dark: #333;
+    --footer-txt-color-light: #fff;
     --footer-txt-color-dark: #72a695;
     --footer-link-hover-light: #213547;
-    --footer-link-hover-dark: #ffffff;
+    --footer-link-hover-dark: #fff;
 
     /* Font and general styles */
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -43,8 +88,18 @@ body.light-mode {
 
     --btn-bg: var(--btn-bg-light);
     --btn-txt-color: var(--btn-txt-color-light);
-    --btn-txt-hover: var(--btn-hover-light);
+    --btn-txt-hover: var(--btn-txt-hover-light);
     --btn-bg-hover: var(--btn-bg-hover-light);
+
+    --graphbtns-bg: var(--graphbtns-bg-light);
+    --graphbtns-txt-color: var(--graphbtns-txt-color-light);
+    --graphbtns-txt-hover: var(--graphbtns-txt-hover-light);
+    --graphbtns-bg-hover: var(--graphbtns-bg-hover-light);
+
+    --nfbtn-bg: var(--nfbtn-bg-light);
+    --nfbtn-txt-color: var(--nfbtn-txt-color-light);
+    --nfbtn-txt-hover: var(--nfbtn-txt-hover-light);
+    --nfbtn-bg-hover: var(--nfbtn-bg-hover-light);
 
     --bg-color: #ffffff;
     --bg-img: url('./assets/images/lightmode/dot_grid.webp');
@@ -52,6 +107,13 @@ body.light-mode {
     --footer-bg: var(--footer-bg-light);
     --footer-text-color: var(--footer-txt-color-light);
     --footer-link-hover: var(--footer-link-hover-light);
+
+    --drop-bg: var(--drop-bg-light);
+    --drop-bg-hover: var(--drop-bg-hover-light);
+    --drop-border-hover:var(--drop-border-hover-light);
+    --drop-txt-color: var(--drop-txt-color-light);
+    --drop-txt-hover: var(--drop-txt-hover-light);
+    --drop-border: var(--drop-border-light);
 }
 
 /* Dark Mode Styles */
@@ -60,8 +122,18 @@ body.dark-mode {
 
     --btn-bg: var(--btn-bg-dark);
     --btn-txt-color: var(--btn-txt-color-dark);
-    --btn-txt-hover: var(--btn-hover-dark);
+    --btn-txt-hover: var(--btn-txt-hover-dark);
     --btn-bg-hover: var(--btn-bg-hover-dark);
+
+    --graphbtns-bg: var(--graphbtns-bg-dark);
+    --graphbtns-txt-color: var(--graphbtns-txt-color-dark);
+    --graphbtns-txt-hover: var(--graphbtns-txt-hover-dark);
+    --graphbtns-bg-hover: var(--graphbtns-bg-hover-dark);
+
+    --nfbtn-bg: var(--nfbtn-bg-dark);
+    --nfbtn-txt-color: var(--nfbtn-txt-color-dark);
+    --nfbtn-txt-hover: var(--nfbtn-txt-hover-dark);
+    --nfbtn-bg-hover: var(--nfbtn-bg-hover-dark);
 
     --bg-color: #121212;
     --bg-img: url('./assets/images/darkmode/tactile_noise.webp');
@@ -69,6 +141,13 @@ body.dark-mode {
     --footer-bg: var(--footer-bg-dark);
     --footer-text-color: var(--footer-txt-color-dark);
     --footer-link-hover: var(--footer-link-hover-dark);
+
+    --drop-bg: var(--drop-bg-dark);
+    --drop-bg-hover: var(--drop-bg-hover-dark);
+    --drop-border-hover:var(--drop-border-hover-dark);
+    --drop-txt-color: var(--drop-txt-color-dark);
+    --drop-txt-hover: var(--drop-txt-hover-dark);
+    --drop-border: var(--drop-border-dark);
 }
 
 body, html {

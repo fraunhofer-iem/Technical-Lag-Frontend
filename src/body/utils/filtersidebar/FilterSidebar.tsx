@@ -9,7 +9,7 @@ interface SidebarProps {
     onResultClick: (node: any) => void;
 }
 
-const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick, searchResults }) => {
+const FilterSidebar: React.FC<SidebarProps> = ({ onClose, onSearch, onResultClick, searchResults }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [versionNumber, setVersionNumber] = useState("");
     const [releaseDate, setReleaseDate] = useState("");

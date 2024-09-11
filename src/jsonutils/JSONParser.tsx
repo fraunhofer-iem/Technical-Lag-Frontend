@@ -3,7 +3,7 @@ import {v4 as uuidv4} from 'uuid';
 import {Artifact, Edge, Graph, Node, RepositoryInfo, RootNode, Stats} from "./JSONStructureInterfaces.tsx";
 
 
-export const handleDrop = (
+export const parseJSON = (
     files: File[],
     setTransformedJSONData: React.Dispatch<React.SetStateAction<{ normalGraph: Graph, devGraph: Graph } | null>>,
     setIsFileDropped: React.Dispatch<React.SetStateAction<boolean>>) => {
@@ -19,7 +19,7 @@ export const handleDrop = (
                 setTransformedJSONData({normalGraph, devGraph});
                 setIsFileDropped(true); // Hide the FileDrop and show the chart
 
-                // Store both graphs in session storage
+                // Store bo th graphs in session storage
                 sessionStorage.setItem("normalGraph", JSON.stringify(normalGraph));
                 sessionStorage.setItem("devGraph", JSON.stringify(devGraph));
                 sessionStorage.setItem("isFileDropped", "true");
@@ -29,12 +29,10 @@ export const handleDrop = (
                         message: error.message,
                         stack: error.stack,
                         data: event.target?.result,
-                        // Optional: You might want to include more specific details about the process
                     });
                 } else {
                     console.error("An unknown error occurred.", {
                         data: event.target?.result,
-                        // Optional: Include other relevant data here
                     });
                 }
             }

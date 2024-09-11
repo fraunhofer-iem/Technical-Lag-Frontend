@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { JSONodeData } from "../../utils/Types.tsx";
+import {Graph} from "../../../jsonutils/JSONStructureInterfaces.tsx";
 import echarts from "echarts";
 
-interface SearchResult extends JSONodeData {
+interface SearchResult extends Graph {
+    name: string;
     path: string[];
 }
 
@@ -11,17 +12,17 @@ interface Node {
     path: string[];
 }
 
-export const useFilterSidebar = (jsonData: JSONodeData | null, chartInstanceRef: React.RefObject<echarts.ECharts | null>) => {
+export const useFilterSidebar = (graph: Graph  | null, chartInstanceRef: React.RefObject<echarts.ECharts | null>) => {
     const [isFilterSidebarVisible, setIsFilterSidebarVisible] = useState(false);
     const [searchResults, setSearchResults] = useState<SearchResult []>([]);
 
     const handleFilterButton = () => {
-        setIsFilterSidebarVisible(true);
+        setIsFilterSidebarVisible(!isFilterSidebarVisible);
     };
 
     const handleSearch = (searchTerm: string) => {
-        if (!jsonData) return;
-        const searchResult = searchNodesByName(jsonData, searchTerm);
+        if (!graph) return;
+        const searchResult = searchNodesByName(graph, searchTerm);
         if (searchResult) {
             console.log("Search result found:", searchResult);
             searchResult.sort((a, b) => a.name.localeCompare(b.name)); // sort alphabetically
@@ -68,40 +69,6 @@ export const useFilterSidebar = (jsonData: JSONodeData | null, chartInstanceRef:
         }
         return results;
     };
-
-    /*    const filterJsonData = (data: JSONData, filters: any): JSONData | null => {
-           const applyFilters = (node: any): boolean => {
-               let matches = true;
-               if (filters.versionNumber && !node.version.includes(filters.versionNumber)) {
-                   matches = false;
-               }
-               if (filters.releaseDate && node.releaseDate !== filters.releaseDate) {
-                   matches = false;
-               }
-               if (filters.libDays && node.libDays !== filters.libDays) {
-                   matches = false;
-               }
-               if (filters.numberOfMissedReleases && node.numberOfMissedReleases !== filters.numberOfMissedReleases) {
-                   matches = false;
-               }
-               if (filters.releaseFrequency && node.releaseFrequency !== filters.releaseFrequency) {
-                   matches = false;
-               }
-               return matches;
-           };
-
-           const filterNodes = (node: any): any | null => {
-               if (applyFilters(node)) {
-                   return {
-                       ...node,
-                       children: node.children ? node.children.map(filterNodes).filter(Boolean) : []
-                   };
-               }
-               return null;
-           };
-
-           return filterNodes(data);
-       };*/
 
     return {
         isFilterSidebarVisible,

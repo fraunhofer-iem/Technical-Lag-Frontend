@@ -7,6 +7,8 @@ import PrivacyPolicyPage from "./legalnotice/PrivacyPolicyPage.tsx";
 import HelpPage from "./help/HelpPage.tsx";
 import HelpButton from "./help/HelpButton.tsx";
 import DarkModeButton from "./darkmode/DarkModeButton.tsx";
+import NormalDependenciesChart from "./body/chart/chartvariants/NormalDependenciesChart.tsx";
+import DevDependenciesChart from "./body/chart/chartvariants/DevDependenciesChart.tsx";
 
 const App: React.FC = () => {
     return (
@@ -17,7 +19,8 @@ const App: React.FC = () => {
                 <Route path="/drag-n-drop" element={<DragAndDropPage/>}/>
                 <Route path="/terms-of-service" element={<ToSPage/>}/>
                 <Route path="/privacy-policy" element={<PrivacyPolicyPage/>}/>
-{/*                <Route path="/tree-map" element={<TreeMapPage/>}/>*/}
+                <Route path="/normal-dependencies-chart" element={<NormalDependenciesChart />} />
+                <Route path="/dev-dependencies-chart" element={<DevDependenciesChart />} />
                 <Route path="/help" element={<HelpPage/>}/>
                 {/*TODO Other routes*/}
             </Routes>

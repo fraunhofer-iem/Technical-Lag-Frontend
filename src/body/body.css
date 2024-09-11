@@ -1,43 +1,23 @@
-.main-container {
-    display: grid;
-    grid-template-columns: 1fr 5fr 1fr; /* 3 columns, middle one is 5 times larger */
-    grid-gap: 10px;
-    padding: 10px;
-    position: relative;
-}
+/*
 
-.chart-update-button,
+.button-column button,
 .chart-revert-button,
-.chart-back-button {
+.chart-update-button,
+.chart-normal-graph-button,
+.chart-dev-graph-button{
+!*    width: 50px;
+    height: 50px;*!
+!*    border: 1px solid #ccc;*!
+    background-color: white;
+    color: black;
     border-radius: 8px;
-    border: 2px solid #000000;
-    padding: 0.2em 0.6em;
     font-size: 16px;
-    font-weight: 600;
-    font-family: inherit;
-    background-color: #333333;
     cursor: pointer;
-    transition: border-color 0.25s, background-color 0.25s;
-    width: 10em;
-    height: 3em;
-    text-align: center;
-    z-index: 3;
 }
 
-.chart-button-row {
-    grid-column: span 2;
-    display: flex;
-    justify-content: center;
-    position: absolute;
-    gap: 1vw;
-    z-index: 3;
-    top: 1vh;
-    left: 50%;
-    transform: translateX(-50%);
-    flex-wrap: wrap;
-    width: 100%;
-}
 
+/*.normal-graph-button:hover,
+.dev-graph-button:hover,
 .chart-update-button:hover,
 .chart-revert-button:hover,
 .chart-back-button:hover{
@@ -45,61 +25,15 @@
     border-color: white;
 }
 
+.normal-graph-button:focus,
+.dev-graph-button:focus,
 .chart-update-button:focus,
 .chart-revert-button:focus,
 .chart-back-button:focus {
     outline: 20px auto -webkit-focus-ring-color;
-}
+}*/
 
-.drag-n-drop {
-    margin-top: 2vh;
-    text-align: center;
-    background-color: #63aa96;
-    padding: 1.5em;
-    width: 20em;
-    height: 15em;
-    font-size: 20px;
-    justify-content: center;
-    border-radius: 8px;
-}
-
-.drag-n-drop-container {
-    grid-row: 2;
-    grid-column: span 2;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    position: absolute;
-    top: 12vh;
-    left: 50%;
-    transform: translateX(-50%);
-    flex-wrap: wrap;
-    width: 100%;
-}
-
-.chart {
-    grid-column: 1 / -1; /* Span across all columns */
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    margin-top: -40vh;
-}
-
-@media (max-width: 1200px) {
-    .chart-button-row {
-        grid-column: span 2;
-        top: 2vh;
-        left: 50%;
-        transform: translateX(-50%);
-        flex-wrap: wrap;
-        width: auto;
-    }
-
-    .chart-update-button,
-    .chart-revert-button,
-    .chart-back-button {
-        margin: 1vh 1vw;
-    }
+/*@media (max-width: 1200px) {
 
     .drag-n-drop-container {
         grid-column: span 2;
@@ -112,8 +46,4 @@
         width: 40%;
         height: auto;
     }
-
-    .chart {
-        margin-top: -45vh;
-    }
-}
+}*/

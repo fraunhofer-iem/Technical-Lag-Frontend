@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {DarkModeButtonStyles} from "./DarkModeButtonStyles.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMoon, faSun} from "@fortawesome/free-solid-svg-icons";
-import {HelpButtonStyles} from "../help/HelpButtonStyles.tsx";
+import {Tooltip as ReactToolTip} from "react-tooltip";
 
 const DarkModeButton: React.FC = () => {
     const [isDMButtonHovered, setIsDMButtonHovered] = useState<boolean>(false);
@@ -37,12 +37,21 @@ const DarkModeButton: React.FC = () => {
         setDarkMode(!darkMode);
     };
 
-    return (<button style={darkModeButtonStyle} onClick={toggleDarkMode}
-                    onMouseEnter={() => setIsDMButtonHovered(true)}
-                    onMouseLeave={() => setIsDMButtonHovered(false)}>
-            {darkMode ? <FontAwesomeIcon icon={faSun} style={HelpButtonStyles.icon}/> :
-                <FontAwesomeIcon icon={faMoon} style={HelpButtonStyles.icon}/>}
-        </button>
+    return (
+        <div style={DarkModeButtonStyles.buttonContainer}>
+            <button
+                style={darkModeButtonStyle}
+                onClick={toggleDarkMode}
+                data-tooltip-content={darkMode ? "Light it up!" : "Darken"}
+                data-tooltip-id="darkmode-button"
+                onMouseEnter={() => setIsDMButtonHovered(true)}
+                onMouseLeave={() => setIsDMButtonHovered(false)}
+            >
+                {darkMode ? <FontAwesomeIcon icon={faSun} style={DarkModeButtonStyles.icon}/> :
+                    <FontAwesomeIcon icon={faMoon} style={DarkModeButtonStyles.icon}/>}
+            </button>
+            <ReactToolTip id="darkmode-button" place="left" variant="info"/>
+        </div>
     );
 }
 

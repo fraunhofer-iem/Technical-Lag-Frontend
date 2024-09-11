@@ -17,7 +17,7 @@ const styles = {
         zIndex: 1000,
         textAlign: 'left' as const,
         overflowY: 'auto' as const,
-        display: 'block',
+        transition: 'right 0.6s ease-in-out',
     },
     headerContainer: {
         display: 'flex',
