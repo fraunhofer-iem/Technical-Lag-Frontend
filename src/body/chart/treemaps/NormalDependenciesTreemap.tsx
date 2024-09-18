@@ -8,18 +8,28 @@ import {transformJSONDataToTreemap, TreemapGenerator} from './TreemapGenerator';
 export class NormalDependenciesTreemap implements TreemapGenerator {
     initChart(
         chartRef: HTMLDivElement,
-        graph: Graph,
+        normalGraph: Graph,
         setChartSidebarData: React.Dispatch<React.SetStateAction<ChartSidebarData | null>>,
         setIsChartSidebarVisible: React.Dispatch<React.SetStateAction<boolean>>
     ): echarts.ECharts | null {
         try {
             const chartInstance = echarts.init(chartRef);
 
+            const rootNode = normalGraph.root;
+            const rootName = rootNode.rootName || "Unknown Project";
+            const rootVersion = rootNode.repositoryInfo.projectVersion || "N/A";
+
             const option = {
+                title: {
+                    text: "Normal Dependencies for: " + rootName,
+                    subtext: 'Version: ' + rootVersion,
+                    left: 'center',
+                    top: 'top'
+                },
                 tooltip: {
                     formatter: function (info: any) {
                         const name = info.name;
-                        const version = info.data.version;
+                        const version = info.data.version || 'Unknown Version';
 
                         return [
                             '<div class="tooltip-title">' + echarts.format.encodeHTML(name) + '</div>',
@@ -29,21 +39,13 @@ export class NormalDependenciesTreemap implements TreemapGenerator {
                 },
                 color: ['#62a995'],
                 series: [{
+                    name: 'dashboard',
                     type: 'treemap',
-                    visibleMin: 300,
-                    label: {
-                        show: true,
-                        formatter: '{b}',
-                        color: '#000'
-                    },
-                    itemStyle: {
-                        borderColor: '#7ed3c5',
-                        borderWidth: 2,
-                        gapWidth: 2
-                    },
+                    visibleMin: 100,
+                    leafDepth: 1,
                     colorMappingBy: 'id',
                     levels: this.getLevelOption(),
-                    data: [transformJSONDataToTreemap(graph)]
+                    data: transformJSONDataToTreemap(normalGraph).children
                 }]
             };
 
@@ -66,39 +68,34 @@ export class NormalDependenciesTreemap implements TreemapGenerator {
         }
     }
 
-// Function to generate levels option for treemap
+    // Function to generate levels option for treemap
     getLevelOption(): TreemapSeriesOption['levels'] {
         return [
             {
                 itemStyle: {
-                    borderColor: '#777',
-                    borderWidth: 0,
-                    gapWidth: 1,
-                },
-                upperLabel: {
-                    show: false
-                }
-            },
-            {
-                itemStyle: {
                     borderColor: '#555',
-                    borderWidth: 5,
-                    gapWidth: 1,
-                },
-                emphasis: {
-                    itemStyle: {
-                        borderColor: '#ddd'
-                    }
+                    borderWidth: 4,
+                    gapWidth: 4
                 }
             },
             {
-                colorSaturation: [0.35, 0.5],
+                colorSaturation: [0.3, 0.6],
                 itemStyle: {
-                    borderWidth: 5,
-                    gapWidth: 1,
-                    borderColorSaturation: 0.6,
+                    borderColorSaturation: 0.7,
+                    gapWidth: 2,
+                    borderWidth: 2
                 }
+            },
+            {
+                colorSaturation: [0.3, 0.5],
+                itemStyle: {
+                    borderColorSaturation: 0.6,
+                    gapWidth: 1
+                }
+            },
+            {
+                colorSaturation: [0.3, 0.5]
             }
-        ];
-    };
+        ]
+    }
 }

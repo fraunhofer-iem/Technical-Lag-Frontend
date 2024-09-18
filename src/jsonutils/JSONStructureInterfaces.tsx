@@ -84,7 +84,6 @@ export interface Graph {
     root: RootNode;
     nodes: Node[];
     edges: Edge[];
-    directDependencies: number[];
 }
 
 export interface Artifact {

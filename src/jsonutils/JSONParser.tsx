@@ -48,15 +48,15 @@ export const parseJSON = (
     }
 };
 
-export const transformData = (json: any): { normalGraph: Graph, devGraph: Graph } => {
+const transformData = (json: any): { normalGraph: Graph, devGraph: Graph } => {
     const projectDTO = json.projectDtos[0];
 
     const repositoryInfo: RepositoryInfo = {
         repoURL: json.repositoryInfo.url,
         revision: json.repositoryInfo.revision,
-        ecosystem: json.repositoryInfo.projects.type,
-        projectName: json.repositoryInfo.projects.name,
-        projectVersion: json.repositoryInfo.projects.version
+        ecosystem: json.repositoryInfo.projects[0].type,
+        projectName: json.repositoryInfo.projects[0].name,
+        projectVersion: json.repositoryInfo.projects[0].version
     };
 
     if (!projectDTO) {
@@ -74,7 +74,9 @@ export const transformData = (json: any): { normalGraph: Graph, devGraph: Graph 
 
     // Process graphs for both scopes
     const normalGraph = processScopeGraph(root, projectDTO, artifactMap, "dependencies");
+    console.log("normalGraph: ", normalGraph)
     const devGraph = processScopeGraph(root, projectDTO, artifactMap, "devDependencies");
+
 
     return {normalGraph, devGraph};
 };
@@ -83,7 +85,7 @@ export const transformData = (json: any): { normalGraph: Graph, devGraph: Graph 
 const createRootNode = (repositoryInfo: RepositoryInfo): RootNode => {
     return {
         rootName: repositoryInfo.projectName,
-        rootId: repositoryInfo.projectName + uuidv4(),
+        rootId: repositoryInfo.projectName + "_" + uuidv4(),
         repositoryInfo
     };
 };
@@ -125,10 +127,10 @@ const processScopeGraph = (
 ): Graph => {
     const nodeMap = new Map<number, Node>();
     let edges: Edge[] = [];
-    let directDependencies: number[] = [];
 
     // Find the graph item for the given scope
     const graphItem = projectDto.graph.find((item: any) => item.scope === scope);
+    console.log("graphItem: ", graphItem);
 
     if (graphItem) {
         // Process nodes
@@ -139,11 +141,9 @@ const processScopeGraph = (
                 return;
             }
 
-            //const usedVersionIndex = artifact.versions.findIndex((versionItem: any) => versionItem.versionNumber === node.usedVersion);
-
             const nodeData: Node = {
                 nodeName: artifact.artifactName,
-                nodeId: scope + artifact.artifactName + uuidv4(),
+                nodeId: scope + "_" + artifact.artifactName + "_" + uuidv4(),
                 //usedVersion: artifact.versions[usedVersionIndex]?.versionNumber || "unknown",
                 usedVersion: artifact.defaultVersionNumber,
                 stats: node.stats ? simplifyStats(node.stats) : []
@@ -151,72 +151,64 @@ const processScopeGraph = (
             nodeMap.set(node.artifactIdx, nodeData);
         });
 
+        const allNodesArray = Array.from(nodeMap.values());
         // Process direct dependencies
-        directDependencies = processDirectDependencies(root, nodeMap, graphItem.graph.directDependencyIndices, edges);
-
+        edges = processDirectDependencies(root, allNodesArray, graphItem.graph.directDependencyIndices, edges);
         // Process edges between nodes
-        edges = processEdges(nodeMap, graphItem.graph.edges, edges);
+        edges = processEdges(allNodesArray, graphItem.graph.edges, edges);
     }
 
     return {
         root,
         nodes: [...nodeMap.values()],
         edges,
-        directDependencies
     };
 };
 
 // Helper: Process direct dependencies
 const processDirectDependencies = (
     root: RootNode,
-    nodeMap: Map<number, Node>,
+    nodeArray: Node[],
     directDependencyIndices: number[],
     edges: Edge[]
-): number[] => {
-    const directDependencies: number[] = [];
-
+): Edge[] => {
     directDependencyIndices.forEach((artifactID: number) => {
-        directDependencies.push(artifactID); // Storing direct dependency indices
-        const node = nodeMap.get(artifactID);
-        if (node) {
-            edges.push({
-                from: root.rootId,
-                to: node.nodeId,
-            });
+        if (nodeArray.length > 0) {
+            const directNode = nodeArray[artifactID];
+
+            if (directNode) {
+                edges.push({
+                    from: root.rootId,
+                    to: directNode.nodeId,
+                });
+            }
+        } else {
+            console.error('No nodes found in the nodeArray');
         }
     });
-
-/*    for (const artifactID of directDependencyIndices) {
-        const node = nodeMap.get(artifactID);
-        if (node) {
-            edges.push({
-                from: root.rootId,
-                to: node.nodeId,
-            });
-            directDependencies.push(artifactID);
-        }
-    }*/
-
-    return directDependencies;
+    return edges;
 };
 
 // Helper: Process edges between nodes
 const processEdges = (
-    nodeMap: Map<number, Node>,
+    nodeArray: Node[],
     graphEdges: any[],
     edges: Edge[]
 ): Edge[] => {
     graphEdges.forEach((edge: any) => {
-        const fromNode = nodeMap.get(edge.from);
-        const toNode = nodeMap.get(edge.to);
-        if (fromNode && toNode) {
-            edges.push({
-                from: fromNode.nodeId,
-                to: toNode.nodeId,
-            });
+        if (nodeArray.length > 0) {
+            const fromNode = nodeArray[edge.from];
+            const toNode = nodeArray[edge.to];
+/*            console.log("fromArtifactNode: " + fromNode?.nodeName);
+            console.log("toArtifactNode: " + toNode?.nodeName);*/
+            if (fromNode && toNode) {
+                edges.push({
+                    from: fromNode.nodeId,
+                    to: toNode.nodeId,
+                });
+            }
         }
     });
-
     return edges;
 };
 

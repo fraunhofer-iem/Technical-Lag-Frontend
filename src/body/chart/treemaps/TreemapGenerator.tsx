@@ -1,8 +1,9 @@
 import * as echarts from 'echarts';
-import {Graph} from "../../../jsonutils/JSONStructureInterfaces.tsx";
+import {Graph, Node} from "../../../jsonutils/JSONStructureInterfaces.tsx";
 import {ChartSidebarData} from "../../utils/sidebarutils/ChartSidebarUtils.tsx";
 import React from "react";
 import {TreemapSeriesOption} from "echarts/charts";
+
 
 export interface TreemapGenerator {
     initChart: (
@@ -15,18 +16,61 @@ export interface TreemapGenerator {
     getLevelOption: () => TreemapSeriesOption['levels'];
 }
 
-//TODO
 export const transformJSONDataToTreemap = (graph: Graph) => {
-    const transformNode = (node: any) => {
-        // Convert the node to the format required by ECharts treemap
-        return {
-            name: node.name,
-            value: node.size,
-            version: node.version,
-            children: node.dependencies?.map(transformNode) || [],
-        };
-    }
+    // Helper function: Convert a node into a format suitable for ECharts treemap
+    const transformNode = (node: Node): any => {
+        const children = findChildren(node);  // Recursively find children nodes
 
-    console.log(transformNode(graph.root).name);
-    return transformNode(graph.root);
+        // Aggregate some value from the node stats
+        const totalLibDays = node.stats.reduce((sum, stat) => {
+            return sum + stat.stats.technicalLag.libDays;
+        }, 0);
+
+        console.log(`Transforming Node: ${node.nodeName}, TotalLibDays: ${totalLibDays}, Children: ${children.length}`);
+
+        return {
+            name: node.nodeName,          // The name of the node (e.g., library/package)
+            value: 1,          // Aggregated value based on stats, e.g., total libDays
+            usedVersion: node.usedVersion,  // For tooltips or additional info
+            children: children.length > 0 ? children : null // Only include children if they exist
+        };
+    };
+
+    // Helper function: Recursively find children nodes
+    const findChildren = (parentNode: Node): any[] => {
+        const childNodes = graph.edges
+            .filter(edge => edge.from === parentNode.nodeId)  // Find edges where current node is the parent
+            .map(edge => {
+                const childNode = graph.nodes.find(n => n.nodeId === edge.to);  // Find child node
+                if (childNode) {
+                    console.log(`Found Child Node: ${childNode.nodeName} for Parent: ${parentNode.nodeName}`);
+                }
+                return childNode ? transformNode(childNode) : null;  // Transform the child node if found
+            })
+            .filter(childNode => childNode !== null);  // Filter out null results
+
+        return childNodes;
+    };
+
+    const rootNode = graph.root;
+
+    console.log(`Root Node: ${rootNode.rootName}`);
+
+    // Find and transform all the children of the root node
+    const transformedNodes = graph.edges
+        .filter(edge => edge.from === rootNode.rootId)  // Edges originating from the root
+        .map(edge => {
+            const node = graph.nodes.find(n => n.nodeId === edge.to);  // Find child nodes of the root
+            if (node) {
+                console.log(`Transforming Root Child Node: ${node.nodeName}`);
+            }
+            return node ? transformNode(node) : null;  // Transform child nodes
+        })
+        .filter(node => node !== null);  // Filter out null results
+
+    // Return the transformed structure in the ECharts treemap format
+    return {
+        name: rootNode.rootName || "dashboard",  // Ensure root name is set, default to "dashboard" if not available
+        children: transformedNodes // Children of the root node
+    };
 };
