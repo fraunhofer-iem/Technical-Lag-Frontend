@@ -3,6 +3,7 @@ export const BodyStyles = {
         display: 'flex',
         flexDirection: 'column' as const,
         width: '100%',
+        top: "10px",
         position: "relative" as const,
         backgroundColor: 'var(--bg-color)',
         backgroundImage: 'var(--bg-img)',
@@ -11,6 +12,7 @@ export const BodyStyles = {
     graphContainer: {
         width: '100vw',
         height: '90vh',
+        marginTop: '3rem',
         justifyContent: 'center' as const,
         display: 'flex',
         alignItems: 'center',
@@ -28,11 +30,10 @@ export const BodyStyles = {
         zIndex: "1000",
     },
     chartButton: {
-        padding: '10px',
+/*        padding: '8px',*/
         border: 'none',
-        borderRadius: '10px',
-        cursor: 'pointer',
-        fontSize: '1rem',
+        borderRadius: '8px',
+/*        fontSize: '1rem',*/
         textAlign: 'center' as const,
         transition: 'background-color 0.3s ease, color 0.3s ease, transform 0.2s ease',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import StickyNoteComponent from '../footer/stickynote/StickyNoteComponent';
 import {FileDrop} from './DragNDrop';
 import {DragNDropStyles} from "./DragAndDropPageStyles.tsx";
 import {parseJSON} from "../jsonutils/JSONParser.tsx";
 import {Graph} from "../jsonutils/JSONStructureInterfaces.tsx";
 import {useNavigate} from "react-router-dom";
+import {Typography} from "@mui/material";
 
 const DragAndDropPage: React.FC = () => {
     const [isFileDropped, setIsFileDropped] = useState<boolean>(false);
@@ -25,16 +25,15 @@ const DragAndDropPage: React.FC = () => {
         <div style={DragNDropStyles.container}>
             {!isFileDropped ? (
                 <>
-                    <StickyNoteComponent />
-                    <h2 style={DragNDropStyles.description}>
+                    <Typography variant="h3" style={DragNDropStyles.description}>
                         For your project to be analysed, you have to upload your project files first.
                         Run the fitting toolkit to create a Software Bill of Materials for your project and then upload it here:
-                    </h2>
+                    </Typography>
                     <FileDrop onDrop={handleFileDrop} setIsFileDropped={setIsFileDropped} />
-                    <p style={DragNDropStyles.requirements}> A file in JSON format is required!</p>
+                    <Typography style={DragNDropStyles.requirements}> A file in JSON format is required!</Typography>
                 </>
             ) : (
-                <p style={DragNDropStyles.message}>Files have been dropped! Processing...</p>
+                <Typography style={DragNDropStyles.message}>Files have been dropped! Processing...</Typography>
             )}
         </div>
     );

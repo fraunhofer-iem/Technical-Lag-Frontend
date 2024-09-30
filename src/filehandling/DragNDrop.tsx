@@ -1,7 +1,6 @@
 import React, {FC, useRef, useState} from "react";
 import {faFile} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import "../body/body.css";
 import {DNDStyles} from "./DragNDropStyles.tsx";
 
 interface IFileDrop {

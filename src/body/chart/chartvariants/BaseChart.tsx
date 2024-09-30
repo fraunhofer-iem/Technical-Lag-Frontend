@@ -1,6 +1,5 @@
 import * as React from "react";
 import {useEffect, useRef, useState} from "react";
-import "../../body.css";
 import {Graph} from "../../../jsonutils/JSONStructureInterfaces.tsx";
 import NewFileButton from "../../buttons/NewFileButton.tsx";
 import ChartSidebar from "../../utils/chartsidebar/ChartSidebar.tsx";
@@ -13,9 +12,9 @@ import {useNavigate} from "react-router-dom";
 import UpdateButton from "../../buttons/UpdateButton.tsx";
 import RevertButton from "../../buttons/RevertButton.tsx";
 import {BodyStyles} from "../../BodyStyles.tsx";
-import StickyNoteComponent from "../../../footer/stickynote/StickyNoteComponent.tsx";
 import NormDepButton from "../../buttons/NormDepButton.tsx";
 import DevDepButton from "../../buttons/DevDepButton.tsx";
+import {Box, ButtonGroup} from "@mui/material";
 
 interface BaseChartProps {
     initChart: (
@@ -122,20 +121,22 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
         <main style={BodyStyles.mainContainer}>
             <NewFileButton text="New File" action={handleBackButton}/>
             {isFileDropped && (
-                <>
-                    <div style={BodyStyles.graphContainer}>
+                <Box>
+                    <Box style={BodyStyles.graphContainer}>
                         <div className={chartClassName} ref={chartRef} style={{width: '100%', height: '90%'}}/>
-                    </div>
+                    </Box>
 
                     {graphs && (
-                        <div style={BodyStyles.chartButtonColumn}>
-                            <NormDepButton text="N" tooltip="" action={() => handleGraphSelection('normalGraph')}/>
-                            <DevDepButton text="D" tooltip="" action={() => handleGraphSelection('devGraph')}/>
-                            <FilterButton text="" tooltip="" action={handleFilterButton}/>
+                        <ButtonGroup style={BodyStyles.chartButtonColumn}>
+                            <NormDepButton text="N" tooltip="Normal Dependencies"
+                                           action={() => handleGraphSelection('normalGraph')}/>
+                            <DevDepButton text="D" tooltip="Dev Dependencies"
+                                          action={() => handleGraphSelection('devGraph')}/>
                             <br/>
+                            <FilterButton text="" tooltip="Filter & Search" action={handleFilterButton}/>
                             <UpdateButton text="" tooltip="Update Libraries" action={() => handleClick("Update")}/>
                             <RevertButton text="" tooltip="Revert Updates" action={() => handleClick("Revert")}/>
-                        </div>
+                        </ButtonGroup>
                     )}
 
                     {isChartSidebarVisible && (
@@ -159,8 +160,7 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
                             onResultClick={(node) => zoomToNode(node)}
                         />
                     )}
-                    <StickyNoteComponent/>
-                </>
+                </Box>
             )}
         </main>
     );
