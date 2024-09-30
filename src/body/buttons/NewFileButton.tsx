@@ -1,7 +1,8 @@
 import * as React from "react";
 import {useState} from "react";
-import "../body.css";
 import {BodyStyles} from "../BodyStyles.tsx";
+import {Fab} from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
 
 interface ButtonProps {
     text: string;
@@ -19,15 +20,17 @@ const NewFileButton: React.FC<ButtonProps> = ({text, action}) => {
     };
 
     return (
-        <button
-            type="button"
+        <Fab
+            aria-label="newfile"
+            size="medium"
             style={newFileButtonStyle}
             onClick={action}
             onMouseEnter={() => setIsNFButtonHovered(true)}
             onMouseLeave={() => setIsNFButtonHovered(false)}
         >
+            <AddIcon/>
             {text}
-        </button>
+        </Fab >
     );
 };
 

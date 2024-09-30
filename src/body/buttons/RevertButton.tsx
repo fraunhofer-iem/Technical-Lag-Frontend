@@ -1,11 +1,9 @@
 import * as React from "react";
 import {useState} from "react";
-import "../body.css";
 import {BodyStyles} from "../BodyStyles.tsx";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faRotateLeft} from "@fortawesome/free-solid-svg-icons";
-import {ButtonProps} from "./ButtonInterface.tsx";
-import {Tooltip as ReactTooltip} from "react-tooltip";
+import {ButtonProps} from "./buttonInterface.ts";
+import {Fade, IconButton, Tooltip} from "@mui/material";
+import BackspaceIcon from '@mui/icons-material/Backspace';
 
 
 const RevertButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
@@ -15,25 +13,22 @@ const RevertButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
         ...BodyStyles.chartButton,
         backgroundColor: isRevButtonHovered ? 'var(--graphbtns-bg-hover)' : 'var(--graphbtns-bg)',
         color: isRevButtonHovered ? 'var(--graphbtns-txt-hover)' : 'var(--graphbtns-txt-color)',
-        fontWeight: isRevButtonHovered ? 'bold' : 'normal',
     };
 
     return (
-        <div>
-            <button
-                type="button"
+        <Tooltip title={tooltip} placement={"right"} arrow TransitionComponent={Fade} TransitionProps={{timeout: 600}}
+                 PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '10px', fontSize: "14px"},}}}>
+            <IconButton
                 style={revButtonStyle}
-                data-tooltip-content={tooltip}
-                data-tooltip-id="revert-button"
+                size="medium"
                 onClick={action}
                 onMouseEnter={() => setIsRevButtonHovered(true)}
                 onMouseLeave={() => setIsRevButtonHovered(false)}
             >
                 {text}
-                <FontAwesomeIcon icon={faRotateLeft}/>
-            </button>
-            <ReactTooltip id="revert-button" place="left" variant="info"/>
-        </div>
+                <BackspaceIcon/>
+            </IconButton>
+        </Tooltip>
     );
 };
 

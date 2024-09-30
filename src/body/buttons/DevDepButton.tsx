@@ -1,9 +1,9 @@
 import * as React from "react";
 import {useState} from "react";
-import "../body.css";
 import {BodyStyles} from "../BodyStyles.tsx";
-import {ButtonProps} from "./ButtonInterface.tsx";
-import {Tooltip as ReactTooltip} from "react-tooltip";
+import {ButtonProps} from "./buttonInterface.ts";
+import {Button, Fade, Tooltip} from "@mui/material";
+import AddchartIcon from '@mui/icons-material/Addchart';
 
 const DevDepButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
     const [isDDButtonHovered, setIsDDButtonHovered] = useState<boolean>(false);
@@ -12,24 +12,22 @@ const DevDepButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
         ...BodyStyles.chartButton,
         backgroundColor: isDDButtonHovered ? 'var(--graphbtns-bg-hover)' : 'var(--graphbtns-bg)',
         color: isDDButtonHovered ? 'var(--graphbtns-txt-hover)' : 'var(--graphbtns-txt-color)',
-        fontWeight: isDDButtonHovered ? 'bold' : 'normal',
     };
 
     return (
-        <div>
-        <button
-            type="button"
-            style={updateButtonStyle}
-            data-tooltip-content={tooltip}
-            data-tooltip-id="devdep-button"
-            onClick={action}
-            onMouseEnter={() => setIsDDButtonHovered(true)}
-            onMouseLeave={() => setIsDDButtonHovered(false)}
-        >
-            {text}
-        </button>
-            <ReactTooltip id="devdep-button" place="left" variant="info"/>
-        </div>
+        <Tooltip title={tooltip} placement={"right"} arrow TransitionComponent={Fade} TransitionProps={{timeout: 600}}
+                 PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '10px', fontSize: "14px"},}}}>
+            <Button
+                style={updateButtonStyle}
+                size="medium"
+                onClick={action}
+                onMouseEnter={() => setIsDDButtonHovered(true)}
+                onMouseLeave={() => setIsDDButtonHovered(false)}
+            >
+                <AddchartIcon/>
+                {text}
+            </Button>
+        </Tooltip>
     );
 };
 export default DevDepButton;

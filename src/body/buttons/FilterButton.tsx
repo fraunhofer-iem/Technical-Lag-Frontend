@@ -1,11 +1,9 @@
 import * as React from "react";
 import {useState} from "react";
-import "../body.css";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBars} from "@fortawesome/free-solid-svg-icons";
 import {BodyStyles} from "../BodyStyles.tsx";
-import {ButtonProps} from "./ButtonInterface.tsx";
-import {Tooltip as ReactTooltip} from "react-tooltip";
+import {ButtonProps} from "./buttonInterface.ts";
+import {Fade, IconButton, Tooltip} from "@mui/material";
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 const FilterButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
     const [isFilterButtonHovered, setIsFilterButtonHovered] = useState<boolean>(false);
@@ -14,25 +12,22 @@ const FilterButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
         ...BodyStyles.chartButton,
         backgroundColor: isFilterButtonHovered ? 'var(--graphbtns-bg-hover)' : 'var(--graphbtns-bg)',
         color: isFilterButtonHovered ? 'var(--graphbtns-txt-hover)' : 'var(--graphbtns-txt-color)',
-        fontWeight: isFilterButtonHovered ? 'bold' : 'normal',
     };
 
     return (
-        <div>
-            <button
-                type="button"
+        <Tooltip title={tooltip} placement={"right"} arrow TransitionComponent={Fade} TransitionProps={{timeout: 600}}
+                 PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '10px', fontSize: "14px"},}}}>
+            <IconButton
                 style={filterButtonStyle}
-                data-tooltip-content={tooltip}
-                data-tooltip-id="filter-button"
+                size="medium"
                 onClick={action}
                 onMouseEnter={() => setIsFilterButtonHovered(true)}
                 onMouseLeave={() => setIsFilterButtonHovered(false)}
             >
-                <FontAwesomeIcon icon={faBars}/>
+                <FilterListIcon />
                 {text}
-            </button>
-            <ReactTooltip id="filter-button" place="left" variant="info"/>
-        </div>
+            </IconButton>
+        </Tooltip>
     );
 };
 
