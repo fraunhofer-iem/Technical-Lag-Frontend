@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom'; // Updated to use useNavigate for React Router v6
-import StickyNoteComponent from "../footer/stickynote/StickyNoteComponent.tsx";
 import {WelcomePageStyles} from "./WelcomePageStyles";
+import {Button, Typography} from "@mui/material";
 
 
 const WelcomePage: React.FC = () => {
@@ -22,20 +22,19 @@ const WelcomePage: React.FC = () => {
 
     return (
         <div style={WelcomePageStyles.container}>
-            <h1 style={WelcomePageStyles.title}>Technical Lag Analyzer</h1>
-            <p style={WelcomePageStyles.description}>
+            <Typography variant={"h1"} color="primary" gutterBottom style={WelcomePageStyles.title}>Technical Lag Analyzer</Typography>
+            <Typography style={WelcomePageStyles.description}>
                 This tool helps with analysing the technical lag to all of your projects in a user friendly way. It's
                 designed to improve your workflow and make your life easier.
                 LibYear Analyzer displays your project structure in a dependency tree to better visualise the areas of
                 improvement.
                 Get started by clicking the button below!
-            </p>
-            <button style={getStartedButtonStyle} onClick={handleClick}
+            </Typography>
+            <Button variant="contained" size="large" style={getStartedButtonStyle} onClick={handleClick}
                     onMouseEnter={() => setIsStartButtonHovered(true)}
                     onMouseLeave={() => setIsStartButtonHovered(false)}>
                 Get Started
-            </button>
-            <StickyNoteComponent/>
+            </Button>
         </div>
     );
 };

@@ -6,14 +6,12 @@ export const WelcomePageStyles = {
         alignItems: 'center',
         height: '100vh',
         padding: '0 20px',
-        paddingTop: '10vh',
+        paddingTop: '15vh',
         backgroundColor: 'var(--bg-color)',
         backgroundImage: 'var(--bg-img)',
         backgroundPosition: 'center',
     },
     title: {
-        fontSize: '3rem',
-        marginBottom: '1rem',
         color: 'var(--txt-color)',
     },
     description: {
@@ -24,13 +22,11 @@ export const WelcomePageStyles = {
         maxWidth: '600px',
     },
     getStartedButton: {
-        padding: '10px 20px',
-        fontSize: '1.2rem',
         color: 'var(--btn-txt-color)',
         backgroundColor: 'var(--btn-bg)',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
+/*        border: 'none',
+        borderRadius: '5px',*/
+/*        cursor: 'pointer',*/
         transition: 'background-color 0.3s ease, color 0.3s ease',
     },
 };
