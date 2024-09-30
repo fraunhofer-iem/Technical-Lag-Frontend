@@ -1,0 +1,70 @@
+export const CookieConsentStyles = {
+    cookieConsent: {
+        position: 'fixed' as const,
+        top: '10',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '600px',
+        backgroundColor: 'var(--bg-color)',
+        padding: '20px',
+        borderRadius: '10px',
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+        zIndex: 1000,
+    },
+    title: {
+        fontWeight: 'bold',
+        marginTop: '0',
+        fontSize: '18px',
+    },
+    description: {
+        fontSize: '14px',
+        marginBottom: '20px',
+        marginTop: '10px',
+    },
+    cookieButtons: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        marginTop: '20px',
+    },
+    button: {
+        padding: '10px 20px',
+        border: 'none',
+        backgroundColor: 'var(--bg-color)',
+        color: 'var(--txt-color)',
+        cursor: 'pointer',
+        borderRadius: '5px',
+        transition: 'background-color 0.3s ease, color 0.3s ease',
+        marginRight: '0',
+    },
+    buttonHover: {
+        backgroundColor: 'var(--btn-bg-hover)',
+    },
+    manageCookies: {
+        position: 'fixed' as const,
+        top: '10',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '400px',
+        backgroundColor: 'var(--bg-color)',
+        padding: '20px',
+        borderRadius: '10px',
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+        zIndex: 1000,
+    },
+    manageButtonsContainer: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        gap: '10px',
+        marginTop: '20px',
+    },
+    accordion: {
+        marginBottom: '10px',
+        marginTop: '10px',
+    },
+    accordionItem: {
+        marginBottom: '5px',
+    },
+    checkbox: {
+        marginRight: '10px',
+    },
+};
