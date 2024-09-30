@@ -1,8 +1,8 @@
 export const HelpButtonStyles = {
     button: {
-        position: 'fixed' as const,
-        top: '10px',
-        left: '10px',
+/*        position: 'fixed' as const,*/
+/*        top: '10px',
+        left: '10px',*/
         padding: '10px 20px',
         border: 'none',
         borderRadius: '5px',
@@ -12,13 +12,5 @@ export const HelpButtonStyles = {
     },
     icon: {
         fontSize: '0.8rem',
-    },
-    buttonContainer: {
-        position: 'relative' as const,
-        zIndex: 1000,
-        background: "none",
-        border: "none",
-        padding: "0",
-        width: '0',
     },
 };

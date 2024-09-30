@@ -3,7 +3,7 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {HelpButtonStyles} from './HelpButtonStyles';
 import {faQuestion} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {Tooltip as ReactToolTip} from "react-tooltip";
+import {Button, Fade, Tooltip} from "@mui/material";
 
 const HelpButton: React.FC = () => {
     const navigate = useNavigate();
@@ -27,19 +27,17 @@ const HelpButton: React.FC = () => {
     }
 
     return (
-        <div style={HelpButtonStyles.buttonContainer}>
-            <button
-                style={helpButtonStyle}
+        <Tooltip title={"Need Help? Click me!"} placement={"bottom"} arrow TransitionComponent={Fade} TransitionProps={{timeout: 600}}
+                 PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '8px', fontSize: "12px"},}}}>
+            <Button
+                style={helpButtonStyle} //TODO
                 onClick={handleHelpClick}
-                data-tooltip-content="Need Help? Click me!"
-                data-tooltip-id="help-button"
                 onMouseEnter={() => setIsHelpButtonHovered(true)}
                 onMouseLeave={() => setIsHelpButtonHovered(false)}
             >
                 <FontAwesomeIcon icon={faQuestion} style={HelpButtonStyles.icon}/>
-            </button>
-            <ReactToolTip id="help-button" place="left" variant="info"/>
-        </div>
+            </Button>
+        </Tooltip>
     );
 };
 
