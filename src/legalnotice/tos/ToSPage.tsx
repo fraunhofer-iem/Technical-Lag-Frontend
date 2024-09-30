@@ -1,10 +1,10 @@
 import React from 'react';
 import {ToSPageStyles} from "./TosPageStyles.tsx";
-
+import {Box} from "@mui/material";
 
 const TermsOfService: React.FC = () => {
     return (
-        <div style={ToSPageStyles.container}>
+        <Box style={ToSPageStyles.container}>
             <h1 style={ToSPageStyles.title}>Terms of Service</h1>
             <p style={ToSPageStyles.description}>Last updated: September 1, 2024</p>
             <br/>
@@ -48,7 +48,7 @@ const TermsOfService: React.FC = () => {
             <p style={ToSPageStyles.description}>
                 If you have any questions about these Terms of Service, please contact us at support@example.com.
             </p>
-        </div>
+        </Box>
     );
 };
 

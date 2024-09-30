@@ -10,8 +10,8 @@ export const ToSPageStyles = {
         backgroundColor: 'var(--background-color)',
         backgroundImage: 'var(--background-image)',
         backgroundPosition: 'center',
-        overflowY: 'auto',
-        overflowX: 'hidden',
+        overflowY: 'auto' as const,
+        overflowX: 'hidden' as const,
     },
 
     title: {
