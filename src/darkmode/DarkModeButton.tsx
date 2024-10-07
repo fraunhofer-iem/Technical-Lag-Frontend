@@ -3,52 +3,35 @@ import {DarkModeButtonStyles} from "./DarkModeButtonStyles.tsx";
 import {Fade, IconButton, Tooltip} from "@mui/material";
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import {useTheme} from './ThemeContext';
+
 
 const DarkModeButton: React.FC = () => {
-    const [isDMButtonHovered, setIsDMButtonHovered] = useState<boolean>(false);
-    const [darkMode, setDarkMode] = useState<boolean>(false);
-
-    const darkModeButtonStyle = {
-        ...DarkModeButtonStyles.darkModeButton,
-        backgroundColor: isDMButtonHovered ? 'var(--btn-bg-hover)' : 'var(--btn-bg)',
-        color: isDMButtonHovered ? 'var(--btn-hover-txt-color)' : 'var(--btn-txt-color)',
-        fontWeight: isDMButtonHovered ? 'bold' : 'normal',
-    };
-
-    // Apply the theme to the body element
-    useEffect(() => {
-        const modeClass = darkMode ? 'dark-mode' : 'light-mode';
-        document.body.classList.remove('dark-mode', 'light-mode');
-        document.body.classList.add(modeClass);
-        localStorage.setItem('theme', modeClass);
-    }, [darkMode]);
-
-    // Retrieve the user's theme preference from localStorage
-    useEffect(() => {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            setDarkMode(savedTheme === 'dark-mode');
-        }
-    }, []);
-
+    const [isHovered, setIsHovered] = useState<boolean>(false);
+    const {toggleTheme, mode} = useTheme();
 
     // Toggle dark mode
-    const toggleDarkMode = () => {
-        setDarkMode(!darkMode);
+    const handleToggleDarkMode = () => {
+        toggleTheme();
     };
 
     return (
-        <Tooltip title={darkMode ? "Light it up!" : "Darken"} placement={"bottom"} arrow TransitionComponent={Fade}
+        <Tooltip title={mode === 'dark' ? "Light it up!" : "Vampire Mode"} placement={"bottom"} arrow
+                 TransitionComponent={Fade}
                  TransitionProps={{timeout: 600}}
                  PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '8px', fontSize: "12px"},}}}>
             <IconButton
-                style={darkModeButtonStyle}
-                onClick={toggleDarkMode}
-                onMouseEnter={() => setIsDMButtonHovered(true)}
-                onMouseLeave={() => setIsDMButtonHovered(false)}
+/*                style={darkModeButtonStyle}*/ //TODO
+                onClick={handleToggleDarkMode}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                sx={{ //TODO
+/*                    backgroundColor: isHovered ? 'var(--btn-bg-hover)' : 'var(--btn-bg)',  // Background color on hover
+                    color: isHovered ? 'var(--btn-hover-txt-color)' : 'var(--btn-txt-color)',  // Text color on hover*/
+                }}
             >
-                {darkMode ? <LightModeIcon style={DarkModeButtonStyles.icon}/> :
-                    <DarkModeIcon style={DarkModeButtonStyles.icon}/>}
+                {mode === 'dark' ? <DarkModeIcon style={DarkModeButtonStyles.icon}/> :
+                    <LightModeIcon style={DarkModeButtonStyles.icon}/>}
             </IconButton>
         </Tooltip>
     );

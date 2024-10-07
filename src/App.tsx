@@ -10,24 +10,28 @@ import DevDependenciesChart from "./body/chart/chartvariants/DevDependenciesChar
 import CookieConsent from "./legalnotice/cookies/CookieConstent.tsx";
 import ResponsiveAppBar from "./appbar/ResponsiveAppBar.tsx";
 import StickyNoteComponent from "./footer/stickynote/StickyNoteComponent.tsx";
+import {ThemeProviderComponent} from "./darkmode/ThemeContext.tsx";
+
 
 const App: React.FC = () => {
     return (
-        <Router>
-            <ResponsiveAppBar/>
-            <Routes>
-                <Route path="/" element={<WelcomePage/>}/>
-                <Route path="/drag-n-drop" element={<DragAndDropPage/>}/>
-                <Route path="/terms-of-service" element={<ToSPage/>}/>
-                <Route path="/privacy-policy" element={<PrivacyPolicyPage/>}/>
-                <Route path="/normal-dependencies-chart" element={<NormalDependenciesChart />} />
-                <Route path="/dev-dependencies-chart" element={<DevDependenciesChart />} />
-                <Route path="/help" element={<HelpPage/>}/>
-                {/*TODO Other routes*/}
-            </Routes>
-            <CookieConsent/>
-            <StickyNoteComponent/>
-        </Router>
+        <ThemeProviderComponent>
+            <Router>
+                <ResponsiveAppBar/>
+                <Routes>
+                    <Route path="/" element={<WelcomePage/>}/>
+                    <Route path="/drag-n-drop" element={<DragAndDropPage/>}/>
+                    <Route path="/terms-of-service" element={<ToSPage/>}/>
+                    <Route path="/privacy-policy" element={<PrivacyPolicyPage/>}/>
+                    <Route path="/normal-dependencies-chart" element={<NormalDependenciesChart/>}/>
+                    <Route path="/dev-dependencies-chart" element={<DevDependenciesChart/>}/>
+                    <Route path="/help" element={<HelpPage/>}/>
+                    {/*TODO Other routes*/}
+                </Routes>
+                <CookieConsent/>
+                <StickyNoteComponent/>
+            </Router>
+        </ThemeProviderComponent>
     );
 };
 

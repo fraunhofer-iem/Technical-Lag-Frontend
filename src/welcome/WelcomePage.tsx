@@ -22,7 +22,7 @@ const WelcomePage: React.FC = () => {
 
     return (
         <div style={WelcomePageStyles.container}>
-            <Typography variant={"h1"} color="primary" gutterBottom style={WelcomePageStyles.title}>Technical Lag Analyzer</Typography>
+            <Typography variant={"h1"} gutterBottom style={WelcomePageStyles.title}>Technical Lag Analyzer</Typography>
             <Typography style={WelcomePageStyles.description}>
                 This tool helps with analysing the technical lag to all of your projects in a user friendly way. It's
                 designed to improve your workflow and make your life easier.

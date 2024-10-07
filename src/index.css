@@ -1,8 +1,8 @@
 :root {
     --color-scheme: light dark;
-    --txt-color: rgba(255, 255, 255, 0.87);
+/*    --txt-color: rgba(255, 255, 255, 0.87);*/
 
-    /*Basic Button Styles*/
+/*    !*Basic Button Styles*!
     --btn-bg-light: #72a695;
     --btn-bg-dark: #333;
 
@@ -14,7 +14,7 @@
     --btn-bg-hover-light: #6cbea8;
     --btn-bg-hover-dark: #868686;
 
-    /*Norm, Dev, Update, Revert and Filter Button Styles*/
+    !*Norm, Dev, Update, Revert and Filter Button Styles*!
     --graphbtns-bg-light: #34a19d;
     --graphbtns-bg-dark: #1f81be;
 
@@ -26,7 +26,7 @@
     --graphbtns-bg-hover-light: #68b9b2;
     --graphbtns-bg-hover-dark: #25b9e0;
 
-    /*New File Button Styles*/
+    !*New File Button Styles*!
     --nfbtn-bg-light: #00346a;
     --nfbtn-bg-dark: #00346a;
 
@@ -38,13 +38,7 @@
     --nfbtn-bg-hover-light: #005993;
     --nfbtn-bg-hover-dark: #005993;
 
-    /*Background Styles*/
-    --bg-color: #212f36;
-    --bg-img: url('./assets/images/darkmode/tactile_noise.webp');
-    background-position: center;
-    background-size: cover;
-
-    /*Drag n' Drop field Styles*/
+    !*Drag n' Drop field Styles*!
     --drop-bg-hover-light: #9eddcc;
     --drop-bg-hover-dark: #4e4e4e;
     --drop-bg-light: #72a695;
@@ -60,18 +54,16 @@
     --drop-border-light:transparent;
     --drop-border-dark:transparent;
 
-    /*Footer styles*/
+    !*Footer styles*!
     --footer-bg-light: #63aa96;
     --footer-bg-dark: #333;
     --footer-txt-color-light: #fff;
     --footer-txt-color-dark: #72a695;
     --footer-link-hover-light: #213547;
-    --footer-link-hover-dark: #fff;
+    --footer-link-hover-dark: #fff;*/
 
     /* Font and general styles */
-/*    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;*/
     line-height: 1.5;
-/*    font-weight: 400;*/
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -82,7 +74,7 @@
     height: 100%;
 }
 
-/* Light Mode Styles */
+/*!* Light Mode Styles *!
 body.light-mode {
     --txt-color: #213547;
 
@@ -102,7 +94,6 @@ body.light-mode {
     --nfbtn-bg-hover: var(--nfbtn-bg-hover-light);
 
     --bg-color: #ffffff;
-    --bg-img: url('./assets/images/lightmode/dot_grid.webp');
 
     --footer-bg: var(--footer-bg-light);
     --footer-text-color: var(--footer-txt-color-light);
@@ -116,7 +107,7 @@ body.light-mode {
     --drop-border: var(--drop-border-light);
 }
 
-/* Dark Mode Styles */
+!* Dark Mode Styles *!
 body.dark-mode {
     --txt-color: #ffffff;
 
@@ -135,8 +126,8 @@ body.dark-mode {
     --nfbtn-txt-hover: var(--nfbtn-txt-hover-dark);
     --nfbtn-bg-hover: var(--nfbtn-bg-hover-dark);
 
-    --bg-color: #121212;
-    --bg-img: url('./assets/images/darkmode/tactile_noise.webp');
+    --bg-color: #212121;
+!*    --bg-img: url('./assets/images/darkmode/tactile_noise.webp');*!
 
     --footer-bg: var(--footer-bg-dark);
     --footer-text-color: var(--footer-txt-color-dark);
@@ -148,7 +139,7 @@ body.dark-mode {
     --drop-txt-color: var(--drop-txt-color-dark);
     --drop-txt-hover: var(--drop-txt-hover-dark);
     --drop-border: var(--drop-border-dark);
-}
+}*/
 
 body, html {
     margin: 0;

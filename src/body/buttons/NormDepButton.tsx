@@ -2,17 +2,18 @@ import * as React from "react";
 import {useState} from "react";
 import {BodyStyles} from "../BodyStyles.tsx";
 import {ButtonProps} from "./buttonInterface.ts";
-import {Button, Fade, Tooltip} from "@mui/material";
+import {Button, Fade, Tooltip, useTheme} from "@mui/material";
 import AddchartIcon from "@mui/icons-material/Addchart";
 
 const NormDepButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
-    const [isNDButtonHovered, setIsNDButtonHovered] = useState<boolean>(false);
+    const [isHovered, setIsHovered] = useState<boolean>(false);
+    const theme = useTheme();
 
     const updateButtonStyle = {
         ...BodyStyles.chartButton,
-        backgroundColor: isNDButtonHovered ? 'var(--graphbtns-bg-hover)' : 'var(--graphbtns-bg)',
-        color: isNDButtonHovered ? 'var(--graphbtns-txt-hover)' : 'var(--graphbtns-txt-color)',
-        fontWeight: isNDButtonHovered ? 'bold' : 'normal',
+        backgroundColor: isHovered ? theme.palette.primary.light : theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+        fontWeight: isHovered ? 'bold' : 'normal',
     };
 
     return (
@@ -23,8 +24,8 @@ const NormDepButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
                 size="medium"
                 variant="contained"
                 onClick={action}
-                onMouseEnter={() => setIsNDButtonHovered(true)}
-                onMouseLeave={() => setIsNDButtonHovered(false)}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
             >
                 <AddchartIcon/>
                 {text}

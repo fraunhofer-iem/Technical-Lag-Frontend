@@ -6,13 +6,13 @@ import Typography from '@mui/material/Typography';
 import HelpButton from '../help/HelpButton';
 import DarkModeButton from '../darkmode/DarkModeButton';
 import {Link} from 'react-router-dom';
-import {ButtonGroup, CssBaseline, Slide, useScrollTrigger} from "@mui/material";
+import {ButtonGroup, CssBaseline, Slide, useScrollTrigger, useTheme} from "@mui/material";
 
 const logo = 'src/assets/images/channels4_profile.jpg';
 const top = '-6px';
 
 // Function to hide AppBar on scroll
-function HideOnScroll(props: { children: React.ReactElement }) {
+function HideOnScroll(props: Readonly<{ children: React.ReactElement }>) {
     const {children} = props;
     const trigger = useScrollTrigger();
 
@@ -24,61 +24,68 @@ function HideOnScroll(props: { children: React.ReactElement }) {
 }
 
 const ResponsiveAppBar: React.FC = () => {
+    const theme = useTheme();
+
     return (
         <React.Fragment>
             <CssBaseline/>
             <HideOnScroll>
-                <AppBar position="sticky" sx={{height: '44px', backgroundColor: 'var(--bg-color)'}}> {/*TODO color*/}
-                        <Toolbar
-                            disableGutters
-                            variant="dense"
-                            sx={{
-                                padding: '0px',
-                                justifyContent: 'space-between',
-                                width: '98vw',  // Set the width to 90% of the AppBar
-                                margin: '0 auto' // Center the toolbar within the AppBar
+                <AppBar position="sticky" sx={{height: '44px', bgcolor: theme.palette.primary.main}}> {/*TODO color*/}
+                    <Toolbar
+                        disableGutters
+                        variant="dense"
+                        sx={{
+                            padding: '0px',
+                            justifyContent: 'space-between',
+                            width: '98vw',  // Set the width to 90% of the AppBar
+                            margin: '0 auto' // Center the toolbar within the AppBar
+                        }}>
+
+                        {/* Logo and Text for Large Screens */}
+                        <Box sx={{display: {xs: 'none', md: 'flex'}, alignItems: 'center'}}>
+                            <img
+                                src={logo}
+                                alt="Logo"
+                                style={{
+                                    height: '28px',
+                                    width: 'auto',
+                                    marginRight: '8px',
+                                    alignSelf: 'center',
+                                    marginTop: top,
+                                }}
+                            />
+                            <Typography
+                                variant="h5"
+                                noWrap
+                                component={Link}
+                                to="/"
+                                sx={{
+                                    mr: 2,
+                                    fontFamily: 'monospace',
+                                    fontWeight: 700,
+                                    letterSpacing: '.2rem',
+                                    textDecoration: 'none',
+                                    marginTop: top,
+                                    color: theme.palette.primary.contrastText
+                                }}>
+                                TLA
+                            </Typography>
+                            <Typography sx={{
+                                fontSize: "0.7em",
+                                lineHeight: 'normal',
+                                marginTop: top,
+                                color: theme.palette.primary.contrastText
                             }}>
+                                powered by Fraunhofer IEM
+                            </Typography>
+                        </Box>
 
-                            {/* Logo and Text for Large Screens */}
-                            <Box sx={{display: {xs: 'none', md: 'flex'}, alignItems: 'center'}}>
-                                <img
-                                    src={logo}
-                                    alt="Logo"
-                                    style={{
-                                        height: '28px',
-                                        width: 'auto',
-                                        marginRight: '8px',
-                                        alignSelf: 'center',
-                                        marginTop: top,
-                                    }}
-                                />
-                                <Typography
-                                    variant="h5"
-                                    noWrap
-                                    component={Link}
-                                    to="/"
-                                    sx={{
-                                        mr: 2,
-                                        fontFamily: 'monospace',
-                                        fontWeight: 700,
-                                        letterSpacing: '.2rem',
-                                        color: 'var(--txt-color)', //TODO
-                                        textDecoration: 'none',
-                                        marginTop: top,
-                                    }}>
-                                    TLA
-                                </Typography>
-                                <Typography sx={{fontSize: "0.7em", lineHeight: 'normal', marginTop: top, color: 'var(--txt-color)'}}>
-                                    powered by Fraunhofer IEM
-                                </Typography>
-                            </Box>
-
-                            {/* Right-aligned buttons */}
-                            <ButtonGroup sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                    <HelpButton />
-                                    <DarkModeButton />
-                            </ButtonGroup>
-                        </Toolbar>
+                        {/* Right-aligned buttons */}
+                        <ButtonGroup sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+                            <HelpButton/>
+                            <DarkModeButton/>
+                        </ButtonGroup>
+                    </Toolbar>
                 </AppBar>
             </HideOnScroll>
         </React.Fragment>

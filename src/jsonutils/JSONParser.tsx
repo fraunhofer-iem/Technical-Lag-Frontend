@@ -74,7 +74,6 @@ const transformData = (json: any): { normalGraph: Graph, devGraph: Graph } => {
 
     // Process graphs for both scopes
     const normalGraph = processScopeGraph(root, projectDTO, artifactMap, "dependencies");
-    console.log("normalGraph: ", normalGraph)
     const devGraph = processScopeGraph(root, projectDTO, artifactMap, "devDependencies");
 
 
@@ -130,7 +129,6 @@ const processScopeGraph = (
 
     // Find the graph item for the given scope
     const graphItem = projectDto.graph.find((item: any) => item.scope === scope);
-    console.log("graphItem: ", graphItem);
 
     if (graphItem) {
         // Process nodes
@@ -199,8 +197,7 @@ const processEdges = (
         if (nodeArray.length > 0) {
             const fromNode = nodeArray[edge.from];
             const toNode = nodeArray[edge.to];
-/*            console.log("fromArtifactNode: " + fromNode?.nodeName);
-            console.log("toArtifactNode: " + toNode?.nodeName);*/
+
             if (fromNode && toNode) {
                 edges.push({
                     from: fromNode.nodeId,

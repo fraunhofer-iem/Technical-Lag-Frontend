@@ -1,8 +1,5 @@
 export const HelpButtonStyles = {
-    button: {
-/*        position: 'fixed' as const,*/
-/*        top: '10px',
-        left: '10px',*/
+    helpButton: {
         padding: '10px 20px',
         border: 'none',
         borderRadius: '5px',

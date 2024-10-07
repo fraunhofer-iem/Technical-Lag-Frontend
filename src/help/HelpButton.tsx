@@ -3,19 +3,12 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {HelpButtonStyles} from './HelpButtonStyles';
 import {faQuestion} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {Button, Fade, Tooltip} from "@mui/material";
+import {Button, Fade, IconButton, Tooltip} from "@mui/material";
 
 const HelpButton: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const [isHelpButtonHovered, setIsHelpButtonHovered] = useState<boolean>(false);
-
-    const helpButtonStyle = {
-        ...HelpButtonStyles.button,
-        backgroundColor: isHelpButtonHovered ? 'var(--btn-bg-hover)' : 'var(--btn-bg)',
-        color: isHelpButtonHovered ? 'var(--btn-hover-txt-color)' : 'var(--btn-txt-color)',
-        fontWeight: isHelpButtonHovered ? 'bold' : 'normal',
-    };
+    const [isHovered, setIsHovered] = useState<boolean>(false);
 
     const handleHelpClick = () => {
         navigate('/help');
@@ -29,14 +22,18 @@ const HelpButton: React.FC = () => {
     return (
         <Tooltip title={"Need Help? Click me!"} placement={"bottom"} arrow TransitionComponent={Fade} TransitionProps={{timeout: 600}}
                  PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '8px', fontSize: "12px"},}}}>
-            <Button
-                style={helpButtonStyle} //TODO
+            <IconButton
+                /*style={helpButtonStyle}*/ //TODO
                 onClick={handleHelpClick}
-                onMouseEnter={() => setIsHelpButtonHovered(true)}
-                onMouseLeave={() => setIsHelpButtonHovered(false)}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                sx={{ //TODO
+/*                    backgroundColor: isHovered ? 'var(--btn-bg-hover)' : 'var(--btn-bg)',  // Background color on hover
+                    color: isHovered ? 'var(--btn-hover-txt-color)' : 'var(--btn-txt-color)',  // Text color on hover*/
+                }}
             >
                 <FontAwesomeIcon icon={faQuestion} style={HelpButtonStyles.icon}/>
-            </Button>
+            </IconButton>
         </Tooltip>
     );
 };

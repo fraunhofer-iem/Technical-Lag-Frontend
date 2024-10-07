@@ -2,31 +2,33 @@ import * as React from "react";
 import {useState} from "react";
 import {BodyStyles} from "../BodyStyles.tsx";
 import {ButtonProps} from "./buttonInterface.ts";
-import {Fade, IconButton, Tooltip} from "@mui/material";
+import {Fade, Button, Tooltip, useTheme} from "@mui/material";
 import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
 
 const UpdateButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
-    const [isUDButtonHovered, setIsUDButtonHovered] = useState<boolean>(false);
+    const [isHovered, setIsHovered] = useState<boolean>(false);
+    const theme = useTheme();
 
     const updateButtonStyle = {
         ...BodyStyles.chartButton,
-        backgroundColor: isUDButtonHovered ? 'var(--graphbtns-bg-hover)' : 'var(--graphbtns-bg)',
-        color: isUDButtonHovered ? 'var(--graphbtns-txt-hover)' : 'var(--graphbtns-txt-color)',
+        backgroundColor: isHovered ? theme.palette.primary.light : theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
     };
 
     return (
         <Tooltip title={tooltip} placement={"right"} arrow TransitionComponent={Fade} TransitionProps={{timeout: 600}}
                  PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '10px', fontSize: "14px"},}}}>
-            <IconButton
+            <Button
                 style={updateButtonStyle}
                 size="medium"
+                variant="contained"
                 onClick={action}
-                onMouseEnter={() => setIsUDButtonHovered(true)}
-                onMouseLeave={() => setIsUDButtonHovered(false)}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
             >
                 <TroubleshootIcon/>
                 {text}
-            </IconButton>
+            </Button>
         </Tooltip>
     );
 };

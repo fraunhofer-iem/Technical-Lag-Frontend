@@ -1,6 +1,21 @@
 import React from 'react';
 import styles from './ChartSidebarStyles.tsx';
 import {Stats} from "../../../jsonutils/JSONStructureInterfaces.tsx";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Box,
+    Button,
+    Divider,
+    Drawer,
+    List,
+    ListItem,
+    MenuItem,
+    Select,
+    Typography
+} from '@mui/material';
+import {ExpandMore} from "@mui/icons-material";
 
 interface SidebarProps {
     fullName: string;
@@ -14,15 +29,15 @@ interface SidebarProps {
 }
 
 const ChartSidebar: React.FC<SidebarProps> = ({
-                                             fullName,
-                                             versionNumber,
-                                             releaseDate,
-                                             onClose,
-                                             ecosystem,
-                                             repoURL,
-                                             revision,
-                                             stats
-                                         }) => {
+                                                  fullName,
+                                                  versionNumber,
+                                                  releaseDate,
+                                                  onClose,
+                                                  ecosystem,
+                                                  repoURL,
+                                                  revision,
+                                                  stats
+                                              }) => {
     // Convert milliseconds to a Date object
     const formattedReleaseDate = !isNaN(parseInt(releaseDate))
         ? new Date(parseInt(releaseDate)).toLocaleString()
@@ -41,17 +56,17 @@ const ChartSidebar: React.FC<SidebarProps> = ({
     type VersionType = 'Minor' | 'Major' | 'Patch';
     const [versionType, setVersionType] = React.useState<VersionType>('Major');
 
-    const [isAccordionStatisticsHovered, setIsAccordionStatisticsHovered] = React.useState(false);
-    const [isAccordionNodeHovered, setIsAccordionNodeHovered] = React.useState(false);
-    const [isAccordionChildrenHovered, setIsAccordionChildrenHovered] = React.useState(false);
+    /*    const [isAccordionStatisticsHovered, setIsAccordionStatisticsHovered] = React.useState(false);
+        const [isAccordionNodeHovered, setIsAccordionNodeHovered] = React.useState(false);
+        const [isAccordionChildrenHovered, setIsAccordionChildrenHovered] = React.useState(false);
 
-    const [isAccordionStatisticsActive, setIsAccordionStatisticsActive] = React.useState(false);
-    const [isAccordionNodeActive, setIsAccordionNodeActive] = React.useState(false);
-    const [isAccordionChildrenActive, setIsAccordionChildrenActive] = React.useState(false);
+        const [isAccordionStatisticsActive, setIsAccordionStatisticsActive] = React.useState(false);
+        const [isAccordionNodeActive, setIsAccordionNodeActive] = React.useState(false);
+        const [isAccordionChildrenActive, setIsAccordionChildrenActive] = React.useState(false);
 
-    const handleVersionTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setVersionType(event.target.value as VersionType);
-    };
+        const handleVersionTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+            setVersionType(event.target.value as VersionType);
+        };*/
 
     const getStatsByVersionType = (versionType: VersionType) => {
         const defaultStats = {
@@ -137,52 +152,38 @@ const ChartSidebar: React.FC<SidebarProps> = ({
         const childrenData = getChildrenData(versionType);
 
         return (
-            <div>
-                <br/>
-                <hr style={styles.horizontalLine}/>
-                <br/>
-
-                <button onClick={() => {
-                    setIsStatisticsOpen(!isStatisticsOpen);
-                    setIsAccordionStatisticsActive(!isAccordionStatisticsActive);
-                }}
-                        onMouseEnter={() => setIsAccordionStatisticsHovered(true)}
-                        onMouseLeave={() => setIsAccordionStatisticsHovered(false)}
-                        style={{
-                            ...styles.accordionHeader,
-                            ...(isAccordionStatisticsHovered ? styles.accordionHeaderStatisticsHover : {}),
-                            ...(isAccordionStatisticsActive ? styles.accordionHeaderStatisticsActive : {})
-                        }}>
-                    <p>Technical Lag Statistics {isStatisticsOpen ? '-' : '+'}</p>
-                </button>
+            <Box>
+                <Divider/>
+                <Button
+                    variant="contained"
+                    onClick={() => {
+                        setIsStatisticsOpen(!isStatisticsOpen);
+                    }}
+                    style={styles.accordionHeader}>
+                    <Typography>
+                        Technical Lag Statistics {isStatisticsOpen ? '-' : '+'}
+                    </Typography>
+                </Button>
 
                 {isStatisticsOpen && (
-                    <div style={styles.accordionContent}>
-                        <div style={styles.select}>
+                    <Box style={styles.accordionContent}>
+                        <Box style={styles.select}>
                             <strong style={styles.label}>Version Type:&nbsp;{' '}
-                                <select value={versionType} onChange={handleVersionTypeChange}>
-                                    <option value={"Major"}>Major</option>
-                                    <option value={"Minor"}>Minor</option>
-                                    <option value={"Patch"}>Patch</option>
-                                </select>
+                                <Select value={versionType}
+                                        onChange={(e) => setVersionType(e.target.value as VersionType)} displayEmpty>
+                                    <MenuItem value={"Major"}>Major</MenuItem>
+                                    <MenuItem value={"Minor"}>Minor</MenuItem>
+                                    <MenuItem value={"Patch"}>Patch</MenuItem>
+                                </Select>
                             </strong>
-                        </div>
+                        </Box>
 
-                        <button onClick={() => {
-                            setIsTechnicalLagNodeOpen(!isTechnicalLagNodeOpen);
-                            setIsAccordionNodeActive(!isAccordionNodeActive);
-                        }}
-                                onMouseEnter={() => setIsAccordionNodeHovered(true)}
-                                onMouseLeave={() => setIsAccordionNodeHovered(false)}
-                                style={{
-                                    ...styles.accordionHeader,
-                                    ...(isAccordionNodeHovered ? styles.accordionHeaderNodeHover : {}),
-                                    ...(isAccordionNodeActive ? styles.accordionHeaderNodeActive : {})
-                                }}>
-                            <p>Current Node {isTechnicalLagNodeOpen ? '-' : '+'}</p>
-                        </button>
-                        {isTechnicalLagNodeOpen && (
-                            <div style={styles.accordionContent}>
+                        <Accordion expanded={isTechnicalLagNodeOpen}
+                                   onChange={() => setIsTechnicalLagNodeOpen(!isTechnicalLagNodeOpen)}>
+                            <AccordionSummary expandIcon={<ExpandMore/>}>
+                                <Typography>Current Node</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
                                 <p style={styles.paragraph}><strong style={styles.label}>Lag in
                                     Days:</strong> {formatNumber(lagData.libDays)}</p>
                                 <p style={styles.paragraph}><strong style={styles.label}>Newest
@@ -190,120 +191,116 @@ const ChartSidebar: React.FC<SidebarProps> = ({
                                 <p style={styles.paragraph}><strong style={styles.label}>Missed
                                     Releases:</strong> {formatNumber(lagData.numberOfMissedReleases)}</p>
                                 <p style={styles.paragraph}><strong
-                                    style={styles.label}>Distance:&nbsp;</strong>{formatNumber(renderDistance())}
-                                </p>
+                                    style={styles.label}>Distance:&nbsp;</strong>{formatNumber(renderDistance())}</p>
                                 <p style={styles.paragraph}><strong style={styles.label}>Release
                                     Frequency:</strong> {formatNumber(lagData.releaseFrequency.releasesPerMonth)} per
-                                    Month
-                                </p>
-                            </div>
-                        )}
+                                    Month</p>
+                            </AccordionDetails>
+                        </Accordion>
 
-                        <button onClick={() => {
-                            setIsTechnicalLagChildrenOpen(!isTechnicalLagChildrenOpen);
-                            setIsAccordionChildrenActive(!isAccordionChildrenActive);
-                        }}
-                                onMouseEnter={() => setIsAccordionChildrenHovered(true)}
-                                onMouseLeave={() => setIsAccordionChildrenHovered(false)}
-                                style={{
-                                    ...styles.accordionHeader,
-                                    ...(isAccordionChildrenHovered ? styles.accordionHeaderChildrenHover : {}),
-                                    ...(isAccordionChildrenActive ? styles.accordionHeaderChildrenActive : {})
-                                }}>
-                            <p>Children {isTechnicalLagChildrenOpen ? '-' : '+'}</p>
-                        </button>
-                        {isTechnicalLagChildrenOpen && (
-                            <div style={styles.accordionContent}>
-                                <p style={styles.paragraph}><strong style={styles.label}>Lag in Days:</strong></p>
-                                <ul style={styles.list}>
-                                    <li><strong
+                        <Accordion expanded={isTechnicalLagChildrenOpen}
+                                   onChange={() => setIsTechnicalLagChildrenOpen(!isTechnicalLagChildrenOpen)}>
+                            <AccordionSummary expandIcon={<ExpandMore/>}>
+                                <Typography>Children</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography style={styles.paragraph}><strong style={styles.label}>Lag in Days:</strong></Typography>
+                                <List style={styles.list}>
+                                    <ListItem><strong
                                         style={styles.label}>Avg:</strong> {formatNumber(childrenData.libDays.average)}
-                                    </li>
-                                    <li><strong style={styles.label}>Std
-                                        Dev:</strong> {formatNumber(childrenData.libDays.stdDev)}</li>
-                                </ul>
-                                <div>
-                                    <p style={styles.paragraph}><strong style={styles.label}>Missed Releases:</strong>
-                                    </p>
-                                    <ul style={styles.list}>
-                                        <li><strong
+                                    </ListItem>
+                                    <ListItem><strong style={styles.label}>Std
+                                        Dev:</strong> {formatNumber(childrenData.libDays.stdDev)}</ListItem>
+                                </List>
+                                <Box>
+                                    <Typography style={styles.paragraph}><strong style={styles.label}>Missed
+                                        Releases:</strong></Typography>
+                                    <List style={styles.list}>
+                                        <ListItem><strong
                                             style={styles.label}>Avg:</strong> {formatNumber(childrenData.missedReleases.average)}
-                                        </li>
-                                        <li><strong style={styles.label}>Std
-                                            Dev:</strong> {formatNumber(childrenData.missedReleases.stdDev)}</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <p style={styles.paragraph}><strong style={styles.label}>Distance:</strong></p>
-                                    <ul style={styles.list}>
-                                        <li><strong style={styles.label}>First
-                                            Avg:</strong> {formatNumber(childrenData.distanceFirst.average)}</li>
-                                        <li><strong style={styles.label}>Second
-                                            Avg:</strong> {formatNumber(childrenData.distanceSecond.average)}</li>
-                                        <li><strong style={styles.label}>Third
-                                            Avg:</strong> {formatNumber(childrenData.distanceThird.average)}</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <p style={styles.paragraph}><strong style={styles.label}>Release Frequency:</strong>
-                                    </p>
-                                    <ul style={styles.list}>
-                                        <li><strong
+                                        </ListItem>
+                                        <ListItem><strong style={styles.label}>Std
+                                            Dev:</strong> {formatNumber(childrenData.missedReleases.stdDev)}</ListItem>
+                                    </List>
+                                </Box>
+                                <Box>
+                                    <Typography style={styles.paragraph}><strong style={styles.label}>Distance:</strong></Typography>
+                                    <List style={styles.list}>
+                                        <ListItem><strong style={styles.label}>First
+                                            Avg:</strong> {formatNumber(childrenData.distanceFirst.average)}</ListItem>
+                                        <ListItem><strong style={styles.label}>Second
+                                            Avg:</strong> {formatNumber(childrenData.distanceSecond.average)}</ListItem>
+                                        <ListItem><strong style={styles.label}>Third
+                                            Avg:</strong> {formatNumber(childrenData.distanceThird.average)}</ListItem>
+                                    </List>
+                                </Box>
+                                <Box>
+                                    <Typography style={styles.paragraph}><strong style={styles.label}>Release
+                                        Frequency:</strong></Typography>
+                                    <List style={styles.list}>
+                                        <ListItem><strong
                                             style={styles.label}>Avg:</strong> {formatNumber(childrenData.releaseFrequency.average)}
-                                        </li>
-                                        <li><strong style={styles.label}>Std
-                                            Dev:</strong> {formatNumber(childrenData.releaseFrequency.stdDev)}</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        )}
-                    </div>
+                                        </ListItem>
+                                        <ListItem><strong style={styles.label}>Std
+                                            Dev:</strong> {formatNumber(childrenData.releaseFrequency.stdDev)}
+                                        </ListItem>
+                                    </List>
+                                </Box>
+                            </AccordionDetails>
+                        </Accordion>
+                    </Box>
                 )}
-            </div>
+            </Box>
         );
     };
 
-
     return (
-        <div style={styles.sidebar}>
+        <Drawer anchor="right" open={true} onClose={onClose}
+                PaperProps={{
+                    sx: {
+                        width: '350px',
+                        height: '80%',
+                        position: 'fixed',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        right: 0,
+                        zIndex: 1300,
+                        borderRadius: '8px 0 0 8px',
+                        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+                    },
+                }}
+        >
+            <Box sx={{width: "100%", padding: '2em'}}>
+                <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1em'}}>
+                    <Typography variant="h6">Node Information</Typography>
+                </Box>
+                <Divider/>
+                {fullName && (
+                    <Box>
+                        <Typography style={styles.paragraph}><strong style={styles.label}>Node:</strong> <span
+                            style={{wordBreak: 'break-all'}}>{fullName}</span></Typography>
+                        <Typography style={styles.paragraph}><strong
+                            style={styles.label}>Version:</strong> {versionNumber}</Typography>
+                        <Typography style={styles.paragraph}><strong style={styles.label}>Release Date:</strong> <span
+                            style={{wordBreak: 'break-all'}}>{formattedReleaseDate}</span></Typography>
+                    </Box>
+                )}
 
+                {ecosystem && repoURL && revision && (
+                    <Box>
+                        <Typography style={styles.paragraph}><strong style={styles.label}>Ecosystem:</strong> <span
+                            style={{wordBreak: 'break-all'}}>{ecosystem}</span></Typography>
+                        <Typography style={styles.paragraph}><strong style={styles.label}>Repository:</strong> <span
+                            style={{wordBreak: 'break-all'}}>{repoURL}</span></Typography>
+                        <Typography style={styles.paragraph}><strong style={styles.label}>Revision:</strong> <span
+                            style={{wordBreak: 'break-all'}}>{revision}</span></Typography>
+                    </Box>
+                )}
 
-            <div style={styles.headerContainer}>
-                <button
-                    onClick={onClose}
-                    style={styles.closeButton}
-                >
-                    <span style={{...styles.closeButtonBeforeAfter, ...styles.closeButtonBefore}}/>
-                    <span style={{...styles.closeButtonBeforeAfter, ...styles.closeButtonAfter}}/>
-                </button>
-                <p style={styles.header}>Node Information</p>
-            </div>
+                {stats && renderStats()}
 
-
-            <hr style={styles.horizontalLine}/>
-            {fullName && (
-                <>
-                    <p style={styles.paragraph}><strong style={styles.label}>Node:</strong> <span
-                        style={{wordBreak: 'break-all'}}>{fullName}</span></p>
-                    <p style={styles.paragraph}><strong style={styles.label}>Version:</strong> {versionNumber}</p>
-                    <p style={styles.paragraph}><strong style={styles.label}>Release Date:</strong> <span
-                        style={{wordBreak: 'break-all'}}>{formattedReleaseDate}</span></p>
-                </>
-            )}
-
-            {ecosystem && repoURL && revision && (
-                <>
-                    <p style={styles.paragraph}><strong style={styles.label}>Ecosystem:</strong> <span
-                        style={{wordBreak: 'break-all'}}>{ecosystem}</span></p>
-                    <p style={styles.paragraph}><strong style={styles.label}>Repository:</strong> <span
-                        style={{wordBreak: 'break-all'}}>{repoURL}</span></p>
-                    <p style={styles.paragraph}><strong style={styles.label}>Revision:</strong> <span
-                        style={{wordBreak: 'break-all'}}>{revision}</span></p>
-                </>
-            )}
-
-            {stats && renderStats()}
-        </div>
+            </Box>
+        </Drawer>
     );
 };
 

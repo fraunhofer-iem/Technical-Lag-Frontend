@@ -2,16 +2,17 @@ import * as React from "react";
 import {useState} from "react";
 import {BodyStyles} from "../BodyStyles.tsx";
 import {ButtonProps} from "./buttonInterface.ts";
-import {Button, Fade, Tooltip} from "@mui/material";
+import {Button, Fade, Tooltip, useTheme} from "@mui/material";
 import AddchartIcon from '@mui/icons-material/Addchart';
 
 const DevDepButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
-    const [isDDButtonHovered, setIsDDButtonHovered] = useState<boolean>(false);
+    const [isHovered, setIsHovered] = useState<boolean>(false);
+    const theme = useTheme();
 
     const updateButtonStyle = {
         ...BodyStyles.chartButton,
-        backgroundColor: isDDButtonHovered ? 'var(--graphbtns-bg-hover)' : 'var(--graphbtns-bg)',
-        color: isDDButtonHovered ? 'var(--graphbtns-txt-hover)' : 'var(--graphbtns-txt-color)',
+        backgroundColor: isHovered ? theme.palette.primary.light : theme.palette.primary.main,
+        color: theme.palette.primary.contrastText
     };
 
     return (
@@ -20,9 +21,10 @@ const DevDepButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
             <Button
                 style={updateButtonStyle}
                 size="medium"
+                variant="contained"
                 onClick={action}
-                onMouseEnter={() => setIsDDButtonHovered(true)}
-                onMouseLeave={() => setIsDDButtonHovered(false)}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
             >
                 <AddchartIcon/>
                 {text}

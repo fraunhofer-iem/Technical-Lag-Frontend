@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Box = styled.div<{ $isfooteropen: boolean }>`
-    background: var(--footer-bg);
-    color: var(--footer-text-color);
+/*    background: var(--footer-bg);
+    color: var(--footer-text-color);*/
     bottom: 0;
     position: fixed;
     height: ${(props) => (props.$isfooteropen ? '2.5em' : '0')};
@@ -18,8 +18,8 @@ export const FooterContainer = styled.div<{ $isfooteropen: boolean }>`
     justify-content: center;
     width: 60vw;
     margin: 0 auto;
-    background: var(--footer-bg);
-    color: var(--footer-text-color);
+/*    background: var(--footer-bg);
+    color: var(--footer-text-color);*/
     padding: 1px;
     height: ${(props) => (props.$isfooteropen ? '2.5em' : '0')};
     z-index: 1000;
@@ -42,19 +42,19 @@ export const Row = styled.div`
 `;
 
 export const FooterLink = styled.a`
-    color: var(--footer-text-color);
+/*    color: var(--footer-text-color);*/
     margin: auto;
     font-size: 13px;
     font-weight: 400;
 
     &:hover {
-        color: var(--footer-link-hover);
+/*        color: var(--footer-link-hover);*/
         transition: 300ms ease-in;
     }
 `;
 
 export const Copyright = styled.p`
     font-size: 12px;
-    color: var(--footer-text-color);
+/*    color: var(--footer-text-color);*/
     font-weight: 400;
 `

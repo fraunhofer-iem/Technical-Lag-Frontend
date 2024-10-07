@@ -21,13 +21,7 @@ export const transformJSONDataToTreemap = (graph: Graph) => {
     const transformNode = (node: Node): any => {
         const children = findChildren(node);  // Recursively find children nodes
 
-        // Aggregate some value from the node stats
-        const totalLibDays = node.stats.reduce((sum, stat) => {
-            return sum + stat.stats.technicalLag.libDays;
-        }, 0);
-
-        console.log(`Transforming Node: ${node.nodeName}, TotalLibDays: ${totalLibDays}, Children: ${children.length}`);
-
+        console.log(node.usedVersion);
         return {
             name: node.nodeName,          // The name of the node (e.g., library/package)
             value: 1,          // Aggregated value based on stats, e.g., total libDays
@@ -42,9 +36,6 @@ export const transformJSONDataToTreemap = (graph: Graph) => {
             .filter(edge => edge.from === parentNode.nodeId)  // Find edges where current node is the parent
             .map(edge => {
                 const childNode = graph.nodes.find(n => n.nodeId === edge.to);  // Find child node
-                if (childNode) {
-                    console.log(`Found Child Node: ${childNode.nodeName} for Parent: ${parentNode.nodeName}`);
-                }
                 return childNode ? transformNode(childNode) : null;  // Transform the child node if found
             })
             .filter(childNode => childNode !== null);  // Filter out null results
@@ -54,16 +45,11 @@ export const transformJSONDataToTreemap = (graph: Graph) => {
 
     const rootNode = graph.root;
 
-    console.log(`Root Node: ${rootNode.rootName}`);
-
     // Find and transform all the children of the root node
     const transformedNodes = graph.edges
         .filter(edge => edge.from === rootNode.rootId)  // Edges originating from the root
         .map(edge => {
             const node = graph.nodes.find(n => n.nodeId === edge.to);  // Find child nodes of the root
-            if (node) {
-                console.log(`Transforming Root Child Node: ${node.nodeName}`);
-            }
             return node ? transformNode(node) : null;  // Transform child nodes
         })
         .filter(node => node !== null);  // Filter out null results

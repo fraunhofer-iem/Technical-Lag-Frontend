@@ -5,9 +5,6 @@ export const BodyStyles = {
         width: '100%',
         top: "10px",
         position: "relative" as const,
-        backgroundColor: 'var(--bg-color)',
-        backgroundImage: 'var(--bg-img)',
-        backgroundPosition: 'center',
     },
     graphContainer: {
         width: '100vw',

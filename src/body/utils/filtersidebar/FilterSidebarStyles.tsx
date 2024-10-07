@@ -1,75 +1,16 @@
 // FilterSidebarStyles.ts
 const styles = {
-    sidebar: {
-        position: 'fixed' as const,
-        top: '10%',
-        right: 0,
-        width: '22em',
-        height: '80vh',
-        backgroundColor: '#333333',
-        borderLeft: '2px solid #000',
-        borderTop: '2px solid #000',
-        borderBottom: '2px solid #000',
-        borderRight: "none",
-        borderBottomLeftRadius: "8px",
-        borderTopLeftRadius: "8px",
-        padding: '2em',
-        zIndex: 1000,
-        textAlign: 'left' as const,
-        overflowY: 'auto' as const,
-        transition: 'right 0.6s ease-in-out',
-    },
     headerContainer: {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: '1em',
     },
-    closeButton: {
-        position: 'relative' as const,
-        border: 'none',
-        padding: '0',
-        width: '1.5em',
-        height: '1.5em',
-        borderRadius: '50%',
-        background: 'transparent',
-        color: '#ffffff',
-        font: 'inherit',
-        textIndent: '100%',
-        cursor: 'pointer',
-        outline: 'solid 0 transparent',
-        boxShadow: '0 0 0 2px rgba(255, 255, 255, 0.5)',
-        transition: 'background 0.3s ease',
-        '&:hover': {
-            background: 'rgba(255, 255, 255, 0.2)',
-        },
-    },
-    closeButtonBeforeAfter: {
-        position: 'absolute' as const,
-        top: '20%',
-        left: 'calc(50% - .0625em)',
-        width: '.1em',
-        height: '60%',
-        borderRadius: '.1em',
-        background: 'currentcolor',
-        content: "''",
-    },
-    closeButtonBefore: {
-        transform: 'rotate(45deg)',
-    },
-    closeButtonAfter: {
-        transform: 'rotate(-45deg)',
-    },
     header: {
         fontSize: '22px',
-        color: '#73a796',
+/*        color: 'var(--txt-color)',*/
         fontWeight: 'bold',
         margin: 0,
-    },
-    horizontalLine: {
-        border: 0,
-        height: '2px',
-        backgroundColor: '#73a796',
     },
     content: {
         display: 'flex',
@@ -79,7 +20,7 @@ const styles = {
         marginBottom: '15px',
     },
     label: {
-        color: '#73a796',
+/*        color: 'var(--txt-color)',*/
         fontSize: '14px',
         fontWeight: 'bold',
         marginBottom: '5px',
@@ -93,8 +34,8 @@ const styles = {
     searchButton: {
         marginTop: '10px',
         padding: '10px',
-        backgroundColor: '#62a995',
-        color: '#fff',
+/*        color: 'var(--btn-txt-color)',
+        backgroundColor: 'var(--btn-bg)',*/
         border: 'none',
         borderRadius: '4px',
         cursor: 'pointer',
@@ -102,8 +43,8 @@ const styles = {
     applyButton: {
         marginTop: '10px',
         padding: '10px',
-        backgroundColor: '#62a995',
-        color: '#fff',
+/*        color: 'var(--btn-txt-color)',
+        backgroundColor: 'var(--btn-bg)',*/
         border: 'none',
         borderRadius: '4px',
         cursor: 'pointer',
@@ -114,8 +55,8 @@ const styles = {
         marginTop: '0.5em',
     },
     resultItem: {
-        backgroundColor: '#444',
-        color: '#fff',
+/*        color: 'var(--btn-txt-color)',
+        backgroundColor: 'var(--btn-bg)',*/
         fontSize: '14px',
         fontWeight: '500',
         padding: '0.5em',
@@ -124,10 +65,5 @@ const styles = {
         cursor: 'pointer',
         borderBottom: '1px solid #ccc',
         transition: 'background-color 0.3s ease',
-        '&:hover': {
-            backgroundColor: '#f0f0f0',
-        },
     },
 };
-
-export default styles;

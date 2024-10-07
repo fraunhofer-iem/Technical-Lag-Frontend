@@ -31,7 +31,6 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
     const [currentGraph, setCurrentGraph] = useState<Graph | null>(null);
 
     const navigate = useNavigate();
-
     const chartRef = useRef<HTMLDivElement>(null);
     const chartInstanceRef = useRef<echarts.ECharts | null>(null);
 
@@ -107,8 +106,10 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
         if (graphs) {
             const selectedGraph = graphType === 'normalGraph' ? graphs.normalGraph : graphs.devGraph;
             setCurrentGraph(selectedGraph);
-            setChartSidebarData(null); // Clear the sidebar when switching graphs
-            setIsChartSidebarVisible(false); // Hide the chart sidebar when switching graphs
+
+            // Clear sidebar data and close the sidebar
+            setChartSidebarData(null);
+            setIsChartSidebarVisible(false);
         }
     };
 
@@ -154,6 +155,7 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
 
                     {isFilterSidebarVisible && (
                         <FilterSidebar
+                            isOpen={isFilterSidebarVisible}
                             onClose={handleCloseFilterSidebar}
                             onSearch={handleSearch}
                             searchResults={searchResults}

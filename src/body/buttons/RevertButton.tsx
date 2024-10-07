@@ -2,32 +2,34 @@ import * as React from "react";
 import {useState} from "react";
 import {BodyStyles} from "../BodyStyles.tsx";
 import {ButtonProps} from "./buttonInterface.ts";
-import {Fade, IconButton, Tooltip} from "@mui/material";
+import {Fade, Button, Tooltip, useTheme} from "@mui/material";
 import BackspaceIcon from '@mui/icons-material/Backspace';
 
 
 const RevertButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
-    const [isRevButtonHovered, setIsRevButtonHovered] = useState<boolean>(false);
+    const [isHovered, setIsHovered] = useState<boolean>(false);
+    const theme = useTheme();
 
     const revButtonStyle = {
         ...BodyStyles.chartButton,
-        backgroundColor: isRevButtonHovered ? 'var(--graphbtns-bg-hover)' : 'var(--graphbtns-bg)',
-        color: isRevButtonHovered ? 'var(--graphbtns-txt-hover)' : 'var(--graphbtns-txt-color)',
+        backgroundColor: isHovered ? theme.palette.primary.light : theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
     };
 
     return (
         <Tooltip title={tooltip} placement={"right"} arrow TransitionComponent={Fade} TransitionProps={{timeout: 600}}
                  PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '10px', fontSize: "14px"},}}}>
-            <IconButton
+            <Button
                 style={revButtonStyle}
                 size="medium"
+                variant="contained"
                 onClick={action}
-                onMouseEnter={() => setIsRevButtonHovered(true)}
-                onMouseLeave={() => setIsRevButtonHovered(false)}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
             >
                 {text}
                 <BackspaceIcon/>
-            </IconButton>
+            </Button>
         </Tooltip>
     );
 };

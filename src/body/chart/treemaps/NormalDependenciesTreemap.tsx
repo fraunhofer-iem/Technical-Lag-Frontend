@@ -157,7 +157,7 @@ export class NormalDependenciesTreemap implements TreemapGenerator {
 
         // Recursively apply the same decal to all descendants of each child
         children.forEach(child => this.applyDecalToDescendants(child, child.itemStyle.decal));
-        console.log("children:", children);
+/*        console.log("children:", children);*/
     }
 
 // Function to calculate text color based on background color
@@ -170,8 +170,8 @@ export class NormalDependenciesTreemap implements TreemapGenerator {
 
         const rgb = this.hexToRgb(bgColor);
         const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b);
-        console.log(luminance);
-        console.log(luminance > 60  ? '#000000' : '#FFFFFF');
+/*        console.log(luminance);
+        console.log(luminance > 60  ? '#000000' : '#FFFFFF');*/
         return luminance > 60  ? '#000000' : '#FFFFFF'; // Use black for bright backgrounds, white for dark
     }
 
@@ -204,8 +204,7 @@ export class NormalDependenciesTreemap implements TreemapGenerator {
 
                 this.applyDecalToDescendants(child, decal);
             });
-        }
-        else
-            console.error("No children found");
+        } else
+            console.warn("No children found");
     }
 }

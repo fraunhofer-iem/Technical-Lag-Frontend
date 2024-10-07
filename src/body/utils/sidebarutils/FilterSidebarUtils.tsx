@@ -58,7 +58,7 @@ export const useFilterSidebar = (graph: Graph  | null, chartInstanceRef: React.R
         let results: SearchResult[] = [];
         const currentPath = [...path, data.name];
 
-        if (data.name.toLowerCase().includes(name.toLowerCase())) {
+        if (data.name && typeof data.name === 'string' && data.name.toLowerCase().includes(name.toLowerCase())) {
             results.push({ ...data, path: currentPath });
         }
 

@@ -2,31 +2,33 @@ import * as React from "react";
 import {useState} from "react";
 import {BodyStyles} from "../BodyStyles.tsx";
 import {ButtonProps} from "./buttonInterface.ts";
-import {Fade, IconButton, Tooltip} from "@mui/material";
+import {Fade, Button, Tooltip, useTheme} from "@mui/material";
 import FilterListIcon from '@mui/icons-material/FilterList';
 
 const FilterButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
-    const [isFilterButtonHovered, setIsFilterButtonHovered] = useState<boolean>(false);
+    const [isHovered, setIsHovered] = useState<boolean>(false);
+    const theme = useTheme();
 
     const filterButtonStyle = {
         ...BodyStyles.chartButton,
-        backgroundColor: isFilterButtonHovered ? 'var(--graphbtns-bg-hover)' : 'var(--graphbtns-bg)',
-        color: isFilterButtonHovered ? 'var(--graphbtns-txt-hover)' : 'var(--graphbtns-txt-color)',
+        backgroundColor: isHovered ? theme.palette.primary.light : theme.palette.primary.main,
+        color: theme.palette.primary.contrastText
     };
 
     return (
         <Tooltip title={tooltip} placement={"right"} arrow TransitionComponent={Fade} TransitionProps={{timeout: 600}}
                  PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '10px', fontSize: "14px"},}}}>
-            <IconButton
+            <Button
                 style={filterButtonStyle}
                 size="medium"
+                variant="contained"
                 onClick={action}
-                onMouseEnter={() => setIsFilterButtonHovered(true)}
-                onMouseLeave={() => setIsFilterButtonHovered(false)}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
             >
                 <FilterListIcon />
                 {text}
-            </IconButton>
+            </Button>
         </Tooltip>
     );
 };
