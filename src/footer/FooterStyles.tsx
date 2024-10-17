@@ -1,60 +1,56 @@
-import styled from "styled-components";
+import {SxProps, Theme} from "@mui/material";
 
-export const Box = styled.div<{ $isfooteropen: boolean }>`
-/*    background: var(--footer-bg);
-    color: var(--footer-text-color);*/
-    bottom: 0;
-    position: fixed;
-    height: ${(props) => (props.$isfooteropen ? '2.5em' : '0')};
-    overflow: hidden;
-    transition: height 0.3s ease-out;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-`;
+// Footer box style
+export const footerBoxStyle = (isFooterOpen: boolean): SxProps<Theme> => ({
+    bottom: 0,
+    position: "fixed",
+    height: isFooterOpen ? '2.5em' : '0',
+    overflow: "hidden",
+    transition: "height 0.5s ease-out",
+    borderTopLeftRadius: "8px",
+    borderTopRightRadius: "8px",
+    backgroundColor: (theme) => theme.palette.primary.main,
+    color: (theme) => theme.palette.primary.contrastText,
+    zIndex: 1500,
+    width: "60vw",
+    left: "50%",
+    transform: "translateX(-50%)",
+});
 
-export const FooterContainer = styled.div<{ $isfooteropen: boolean }>`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 60vw;
-    margin: 0 auto;
-/*    background: var(--footer-bg);
-    color: var(--footer-text-color);*/
-    padding: 1px;
-    height: ${(props) => (props.$isfooteropen ? '2.5em' : '0')};
-    z-index: 1000;
-    overflow: hidden;
-    transition: height 0.3s ease-out;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-`;
+export const footerContainerStyle: SxProps<Theme> = {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "5px",
+    margin: "0 auto",
+};
 
-export const Column = styled.div<{ marginLeft?: string }>`
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-`;
+export const rowStyle: SxProps<Theme> = {
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    gap: "1%",
+};
 
-export const Row = styled.div`
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 1%;
-`;
+export const columnStyle: SxProps<Theme> = {
+    display: "flex",
+    flexDirection: "column",
+    textAlign: "center",
+};
 
-export const FooterLink = styled.a`
-/*    color: var(--footer-text-color);*/
-    margin: auto;
-    font-size: 13px;
-    font-weight: 400;
+export const linkStyle = (isHovered: boolean, theme: Theme): SxProps<Theme> => ({
+    margin: "auto",
+    fontSize: "13px",
+    fontWeight: 400,
+    textDecoration: "none",
+    transition: "color 250ms ease-in",
+    color: isHovered ?
+        theme.palette.getContrastText(theme.palette.primary.contrastText) :
+        theme.palette.getContrastText(theme.palette.primary.dark),
+});
 
-    &:hover {
-/*        color: var(--footer-link-hover);*/
-        transition: 300ms ease-in;
-    }
-`;
+export const copyrightStyle: SxProps<Theme> = {
+    fontSize: "12px",
+    fontWeight: 400,
+};
 
-export const Copyright = styled.p`
-    font-size: 12px;
-/*    color: var(--footer-text-color);*/
-    font-weight: 400;
-`

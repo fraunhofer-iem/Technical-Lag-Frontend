@@ -12,7 +12,8 @@ export const DNDStyles = {
         cursor: "pointer",
         transition: "all 0.3s ease-in-out",
     },
-    icon:{
+    icon: {
         fontSize: '8em',
+        marginTop: "10px",
     }
 };

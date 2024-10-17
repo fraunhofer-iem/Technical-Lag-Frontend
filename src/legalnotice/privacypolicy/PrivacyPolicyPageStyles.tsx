@@ -6,26 +6,23 @@ export const PPPStyles = {
         height: '100vh',
         maxWidth: '80vw',
         margin: 'auto',
-        backgroundPosition: 'center',
         overflowY: 'auto' as const,
         overflowX: 'hidden' as const
     },
     title: {
         fontSize: '2.5em',
         fontWeight: 'bold',
-        marginBottom: '5px',
-        color: 'var(--text-color)',
+        marginBottom: "10px",
+        marginTop: "20px",
     },
     section: {
         fontSize: '1.5em',
         fontWeight: 'bold',
-        marginTop: '20px',
-        color: 'var(--text-color)',
+        marginTop: '15px',
     },
     description: {
         fontSize: '1em',
         lineHeight: '1.6',
         marginTop: '10px',
-        color: 'var(--text-color)',
     },
 };

@@ -10,16 +10,15 @@ interface ButtonProps {
 }
 
 const NewFileButton: React.FC<ButtonProps> = ({text, action}) => {
-    const [isNFButtonHovered, setIsNFButtonHovered] = useState<boolean>(false);
+    const [isHovered, setIsHovered] = useState<boolean>(false);
     const theme = useTheme();
 
     const newFileButtonStyle = {
         ...BodyStyles.newFileButton,
-        backgroundColor: isNFButtonHovered ? theme.palette.secondary.light : theme.palette.secondary.main,
+        backgroundColor: isHovered ? theme.palette.secondary.light : theme.palette.secondary.main,
         color: theme.palette.getContrastText(theme.palette.secondary.main),
-        fontWeight: isNFButtonHovered ? 'bold' : 'normal',
-        boxShadow: isNFButtonHovered ? '0 4px 20px rgba(0, 0, 0, 0.3)' : '0 2px 10px rgba(0, 0, 0, 0.2)',
-
+        fontWeight: isHovered ? 'bold' : 'normal',
+        boxShadow: isHovered ? '0 4px 20px rgba(0, 0, 0, 0.3)' : '0 2px 10px rgba(0, 0, 0, 0.2)',
     };
 
     return (
@@ -28,8 +27,8 @@ const NewFileButton: React.FC<ButtonProps> = ({text, action}) => {
             size="medium"
             style={newFileButtonStyle}
             onClick={action}
-            onMouseEnter={() => setIsNFButtonHovered(true)}
-            onMouseLeave={() => setIsNFButtonHovered(false)}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
         >
             <AddIcon/>
             {text}

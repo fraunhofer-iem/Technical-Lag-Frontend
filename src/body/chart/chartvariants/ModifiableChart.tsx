@@ -1,5 +1,5 @@
-import UpdateButton from "../../buttons/UpdateButton.tsx";
-import RevertButton from "../../buttons/RevertButton.tsx";
+import UpdateButton from "../../buttons/graphbuttons/UpdateButton.tsx";
+import RevertButton from "../../buttons/graphbuttons/RevertButton.tsx";
 import * as React from "react";
 
 const ModifiableChart: React.FC = () => {

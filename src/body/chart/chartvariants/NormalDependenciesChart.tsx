@@ -2,7 +2,7 @@ import * as React from "react";
 import { NormalDependenciesTreemap } from "../treemaps/NormalDependenciesTreemap.tsx";
 import BaseChart from "./BaseChart.tsx";
 import {Graph} from "../../../jsonutils/JSONStructureInterfaces.tsx";
-import {ChartSidebarData} from "../../utils/sidebarutils/ChartSidebarUtils.tsx";
+import {ChartSidebarData} from "../../sidebars/sidebarutils/ChartSidebarUtils.tsx";
 
 const initDependenciesChart = (
     ref: HTMLDivElement,

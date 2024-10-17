@@ -1,8 +1,8 @@
 import * as React from "react";
 import {useState} from "react";
-import {BodyStyles} from "../BodyStyles.tsx";
-import {ButtonProps} from "./buttonInterface.ts";
-import {Fade, Button, Tooltip, useTheme} from "@mui/material";
+import {BodyStyles} from "../../BodyStyles.tsx";
+import {ButtonProps} from "../buttonInterface.ts";
+import {Button, Fade, Tooltip, useTheme} from "@mui/material";
 import FilterListIcon from '@mui/icons-material/FilterList';
 
 const FilterButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
@@ -26,7 +26,7 @@ const FilterButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
-                <FilterListIcon />
+                <FilterListIcon/>
                 {text}
             </Button>
         </Tooltip>

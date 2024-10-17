@@ -2,6 +2,7 @@ import React, {FC, useRef, useState} from "react";
 import {faFile} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {DNDStyles} from "./DragNDropStyles.tsx";
+import {Box, Typography, useTheme} from "@mui/material";
 
 interface IFileDrop {
     onDrop: (files: File[]) => void;
@@ -12,17 +13,12 @@ export const FileDrop: FC<IFileDrop> = ({onDrop, setIsFileDropped}) => {
     const [isFileDragOver, setIsFileDragOver] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const theme = useTheme();
 
-    // Handle drag over event
-    const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    // Handle drag events
+    const handleDrag = (event: React.DragEvent<HTMLDivElement>, isOver: boolean) => {
         event.preventDefault();
-        setIsFileDragOver(true);
-    };
-
-    // Handle drag leave event
-    const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        setIsFileDragOver(false);
+        setIsFileDragOver(isOver);
     };
 
     // Handle drop event
@@ -46,25 +42,19 @@ export const FileDrop: FC<IFileDrop> = ({onDrop, setIsFileDropped}) => {
         setIsFileDropped(true); // Hide the FileDrop and show the tree
     };
 
-    const notDroppedText = "Drop!";
-    const droppedText = "Drag Files Here!";
-
     const dropAreaStyle = {
         ...DNDStyles.dragAndDropField,
-        border: isFileDragOver || isHovered ? "3px solid var(--drop-border-hover)" : "5px solid var(--drop-border)",
-        backgroundColor: isHovered || isFileDragOver ? "var(--drop-bg-hover)" : "var(--drop-bg)",
-        color: isHovered || isFileDragOver ? "var(--drop-txt-hover)" : "var(--drop-txt-color)",
-        fontWeight: isFileDragOver ? "bold" : (isHovered ? "bold" : "normal"),
-        fontSize: isFileDragOver ? "24px" : (isHovered ? "22px" : "20px"),
+        backgroundColor: isHovered || isFileDragOver ? theme.palette.primary.light : theme.palette.primary.main,
+        fontWeight: isFileDragOver || isHovered ? "bold" : "normal",
+        fontSize: isFileDragOver ? "24px" : isHovered ? "22px" : "20px",
     };
 
     return (
-        <div
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
+        <Box
+            onDragOver={(e) => handleDrag(e, true)}
+            onDragLeave={(e) => handleDrag(e, false)}
             onDrop={handleDrop}
             onClick={handleClick}
-            role="button"
             tabIndex={0}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -81,8 +71,12 @@ export const FileDrop: FC<IFileDrop> = ({onDrop, setIsFileDropped}) => {
                 style={{display: "none"}}
                 onChange={handleFileChange}
             />
-            <div>{isFileDragOver ? notDroppedText : droppedText}</div>
-            <div style={DNDStyles.icon}><FontAwesomeIcon icon={faFile}/></div>
-        </div>
+            <Typography variant="h6" color="inherit">
+                {isFileDragOver ? "Drop!" : "Drag Files Here!"}
+            </Typography>
+            <Box sx={DNDStyles.icon}>
+                <FontAwesomeIcon icon={faFile}/>
+            </Box>
+        </Box>
     );
 };

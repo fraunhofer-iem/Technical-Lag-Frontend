@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useState} from "react";
-import {BodyStyles} from "../BodyStyles.tsx";
-import {ButtonProps} from "./buttonInterface.ts";
+import {BodyStyles} from "../../BodyStyles.tsx";
+import {ButtonProps} from "../buttonInterface.ts";
 import {Button, Fade, Tooltip, useTheme} from "@mui/material";
 import AddchartIcon from '@mui/icons-material/Addchart';
 

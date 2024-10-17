@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {DarkModeButtonStyles} from "./DarkModeButtonStyles.tsx";
-import {Fade, IconButton, Tooltip} from "@mui/material";
+import {Button, Fade, Tooltip, useTheme} from "@mui/material";
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import {useTheme} from './ThemeContext';
-
+import {useSelectedTheme} from './ThemeContext';
 
 const DarkModeButton: React.FC = () => {
     const [isHovered, setIsHovered] = useState<boolean>(false);
-    const {toggleTheme, mode} = useTheme();
+    const {toggleTheme, mode} = useSelectedTheme();
+    const theme = useTheme();
 
     // Toggle dark mode
     const handleToggleDarkMode = () => {
@@ -20,19 +20,21 @@ const DarkModeButton: React.FC = () => {
                  TransitionComponent={Fade}
                  TransitionProps={{timeout: 600}}
                  PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '8px', fontSize: "12px"},}}}>
-            <IconButton
-/*                style={darkModeButtonStyle}*/ //TODO
+            <Button
                 onClick={handleToggleDarkMode}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                sx={{ //TODO
-/*                    backgroundColor: isHovered ? 'var(--btn-bg-hover)' : 'var(--btn-bg)',  // Background color on hover
-                    color: isHovered ? 'var(--btn-hover-txt-color)' : 'var(--btn-txt-color)',  // Text color on hover*/
+                size="small"
+                variant="contained"
+                sx={{
+                    backgroundColor: isHovered ? theme.palette.primary.light : theme.palette.primary.main,
+                    color: theme.palette.primary.contrastText,
+                    fontWeight: isHovered ? 'bold' : 'normal',
                 }}
             >
                 {mode === 'dark' ? <DarkModeIcon style={DarkModeButtonStyles.icon}/> :
                     <LightModeIcon style={DarkModeButtonStyles.icon}/>}
-            </IconButton>
+            </Button>
         </Tooltip>
     );
 }

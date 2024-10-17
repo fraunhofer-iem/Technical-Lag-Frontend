@@ -1,7 +1,7 @@
 import * as echarts from 'echarts';
 import {Graph} from "../../../jsonutils/JSONStructureInterfaces.tsx";
 import * as React from "react";
-import {ChartSidebarData} from "../../utils/sidebarutils/ChartSidebarUtils.tsx";
+import {ChartSidebarData} from "../../sidebars/sidebarutils/ChartSidebarUtils.tsx";
 import type {TreemapSeriesOption} from 'echarts/charts';
 import {transformJSONDataToTreemap, TreemapGenerator} from './TreemapGenerator';
 

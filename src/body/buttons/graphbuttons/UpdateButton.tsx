@@ -1,8 +1,8 @@
 import * as React from "react";
 import {useState} from "react";
-import {BodyStyles} from "../BodyStyles.tsx";
-import {ButtonProps} from "./buttonInterface.ts";
-import {Fade, Button, Tooltip, useTheme} from "@mui/material";
+import {BodyStyles} from "../../BodyStyles.tsx";
+import {ButtonProps} from "../buttonInterface.ts";
+import {Button, Fade, Tooltip, useTheme} from "@mui/material";
 import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
 
 const UpdateButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {

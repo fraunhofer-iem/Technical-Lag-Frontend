@@ -10,7 +10,7 @@ import DevDependenciesChart from "./body/chart/chartvariants/DevDependenciesChar
 import CookieConsent from "./legalnotice/cookies/CookieConstent.tsx";
 import ResponsiveAppBar from "./appbar/ResponsiveAppBar.tsx";
 import StickyNoteComponent from "./footer/stickynote/StickyNoteComponent.tsx";
-import {ThemeProviderComponent} from "./darkmode/ThemeContext.tsx";
+import {ThemeProviderComponent} from "./themes_and_colors/ThemeContext.tsx";
 
 
 const App: React.FC = () => {

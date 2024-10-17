@@ -2,18 +2,18 @@ import * as React from "react";
 import {useEffect, useRef, useState} from "react";
 import {Graph} from "../../../jsonutils/JSONStructureInterfaces.tsx";
 import NewFileButton from "../../buttons/NewFileButton.tsx";
-import ChartSidebar from "../../utils/chartsidebar/ChartSidebar.tsx";
-import FilterButton from "../../buttons/FilterButton.tsx";
-import FilterSidebar from "../../utils/filtersidebar/FilterSidebar.tsx";
-import {ChartSidebarData, useChartSidebar} from "../../utils/sidebarutils/ChartSidebarUtils.tsx";
-import {useFilterSidebar} from "../../utils/sidebarutils/FilterSidebarUtils.tsx";
+import ChartSidebar from "../../sidebars/chartsidebar/ChartSidebar.tsx";
+import FilterButton from "../../buttons/graphbuttons/FilterButton.tsx";
+import FilterSidebar from "../../sidebars/filtersidebar/FilterSidebar.tsx";
+import {ChartSidebarData, useChartSidebar} from "../../sidebars/sidebarutils/ChartSidebarUtils.tsx";
+import {useFilterSidebar} from "../../sidebars/sidebarutils/FilterSidebarUtils.tsx";
 import * as echarts from 'echarts';
 import {useNavigate} from "react-router-dom";
-import UpdateButton from "../../buttons/UpdateButton.tsx";
-import RevertButton from "../../buttons/RevertButton.tsx";
+import UpdateButton from "../../buttons/graphbuttons/UpdateButton.tsx";
+import RevertButton from "../../buttons/graphbuttons/RevertButton.tsx";
 import {BodyStyles} from "../../BodyStyles.tsx";
-import NormDepButton from "../../buttons/NormDepButton.tsx";
-import DevDepButton from "../../buttons/DevDepButton.tsx";
+import NormDepButton from "../../buttons/graphbuttons/NormDepButton.tsx";
+import DevDepButton from "../../buttons/graphbuttons/DevDepButton.tsx";
 import {Box, ButtonGroup} from "@mui/material";
 
 interface BaseChartProps {

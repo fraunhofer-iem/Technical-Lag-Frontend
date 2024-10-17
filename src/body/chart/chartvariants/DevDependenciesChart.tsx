@@ -1,7 +1,7 @@
 import * as React from "react";
 import { DevDependenciesTreemap } from "../treemaps/DevDependenciesTreemap.tsx";
 import BaseChart from "./BaseChart.tsx";
-import {ChartSidebarData} from "../../utils/sidebarutils/ChartSidebarUtils.tsx";
+import {ChartSidebarData} from "../../sidebars/sidebarutils/ChartSidebarUtils.tsx";
 import {Graph} from "../../../jsonutils/JSONStructureInterfaces.tsx";
 
 const initDevDependenciesChart = (
