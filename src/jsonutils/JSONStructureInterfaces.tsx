@@ -58,6 +58,7 @@ export interface Node {
     nodeId: string;
     usedVersion: string;
     stats: Stats[];
+    releaseDate: number; //TODO
 }
 
 export interface Edge {

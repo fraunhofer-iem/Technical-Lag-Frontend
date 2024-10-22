@@ -4,7 +4,6 @@ import {ChartSidebarData} from "../../sidebars/sidebarutils/ChartSidebarUtils.ts
 import React from "react";
 import {TreemapSeriesOption} from "echarts/charts";
 
-
 export interface TreemapGenerator {
     initChart: (
         chartRef: HTMLDivElement,
@@ -21,12 +20,13 @@ export const transformJSONDataToTreemap = (graph: Graph) => {
     const transformNode = (node: Node): any => {
         const children = findChildren(node);  // Recursively find children nodes
 
-        console.log(node.usedVersion);
         return {
             name: node.nodeName,          // The name of the node (e.g., library/package)
             value: 1,          // Aggregated value based on stats, e.g., total libDays
             usedVersion: node.usedVersion,  // For tooltips or additional info
-            children: children.length > 0 ? children : null // Only include children if they exist
+            children: children.length > 0 ? children : null, // Only include children if they exist
+            stats: node.stats,
+            releaseDate: node.releaseDate,
         };
     };
 

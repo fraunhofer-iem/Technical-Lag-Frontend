@@ -48,7 +48,6 @@ const ChartSidebar: React.FC<SidebarProps> = ({
         return num.toFixed(2);
     };
 
-
     const [isTechnicalLagNodeOpen, setIsTechnicalLagNodeOpen] = React.useState(false);
     const [isTechnicalLagChildrenOpen, setIsTechnicalLagChildrenOpen] = React.useState(false);
     const [isStatisticsOpen, setIsStatisticsOpen] = React.useState(false);

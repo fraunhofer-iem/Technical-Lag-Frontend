@@ -107,7 +107,7 @@ const createArtifactMap = (projectDTO: any) => {
     projectDTO.artifacts.forEach((artifactJson: { versions: any[]; artifactId: number; }) => {
         const defaultVersion = artifactJson.versions.find((version) => version.isDefault);
         if (defaultVersion) {
-            const artifact = artifactMap.get(artifactJson.artifactId);
+            const artifact = findArtifactById(artifactMap, artifactJson.artifactId);
             if (artifact) {
                 artifact.defaultVersionNumber = defaultVersion.versionNumber;
                 artifact.releaseDate = defaultVersion.releaseDate;
@@ -116,6 +116,15 @@ const createArtifactMap = (projectDTO: any) => {
     });
     return artifactMap;
 };
+
+function findArtifactById(artifactMap: any[] | Map<number, Artifact>, artifactId: number) {
+    for (const [, value] of artifactMap.entries()) {
+        if (value.artifactName === artifactId) {
+            return value;
+        }
+    }
+    return null;
+}
 
 // Helper: Process nodes and edges for a specific scope
 const processScopeGraph = (
@@ -144,7 +153,8 @@ const processScopeGraph = (
                 nodeId: scope + "_" + artifact.artifactName + "_" + uuidv4(),
                 //usedVersion: artifact.versions[usedVersionIndex]?.versionNumber || "unknown",
                 usedVersion: artifact.defaultVersionNumber,
-                stats: node.stats ? simplifyStats(node.stats) : []
+                stats: node.stats ? simplifyStats(node.stats) : [],
+                releaseDate: artifact.releaseDate
             };
             nodeMap.set(node.artifactIdx, nodeData);
         });
