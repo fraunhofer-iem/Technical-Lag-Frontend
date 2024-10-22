@@ -4,9 +4,9 @@ import {SxProps, Theme} from "@mui/material";
 export const footerBoxStyle = (isFooterOpen: boolean): SxProps<Theme> => ({
     bottom: 0,
     position: "fixed",
-    height: isFooterOpen ? '2.5em' : '0',
+    height: isFooterOpen ? '1.6em' : '0',
     overflow: "hidden",
-    transition: "height 0.5s ease-out",
+    transition: "height 0.3s ease-out",
     borderTopLeftRadius: "8px",
     borderTopRightRadius: "8px",
     backgroundColor: (theme) => theme.palette.primary.main,
@@ -21,7 +21,7 @@ export const footerContainerStyle: SxProps<Theme> = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "stretch",
     padding: "5px",
     margin: "0 auto",
 };
@@ -36,12 +36,12 @@ export const columnStyle: SxProps<Theme> = {
     display: "flex",
     flexDirection: "column",
     textAlign: "center",
+    width: "100%",
 };
 
 export const linkStyle = (isHovered: boolean, theme: Theme): SxProps<Theme> => ({
     margin: "auto",
-    fontSize: "13px",
-    fontWeight: 400,
+    fontSize: "12px",
     textDecoration: "none",
     transition: "color 250ms ease-in",
     color: isHovered ?
@@ -50,7 +50,10 @@ export const linkStyle = (isHovered: boolean, theme: Theme): SxProps<Theme> => (
 });
 
 export const copyrightStyle: SxProps<Theme> = {
-    fontSize: "12px",
-    fontWeight: 400,
+    fontSize: "10px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    width: "100%",
 };
 

@@ -14,16 +14,15 @@ export const stickyNoteContainerStyle = (isFooterOpen: boolean): SxProps<Theme> 
 
 // Styles for the sticky note itself
 export const stickyNoteStyle: SxProps<Theme> = (theme) => ({
-    fontSize: "14px",
+    fontSize: "8px",
     borderRadius: "5px",
     width: "100px",
-    height: "50px",
+    height: "45px",
     display: "flex",
     alignItems: "baseline",
     justifyContent: "center",
     cursor: "pointer",
     marginBottom: "1.2em",
-    fontWeight: 500,
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
     "&:hover": {
