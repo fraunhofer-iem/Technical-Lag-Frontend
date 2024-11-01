@@ -142,9 +142,9 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
 
                     {isChartSidebarVisible && (
                         <ChartSidebar
-                            fullName={chartSidebarData?.name ?? ""}
-                            versionNumber={chartSidebarData?.version ?? ""}
-                            releaseDate={chartSidebarData?.releaseDate ?? ""}
+                            fullName={chartSidebarData?.name ?? "N/A"}
+                            versionNumber={chartSidebarData?.usedVersion ?? "N/A"}
+                            releaseDate={chartSidebarData?.releaseDate ?? "N/A"}
                             ecosystem={chartSidebarData?.name === currentGraph?.root.rootName ? chartSidebarData?.ecosystem : undefined}
                             repoURL={chartSidebarData?.name === currentGraph?.root.rootName ? chartSidebarData?.repoURL : undefined}
                             revision={chartSidebarData?.name === currentGraph?.root.rootName ? chartSidebarData?.revision : undefined}

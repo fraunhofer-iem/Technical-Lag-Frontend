@@ -3,7 +3,7 @@ import {Stats} from "../../../jsonutils/JSONStructureInterfaces.tsx";
 
 export interface ChartSidebarData {
     name: string;
-    versionNumber: string;
+    usedVersion: string;
     releaseDate: string;
     ecosystem?: string;
     repoURL?: string;

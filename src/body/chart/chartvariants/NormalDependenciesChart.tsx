@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NormalDependenciesTreemap } from "../treemaps/NormalDependenciesTreemap.tsx";
+import {NormalDependenciesTreemap} from "../treemaps/NormalDependenciesTreemap.tsx";
 import BaseChart from "./BaseChart.tsx";
 import {Graph} from "../../../jsonutils/JSONStructureInterfaces.tsx";
 import {ChartSidebarData} from "../../sidebars/sidebarutils/ChartSidebarUtils.tsx";
@@ -14,7 +14,7 @@ const initDependenciesChart = (
 };
 
 const NormalDependenciesChart: React.FC = () => {
-    return <BaseChart initChart={initDependenciesChart} chartClassName="normalGraph" />;
+    return <BaseChart initChart={initDependenciesChart} chartClassName="normalGraph"/>;
 };
 
 export default NormalDependenciesChart;

@@ -33,7 +33,7 @@ export class NormalDependenciesTreemap implements TreemapGenerator {
                 tooltip: {
                     formatter: function (info: any) {
                         const name = info.name;
-                        const version = info.data.version || 'Unknown Version';
+                        const version = info.versionNumber || 'Unknown Version';
 
                         return [
                             '<div class="tooltip-title">' + echarts.format.encodeHTML(name) + '</div>',
@@ -61,6 +61,7 @@ export class NormalDependenciesTreemap implements TreemapGenerator {
                 if (params.componentType === 'series' && params.seriesType === 'treemap') {
                     params.event.event.preventDefault();
                     const nodeData = params.data;
+                    console.log("Params:",  params.data)
                     setChartSidebarData(nodeData);
                     setIsChartSidebarVisible(true);
                 }
