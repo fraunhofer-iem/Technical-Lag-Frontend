@@ -106,8 +106,9 @@ export class NormalDependenciesTreemap implements TreemapGenerator {
         ]
     }
 
+    //TODO Farben und decal patterns anpassen
     applyDecalsAndColorsToChildren(children: any[]) {
-        //TODO
+
         const colorPalette = [
             '#008B45', // Dark Green
             '#006B3F', // Dark Sea Green

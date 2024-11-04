@@ -7,7 +7,6 @@ const styles = {
     },
     header: {
         fontSize: '22px',
-/*        color: '#73a796',*/
         fontWeight: 'bold',
         margin: 0,
     },
@@ -22,7 +21,6 @@ const styles = {
     accordionHeader: {
         cursor: 'pointer',
         fontSize: '16px',
-/*        color: '#fff',*/
         fontWeight: 'bold',
         margin: '0.5em 0',
         padding: '0.8em 1em',
@@ -59,7 +57,7 @@ const styles = {
         backgroundColor: '#666',
     },*/
     label: {
-        /*color: '#73a796',*/
+/*        color: '#73a796',*/
     },
     select:{
         display: 'flex',

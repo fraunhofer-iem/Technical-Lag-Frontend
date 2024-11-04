@@ -8,7 +8,6 @@ const styles = {
     },
     header: {
         fontSize: '22px',
-/*        color: 'var(--txt-color)',*/
         fontWeight: 'bold',
         margin: 0,
     },
@@ -20,7 +19,6 @@ const styles = {
         marginBottom: '15px',
     },
     label: {
-/*        color: 'var(--txt-color)',*/
         fontSize: '14px',
         fontWeight: 'bold',
         marginBottom: '5px',
@@ -34,8 +32,7 @@ const styles = {
     searchButton: {
         marginTop: '10px',
         padding: '10px',
-/*        color: 'var(--btn-txt-color)',
-        backgroundColor: 'var(--btn-bg)',*/
+        backgroundColor: '#444',
         border: 'none',
         borderRadius: '4px',
         cursor: 'pointer',
@@ -43,8 +40,6 @@ const styles = {
     applyButton: {
         marginTop: '10px',
         padding: '10px',
-/*        color: 'var(--btn-txt-color)',
-        backgroundColor: 'var(--btn-bg)',*/
         border: 'none',
         borderRadius: '4px',
         cursor: 'pointer',
@@ -55,8 +50,6 @@ const styles = {
         marginTop: '0.5em',
     },
     resultItem: {
-/*        color: 'var(--btn-txt-color)',
-        backgroundColor: 'var(--btn-bg)',*/
         fontSize: '14px',
         fontWeight: '500',
         padding: '0.5em',
