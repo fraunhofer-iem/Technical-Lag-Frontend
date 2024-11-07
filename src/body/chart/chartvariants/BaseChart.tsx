@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useEffect, useRef, useState} from "react";
-import {Graph} from "../../../jsonutils/JSONStructureInterfaces.tsx";
+import {Graph, Node} from "../../../jsonutils/JSONStructureInterfaces.tsx";
 import NewFileButton from "../../buttons/NewFileButton.tsx";
 import ChartSidebar from "../../sidebars/chartsidebar/ChartSidebar.tsx";
 import FilterButton from "../../buttons/graphbuttons/FilterButton.tsx";
@@ -56,9 +56,22 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
         searchResults,
         handleFilterButton,
         handleSearch,
-        zoomToNode,
         handleCloseFilterSidebar,
     } = useFilterSidebar(currentGraph, chartInstanceRef);
+
+    // Updates the ChartSidebar when a node is clicked in the FilterSidebar search list
+    const handleNodeClickInFilterSidebar = (node : Node) => {
+        // Set data for ChartSidebar based on the node clicked
+        setChartSidebarData({
+            name: node.nodeName,
+            usedVersion: node.usedVersion,
+            releaseDate: node.releaseDate.toString(),
+            stats: node.stats,
+        });
+
+        // Display the ChartSidebar with node data
+        setIsChartSidebarVisible(true);
+    };
 
     useEffect(() => {
         const storedNormalGraph = sessionStorage.getItem("normalGraph");
@@ -159,7 +172,7 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
                             onClose={handleCloseFilterSidebar}
                             onSearch={handleSearch}
                             searchResults={searchResults}
-                            onResultClick={(node) => zoomToNode(node)}
+                            onResultClick={handleNodeClickInFilterSidebar}
                         />
                     )}
                 </Box>

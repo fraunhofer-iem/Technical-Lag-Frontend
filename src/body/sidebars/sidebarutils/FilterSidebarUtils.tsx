@@ -1,20 +1,14 @@
 import React, { useState } from "react";
-import {Graph} from "../../../jsonutils/JSONStructureInterfaces.tsx";
+import {Graph, Node} from "../../../jsonutils/JSONStructureInterfaces.tsx";
 import * as echarts from 'echarts';
 
-interface SearchResult extends Graph {
-    name: string;
-    path: string[];
-}
-
-interface Node {
-    name: string;
+interface SearchResult extends Node {
     path: string[];
 }
 
 export const useFilterSidebar = (graph: Graph  | null, chartInstanceRef: React.RefObject<echarts.ECharts | null>) => {
     const [isFilterSidebarVisible, setIsFilterSidebarVisible] = useState(false);
-    const [searchResults, setSearchResults] = useState<SearchResult []>([]);
+    const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
 
     const handleFilterButton = () => {
         setIsFilterSidebarVisible(!isFilterSidebarVisible);
@@ -22,14 +16,23 @@ export const useFilterSidebar = (graph: Graph  | null, chartInstanceRef: React.R
 
     const handleSearch = (searchTerm: string) => {
         if (!graph) return;
+
         const searchResult = searchNodesByName(graph, searchTerm);
-        if (searchResult) {
+        if (searchResult.length > 0) {
             console.log("Search result found:", searchResult);
-            searchResult.sort((a, b) => a.name.localeCompare(b.name)); // sort alphabetically
+            searchResult.sort((a, b) => a.nodeName.localeCompare(b.nodeName)); // sort alphabetically
             setSearchResults(searchResult);
         } else {
             console.error("No search result found");
-            setSearchResults([]);
+            setSearchResults([
+                {
+                nodeName: "N/A",
+                path: [],
+                nodeId: "N/A",
+                usedVersion: "",
+                stats: [],
+                releaseDate: 0,
+            },]);
         }
     };
 
@@ -39,8 +42,8 @@ export const useFilterSidebar = (graph: Graph  | null, chartInstanceRef: React.R
             chartInstanceRef.current.dispatchAction({
                 type: 'zoomToNode',
                 targetNode: {
-                    name: node.name,
-                    path: node.path.join('/')
+                    name: node.nodeName,
+                    id: node.nodeId
                 },
                 zoomLevel: 2
             });
@@ -54,20 +57,60 @@ export const useFilterSidebar = (graph: Graph  | null, chartInstanceRef: React.R
         setSearchResults([]);
     };
 
-    const searchNodesByName = (data: any, name: string, path: string[] = []): SearchResult[] => {
-        let results: SearchResult[] = [];
-        const currentPath = [...path, data.name];
+    const searchNodesByName = (graph: Graph, name: string): SearchResult[] => {
+        const results: SearchResult[] = [];
 
-        if (data.name && typeof data.name === 'string' && data.name.toLowerCase().includes(name.toLowerCase())) {
-            results.push({ ...data, path: currentPath });
-        }
-
-        if (data.children) {
-            for (const child of data.children) {
-                results.push(...searchNodesByName(child, name, currentPath));
+        // Traverse nodes to find matches by name
+        graph.nodes.forEach((node) => {
+            if (node.nodeName?.toLowerCase().includes(name.toLowerCase())) {
+                // Find path from root to node using edges
+                const path = findPathToNode(graph, node);
+                if (path) {
+                    results.push({ ...node, path });
+                }
             }
-        }
+        });
+
         return results;
+    };
+
+    const findPathToNode = (graph: Graph, targetNode: Node): string[] | null => {
+        const visited = new Set();
+        const path: string[] = [];
+
+        // Start the search from the root node
+        const rootNode = graph.root;
+        if (!rootNode) return null;
+
+        path.push(rootNode.rootName);
+
+        const dfs = (nodeId: string): boolean => {
+            if (visited.has(nodeId)) return false;
+            visited.add(nodeId);
+
+            const currentNode = graph.nodes.find((n) => n.nodeId === nodeId);
+            if (currentNode) {
+                path.push(currentNode.nodeName);
+                if (currentNode.nodeId === targetNode.nodeId) return true;
+            }
+
+            // Find neighbors of the current node based on edges
+            for (const edge of graph.edges) {
+                let nextNodeId: string | null = null;
+
+                if (edge.from === nodeId) {
+                    nextNodeId = edge.to;
+                } else if (edge.to === nodeId) {
+                    nextNodeId = edge.from;
+                }
+                if (nextNodeId && dfs(nextNodeId)) return true;
+            }
+
+            if (currentNode) path.pop();
+            return false;
+        };
+
+        return dfs(rootNode.rootId) ? path : null;
     };
 
     return {

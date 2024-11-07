@@ -11,12 +11,19 @@ const styles = {
         margin: 0,
     },
     paragraph: {
-        margin: '1em 0',
+        margin: '0.5em 0',
         fontSize: '16px',
     },
     list: {
-        margin: '1em 0',
         fontSize: '14px',
+        margin: '0',
+        padding: '0',
+    },
+    listItem: {
+        fontSize: '14px',
+        margin: '0',
+        paddingTop: '0',
+        paddingBottom: '0',
     },
     accordionHeader: {
         cursor: 'pointer',
@@ -58,6 +65,8 @@ const styles = {
     },*/
     label: {
 /*        color: '#73a796',*/
+        margin: '0',
+        padding: '0',
     },
     select:{
         display: 'flex',

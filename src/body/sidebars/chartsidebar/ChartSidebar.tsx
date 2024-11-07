@@ -28,6 +28,7 @@ interface SidebarProps {
     stats?: Stats[];
 }
 
+//TODO Add a line where the path of the node in the graph is displayed
 const ChartSidebar: React.FC<SidebarProps> = ({
                                                   fullName,
                                                   versionNumber,
@@ -180,7 +181,7 @@ const ChartSidebar: React.FC<SidebarProps> = ({
                         <Accordion expanded={isTechnicalLagNodeOpen}
                                    onChange={() => setIsTechnicalLagNodeOpen(!isTechnicalLagNodeOpen)}>
                             <AccordionSummary expandIcon={<ExpandMore/>}>
-                                <Typography>Current Node</Typography>
+                                <Typography variant="h6">Current Node</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <p style={styles.paragraph}><strong style={styles.label}>Lag in
@@ -200,36 +201,36 @@ const ChartSidebar: React.FC<SidebarProps> = ({
                         <Accordion expanded={isTechnicalLagChildrenOpen}
                                    onChange={() => setIsTechnicalLagChildrenOpen(!isTechnicalLagChildrenOpen)}>
                             <AccordionSummary expandIcon={<ExpandMore/>}>
-                                <Typography>Children</Typography>
+                                <Typography variant="h6">Children</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography style={styles.paragraph}><strong style={styles.label}>Lag in Days:</strong></Typography>
                                 <List style={styles.list}>
-                                    <ListItem><strong
+                                    <ListItem style={styles.listItem}><strong
                                         style={styles.label}>Avg:</strong> {formatNumber(childrenData.libDays.average)}
                                     </ListItem>
-                                    <ListItem><strong style={styles.label}>Std
+                                    <ListItem style={styles.listItem}><strong style={styles.label}>Std
                                         Dev:</strong> {formatNumber(childrenData.libDays.stdDev)}</ListItem>
                                 </List>
                                 <Box>
                                     <Typography style={styles.paragraph}><strong style={styles.label}>Missed
                                         Releases:</strong></Typography>
                                     <List style={styles.list}>
-                                        <ListItem><strong
+                                        <ListItem style={styles.listItem}><strong
                                             style={styles.label}>Avg:</strong> {formatNumber(childrenData.missedReleases.average)}
                                         </ListItem>
-                                        <ListItem><strong style={styles.label}>Std
+                                        <ListItem style={styles.listItem}><strong style={styles.label}>Std
                                             Dev:</strong> {formatNumber(childrenData.missedReleases.stdDev)}</ListItem>
                                     </List>
                                 </Box>
                                 <Box>
                                     <Typography style={styles.paragraph}><strong style={styles.label}>Distance:</strong></Typography>
                                     <List style={styles.list}>
-                                        <ListItem><strong style={styles.label}>First
+                                        <ListItem style={styles.listItem}><strong style={styles.label}>First
                                             Avg:</strong> {formatNumber(childrenData.distanceFirst.average)}</ListItem>
-                                        <ListItem><strong style={styles.label}>Second
+                                        <ListItem style={styles.listItem}><strong style={styles.label}>Second
                                             Avg:</strong> {formatNumber(childrenData.distanceSecond.average)}</ListItem>
-                                        <ListItem><strong style={styles.label}>Third
+                                        <ListItem style={styles.listItem}><strong style={styles.label}>Third
                                             Avg:</strong> {formatNumber(childrenData.distanceThird.average)}</ListItem>
                                     </List>
                                 </Box>
@@ -237,10 +238,10 @@ const ChartSidebar: React.FC<SidebarProps> = ({
                                     <Typography style={styles.paragraph}><strong style={styles.label}>Release
                                         Frequency:</strong></Typography>
                                     <List style={styles.list}>
-                                        <ListItem><strong
+                                        <ListItem style={styles.listItem}><strong
                                             style={styles.label}>Avg:</strong> {formatNumber(childrenData.releaseFrequency.average)}
                                         </ListItem>
-                                        <ListItem><strong style={styles.label}>Std
+                                        <ListItem style={styles.listItem}><strong style={styles.label}>Std
                                             Dev:</strong> {formatNumber(childrenData.releaseFrequency.stdDev)}
                                         </ListItem>
                                     </List>
@@ -257,8 +258,8 @@ const ChartSidebar: React.FC<SidebarProps> = ({
         <Drawer anchor="right" open={true} onClose={onClose}
                 PaperProps={{
                     sx: {
-                        width: '350px',
-                        height: '80%',
+                        width: '400px',
+                        height: '85%',
                         position: 'fixed',
                         top: '50%',
                         transform: 'translateY(-50%)',
@@ -271,7 +272,7 @@ const ChartSidebar: React.FC<SidebarProps> = ({
         >
             <Box sx={{width: "100%", padding: '2em'}}>
                 <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1em'}}>
-                    <Typography variant="h6">Node Information</Typography>
+                    <Typography variant="h5">Node Information</Typography>
                 </Box>
                 <Divider/>
                 {fullName && (

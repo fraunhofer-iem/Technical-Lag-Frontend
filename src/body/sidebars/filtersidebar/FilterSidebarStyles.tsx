@@ -1,62 +1,85 @@
 // FilterSidebarStyles.ts
 const styles = {
+    drawer: {
+        width: '350px',
+        height: '80%',
+        position: 'fixed',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        right: 0,
+        zIndex: 1300,
+        borderRadius: '8px 0 0 8px',
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+    },
     headerContainer: {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: '1em',
     },
-    header: {
-        fontSize: '22px',
+    sidebarHeader: {
+        fontSize: '24px',
         fontWeight: 'bold',
         margin: 0,
+    },
+    filterHeader: {
+        fontSize: '20px',
+        fontWeight: 'bold',
+        margin: 0,
+        marginTop: '15px',
     },
     content: {
         display: 'flex',
         flexDirection: 'column' as const,
+        width: "100%",
+        padding: '2em'
     },
-    field: {
+    searchBarContainer: {
+        display: 'flex',
+        alignItems: 'center',
         marginBottom: '15px',
     },
-    label: {
-        fontSize: '14px',
-        fontWeight: 'bold',
-        marginBottom: '5px',
+    searchField: {
+        flexGrow: 1,
+        marginRight: '10px',
     },
-    input: {
-        width: '100%',
-        padding: '8px',
-        borderRadius: '4px',
-        border: '1px solid #ccc',
+    filterField: {
+        marginBottom: '15px',
+        marginTop: '15px',
+        width: '100%'
     },
     searchButton: {
-        marginTop: '10px',
-        padding: '10px',
-        backgroundColor: '#444',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
+        marginTop: '5px',
+        marginBottom: '15px',
     },
     applyButton: {
+        marginTop: '5px',
+        marginBottom: '15px',
+    },
+    resultsBlock: {
+        backgroundColor: '#f9f9f9',
+        padding: '15px',
+        borderRadius: '8px',
+        boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
         marginTop: '10px',
-        padding: '10px',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
     },
     resultsList: {
         listStyleType: 'none' as const,
         padding: 0,
         marginTop: '0.5em',
+        letterSpacing: '0.1em',
     },
     resultItem: {
         fontSize: '14px',
         fontWeight: '500',
-        padding: '0.5em',
+        padding: '0.75em 1em',
         borderRadius: '4px',
         marginBottom: '5px',
         cursor: 'pointer',
         borderBottom: '1px solid #ccc',
-        transition: 'background-color 0.3s ease',
+        borderLeft: '1px solid #73a796',
+        transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
     },
 };
+
+export default styles;

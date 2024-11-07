@@ -58,7 +58,7 @@ export interface Node {
     nodeId: string;
     usedVersion: string;
     stats: Stats[];
-    releaseDate: number; //TODO
+    releaseDate: number; //TODO if dayjs is used
 }
 
 export interface Edge {
@@ -81,7 +81,6 @@ export interface RootNode {
 }
 
 export interface Graph {
-    //scope: string;
     root: RootNode;
     nodes: Node[];
     edges: Edge[];
@@ -92,5 +91,4 @@ export interface Artifact {
     artifactName: string;
     defaultVersionNumber: string;
     releaseDate: number;
-/*    [key: string]: any; // Adjust this if needed*/
 }
