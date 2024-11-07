@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
 import {Box, Button, Divider, Drawer, List, ListItem, TextField, Typography} from "@mui/material";
+/*import {DateField, LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";*/
+
 
 interface SidebarProps {
     onClose: () => void;
@@ -11,15 +14,20 @@ interface SidebarProps {
 
 const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick, searchResults, isOpen}) => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [versionNumber, setVersionNumber] = useState("");
-    const [releaseDate, setReleaseDate] = useState("");
+/*    const [versionNumber, setVersionNumber] = useState("");*/
+/*    const [releaseDate, setReleaseDate] = useState("");*/
     const [libDays, setLibDays] = useState("");
-    const [numberOfMissedReleases, setNumberOfMissedReleases] = useState("");
-    const [releaseFrequency, setReleaseFrequency] = useState("");
+    /*const [numberOfMissedReleases, setNumberOfMissedReleases] = useState("");*/
+    /*    const [releaseFrequency, setReleaseFrequency] = useState("");*/
 
     //TODO suche implementieren
     const handleSearch = () => {
         onSearch(searchTerm);
+
+    };
+
+    //TODO Filter implementieren
+    const handleFilter = () => {
 
     };
 
@@ -41,7 +49,7 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
         >
             <Box sx={{width: "100%", padding: '2em'}}>
                 <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1em'}}>
-                    <Typography variant="h6">Filter Options</Typography>
+                    <Typography variant="h5">Search & Filter</Typography>
                 </Box>
                 <Divider/>
                 <Box sx={{marginTop: '1em'}}>
@@ -69,43 +77,48 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
                             ))}
                         </List>
                     )}
-                    <TextField
+                    <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5em'}}>
+                        <Typography>More...</Typography>
+                    </Box>
+                    <Divider/>
+{/*                    <TextField
                         label="Version Number"
                         variant="outlined"
                         value={versionNumber}
                         onChange={(e) => setVersionNumber(e.target.value)}
                         sx={{marginBottom: '15px', width: '100%'}}
-                    />
+                    />*/}
+{/*                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DateField
+                            label="Release Date"
+                            value={releaseDate}
+                            onChange={(e) => setReleaseDate(e.target.value)}
+                            sx={{marginBottom: '15px', width: '100%'}}
+                        />
+                    </LocalizationProvider>*/}
                     <TextField
-                        label="Release Date"
-                        type="date"
-                        value={releaseDate}
-                        onChange={(e) => setReleaseDate(e.target.value)}
-                        sx={{marginBottom: '15px', width: '100%'}}
-                    />
-                    <TextField
-                        label="Lib Days"
+                        label="Lag in Days"
                         type="number"
                         value={libDays}
                         onChange={(e) => setLibDays(e.target.value)}
-                        sx={{marginBottom: '15px', width: '100%'}}
+                        sx={{marginBottom: '15px', marginTop: '15px', width: '100%'}}
                     />
-                    <TextField
+{/*                    <TextField
                         label="Number of Missed Releases"
                         type="number"
                         value={numberOfMissedReleases}
                         onChange={(e) => setNumberOfMissedReleases(e.target.value)}
                         sx={{marginBottom: '15px', width: '100%'}}
-                    />
-                    <TextField
+                    />*/}
+                    {/*                    <TextField
                         label="Release Frequency"
                         type="number"
                         value={releaseFrequency}
                         onChange={(e) => setReleaseFrequency(e.target.value)}
                         sx={{marginBottom: '15px', width: '100%'}}
-                    />
+                    />*/}
                     {/* Uncomment this if you implement filter logic */}
-                    {/* <Button onClick={handleFilterChange} variant="contained" sx={styles.applyButton}>Apply Filters</Button> */}
+                     <Button onClick={handleFilter} variant="contained" sx={{marginBottom: '15px'}}>Apply Filters</Button>
                 </Box>
             </Box>
         </Drawer>

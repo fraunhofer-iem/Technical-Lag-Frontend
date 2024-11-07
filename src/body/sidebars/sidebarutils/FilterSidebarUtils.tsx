@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {Graph} from "../../../jsonutils/JSONStructureInterfaces.tsx";
-import echarts from "echarts";
+import * as echarts from 'echarts';
 
 interface SearchResult extends Graph {
     name: string;
