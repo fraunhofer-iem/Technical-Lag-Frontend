@@ -166,11 +166,14 @@ const ChartSidebar: React.FC<SidebarProps> = ({
                 </Button>
 
                 {isStatisticsOpen && (
-                    <Box style={styles.accordionContent}>
+                    <Box style={styles.typeDropBox}>
                         <Box style={styles.select}>
                             <strong style={styles.label}>Version Type:&nbsp;{' '}
                                 <Select value={versionType}
-                                        onChange={(e) => setVersionType(e.target.value as VersionType)} displayEmpty>
+                                        onChange={(e) => setVersionType(e.target.value as VersionType)}
+                                        displayEmpty
+                                        variant="outlined"
+                                >
                                     <MenuItem value={"Major"}>Major</MenuItem>
                                     <MenuItem value={"Minor"}>Minor</MenuItem>
                                     <MenuItem value={"Patch"}>Patch</MenuItem>
@@ -181,20 +184,20 @@ const ChartSidebar: React.FC<SidebarProps> = ({
                         <Accordion expanded={isTechnicalLagNodeOpen}
                                    onChange={() => setIsTechnicalLagNodeOpen(!isTechnicalLagNodeOpen)}>
                             <AccordionSummary expandIcon={<ExpandMore/>}>
-                                <Typography variant="h6">Current Node</Typography>
+                                <Typography variant="h6" >Current Node</Typography>
                             </AccordionSummary>
-                            <AccordionDetails>
-                                <p style={styles.paragraph}><strong style={styles.label}>Lag in
-                                    Days:</strong> {formatNumber(lagData.libDays)}</p>
-                                <p style={styles.paragraph}><strong style={styles.label}>Newest
-                                    Version:</strong> {lagData.version}</p>
-                                <p style={styles.paragraph}><strong style={styles.label}>Missed
-                                    Releases:</strong> {formatNumber(lagData.numberOfMissedReleases)}</p>
-                                <p style={styles.paragraph}><strong
-                                    style={styles.label}>Distance:&nbsp;</strong>{formatNumber(renderDistance())}</p>
-                                <p style={styles.paragraph}><strong style={styles.label}>Release
+                            <AccordionDetails sx={styles.accordionDetails}>
+                                <Typography style={styles.paragraph}><strong style={styles.label}>Lag in
+                                    Days:</strong> {formatNumber(lagData.libDays)}</Typography>
+                                <Typography style={styles.paragraph}><strong style={styles.label}>Newest
+                                    Version:</strong> {lagData.version}</Typography>
+                                <Typography style={styles.paragraph}><strong style={styles.label}>Missed
+                                    Releases:</strong> {formatNumber(lagData.numberOfMissedReleases)}</Typography>
+                                <Typography style={styles.paragraph}><strong
+                                    style={styles.label}>Distance:&nbsp;</strong>{formatNumber(renderDistance())}</Typography>
+                                <Typography style={styles.paragraph}><strong style={styles.label}>Release
                                     Frequency:</strong> {formatNumber(lagData.releaseFrequency.releasesPerMonth)} per
-                                    Month</p>
+                                    Month</Typography>
                             </AccordionDetails>
                         </Accordion>
 
@@ -203,7 +206,7 @@ const ChartSidebar: React.FC<SidebarProps> = ({
                             <AccordionSummary expandIcon={<ExpandMore/>}>
                                 <Typography variant="h6">Children</Typography>
                             </AccordionSummary>
-                            <AccordionDetails>
+                            <AccordionDetails sx={styles.accordionDetails}>
                                 <Typography style={styles.paragraph}><strong style={styles.label}>Lag in Days:</strong></Typography>
                                 <List style={styles.list}>
                                     <ListItem style={styles.listItem}><strong
@@ -258,7 +261,7 @@ const ChartSidebar: React.FC<SidebarProps> = ({
         <Drawer anchor="right" open={true} onClose={onClose}
                 PaperProps={{
                     sx: {
-                        width: '400px',
+                        width: '450px',
                         height: '85%',
                         position: 'fixed',
                         top: '50%',

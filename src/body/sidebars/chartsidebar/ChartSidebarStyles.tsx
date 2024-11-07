@@ -40,31 +40,16 @@ const styles = {
         borderRadius: '4px',
         transition: 'background-color 0.3s, color 0.3s',
     },
-    accordionContent: {
+    typeDropBox: {
         margin: '0 0 1em 0',
         padding: '0.8em 1em',
         borderLeft: '1px solid #73a796',
     },
-/*   accordionHeaderStatisticsActive: {
-        backgroundColor: '#5e5e5e',
+    accordionDetails:{
+        paddingTop: '0',
+        paddingBottom: '10px',
     },
-    accordionHeaderNodeActive: {
-        backgroundColor: '#5e5e5e',
-    },
-    accordionHeaderChildrenActive: {
-        backgroundColor: '#5e5e5e',
-    },
-    accordionHeaderStatisticsHover: {
-        backgroundColor: '#666',
-    },
-    accordionHeaderNodeHover: {
-        backgroundColor: '#666',
-    },
-    accordionHeaderChildrenHover: {
-        backgroundColor: '#666',
-    },*/
     label: {
-/*        color: '#73a796',*/
         margin: '0',
         padding: '0',
     },
