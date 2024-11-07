@@ -90,9 +90,7 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
                                         sx={{
                                             ...styles.resultItem,
                                             cursor: result.nodeName === 'N/A' ? 'not-allowed' : 'pointer', // Disable cursor for "No nodes found"
-                                            backgroundColor: result.nodeName === 'N/A' ? '#f5f5f5' : 'inherit', // Grey background for non-clickable item
-                                            color: result.nodeName === 'N/A' ? '#999' : 'inherit', // Grey color for non-clickable item
-                                        }}
+                                         }}
                                     >
                                         {result.nodeName === "N/A" ? (
                                             <Typography sx={{ color: 'gray', fontStyle: 'italic' }}>

@@ -57,7 +57,6 @@ const styles = {
         marginBottom: '15px',
     },
     resultsBlock: {
-        backgroundColor: '#f9f9f9',
         padding: '15px',
         borderRadius: '8px',
         boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
