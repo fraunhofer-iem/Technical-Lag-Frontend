@@ -1,5 +1,5 @@
 import * as echarts from 'echarts';
-import {Graph, Node} from "../../../jsonutils/JSONStructureInterfaces.tsx";
+import {Graph, Node} from "../../../filehandling/jsonutils/JSONStructureInterfaces.tsx";
 import {ChartSidebarData} from "../../sidebars/sidebarutils/ChartSidebarUtils.tsx";
 import React from "react";
 import {TreemapSeriesOption} from "echarts/charts";
@@ -11,7 +11,6 @@ export interface TreemapGenerator {
         setChartSidebarData: React.Dispatch<React.SetStateAction<ChartSidebarData | null>>,
         setIsChartSidebarVisible: React.Dispatch<React.SetStateAction<boolean>>
     ) => echarts.ECharts | null;
-
     getLevelOption: () => TreemapSeriesOption['levels'];
 }
 

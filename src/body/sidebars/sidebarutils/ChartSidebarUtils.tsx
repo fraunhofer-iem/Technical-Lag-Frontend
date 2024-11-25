@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {Stats} from "../../../jsonutils/JSONStructureInterfaces.tsx";
+import {Stats} from "../../../filehandling/jsonutils/JSONStructureInterfaces.tsx";
 
 export interface ChartSidebarData {
     name: string;

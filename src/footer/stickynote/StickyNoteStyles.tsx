@@ -1,6 +1,5 @@
 import { SxProps, Theme } from "@mui/material";
 
-// Styles for the sticky note container (fixed to bottom-middle)
 export const stickyNoteContainerStyle = (isFooterOpen: boolean): SxProps<Theme> => ({
     position: "fixed",
     bottom: isFooterOpen ? '0vh' : '-2em',
@@ -12,7 +11,6 @@ export const stickyNoteContainerStyle = (isFooterOpen: boolean): SxProps<Theme> 
     justifyContent: "center",
 });
 
-// Styles for the sticky note itself
 export const stickyNoteStyle: SxProps<Theme> = (theme) => ({
     fontSize: "8px",
     borderRadius: "5px",

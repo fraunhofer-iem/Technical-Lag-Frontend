@@ -1,12 +1,11 @@
 import * as React from "react";
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import WelcomePage from './welcome/WelcomePage';
-import DragAndDropPage from "./filehandling/DragAndDropPage.tsx";
+import DragAndDropPage from "./filehandling/drag_n_drop/DragAndDropPage.tsx";
 import ToSPage from "./legalnotice/tos/ToSPage.tsx";
 import PrivacyPolicyPage from "./legalnotice/privacypolicy/PrivacyPolicyPage.tsx";
 import HelpPage from "./help/HelpPage.tsx";
-import NormalDependenciesChart from "./body/chart/chartvariants/NormalDependenciesChart.tsx";
-import DevDependenciesChart from "./body/chart/chartvariants/DevDependenciesChart.tsx";
+import ChartInit from "./body/chart/chartvariants/ChartInit.tsx";
 import CookieConsent from "./legalnotice/cookies/CookieConstent.tsx";
 import ResponsiveAppBar from "./appbar/ResponsiveAppBar.tsx";
 import StickyNoteComponent from "./footer/stickynote/StickyNoteComponent.tsx";
@@ -23,8 +22,7 @@ const App: React.FC = () => {
                     <Route path="/drag-n-drop" element={<DragAndDropPage/>}/>
                     <Route path="/terms-of-service" element={<ToSPage/>}/>
                     <Route path="/privacy-policy" element={<PrivacyPolicyPage/>}/>
-                    <Route path="/normal-dependencies-chart" element={<NormalDependenciesChart/>}/>
-                    <Route path="/dev-dependencies-chart" element={<DevDependenciesChart/>}/>
+                    <Route path="/normal-dependencies-chart" element={<ChartInit/>}/>
                     <Route path="/help" element={<HelpPage/>}/>
                     {/*TODO Other routes*/}
                 </Routes>

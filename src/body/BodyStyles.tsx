@@ -7,7 +7,7 @@ export const BodyStyles = {
         position: "relative" as const,
     },
     graphContainer: {
-        width: '100vw',
+        width: '100vw', //TODO Calculate according to fitlersidebar
         height: '90vh',
         marginTop: '3rem',
         justifyContent: 'center' as const,
@@ -48,7 +48,6 @@ export const BodyStyles = {
         fontSize: "1rem",
         border: "none",
         borderRadius: "5px",
-        cursor: "pointer",
         transition: "background-color 0.3s ease, color 0.3s ease",
         zIndex: "1000",
     },

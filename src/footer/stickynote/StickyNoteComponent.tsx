@@ -19,7 +19,7 @@ const StickyNoteComponent: React.FC = () => {
     }
 
     return (
-        <>
+        <Box>
             {/* Sticky Note */}
             <Box sx={stickyNoteContainerStyle(isFooterOpen)}>
                 <Box
@@ -32,7 +32,7 @@ const StickyNoteComponent: React.FC = () => {
 
             {/* Footer */}
             <Footer isFooterOpen={isFooterOpen} />
-        </>
+        </Box>
     );
 };
 

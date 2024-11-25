@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FileDrop} from './DragNDrop';
+import {FileDrop} from './DragNDrop.tsx';
 import {DragNDropStyles} from "./DragAndDropPageStyles.tsx";
 import {parseJSON} from "../jsonutils/JSONParser.tsx";
 import {Graph} from "../jsonutils/JSONStructureInterfaces.tsx";

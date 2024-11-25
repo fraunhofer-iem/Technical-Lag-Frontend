@@ -1,22 +1,22 @@
 import * as React from "react";
 import {useState} from "react";
-import {BodyStyles} from "../../BodyStyles.tsx";
 import {ButtonProps} from "../buttonInterface.ts";
 import {Button, Fade, Tooltip, useTheme} from "@mui/material";
 import FilterListIcon from '@mui/icons-material/FilterList';
+import {FilterButtonStyles} from "./FilterButtonStyles.ts";
 
 const FilterButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const theme = useTheme();
 
     const filterButtonStyle = {
-        ...BodyStyles.chartButton,
+        ...FilterButtonStyles.filterButton,
         backgroundColor: isHovered ? theme.palette.primary.light : theme.palette.primary.main,
         color: theme.palette.primary.contrastText
     };
 
     return (
-        <Tooltip title={tooltip} placement={"right"} arrow TransitionComponent={Fade} TransitionProps={{timeout: 600}}
+        <Tooltip title={tooltip} placement={"left"} arrow TransitionComponent={Fade} TransitionProps={{timeout: 600}}
                  PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '10px', fontSize: "14px"},}}}>
             <Button
                 style={filterButtonStyle}

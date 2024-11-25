@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Graph, Node} from "../../../jsonutils/JSONStructureInterfaces.tsx";
+import {Graph, Node} from "../../../filehandling/jsonutils/JSONStructureInterfaces.tsx";
 import * as echarts from 'echarts';
 
 interface SearchResult extends Node {

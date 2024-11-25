@@ -1,16 +1,4 @@
-// FilterSidebarStyles.ts
-const styles = {
-    drawer: {
-        width: '350px',
-        height: '80%',
-        position: 'fixed',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        right: 0,
-        zIndex: 1300,
-        borderRadius: '8px 0 0 8px',
-        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
-    },
+export const FilterSidebarStyles = {
     headerContainer: {
         display: 'flex',
         justifyContent: 'space-between',
@@ -23,16 +11,16 @@ const styles = {
         margin: 0,
     },
     filterHeader: {
-        fontSize: '20px',
+        fontSize: '22px',
         fontWeight: 'bold',
         margin: 0,
-        marginTop: '15px',
+        marginTop: '20px',
     },
     content: {
         display: 'flex',
         flexDirection: 'column' as const,
         width: "100%",
-        padding: '2em'
+        padding: '2em',
     },
     searchBarContainer: {
         display: 'flex',
@@ -80,5 +68,3 @@ const styles = {
         transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
     },
 };
-
-export default styles;

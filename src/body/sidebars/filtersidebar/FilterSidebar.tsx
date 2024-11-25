@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import styles from './FilterSidebarStyles.tsx';
+import {FilterSidebarStyles} from './FilterSidebarStyles.tsx';
 import {Box, Button, Divider, Drawer, List, ListItem, TextField, Typography} from "@mui/material";
 
 /*import {DateField, LocalizationProvider} from "@mui/x-date-pickers";
@@ -37,43 +37,44 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
     };
 
     return (
-        <Drawer anchor="right" open={isOpen} onClose={onClose}
+        <Drawer anchor="right" open={isOpen} onClose={onClose} variant="persistent"
                 PaperProps={{
                     sx: {
                         width: '450px',
-                        height: '85%',
-                        position: 'fixed',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        right: 0,
-                        zIndex: 1300,
-                        borderRadius: '8px 0 0 8px',
+                        height: '100%',
+                        top: '44px',
                         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+                        borderLeft: '5px solid',
+/*                        flexShrink: 0,
+                        '& .MuiDrawer-paper': {
+                            width: 450,
+                        },*/
                     },
                 }}
         >
             {/* Header */}
-            <Box sx={styles.content}>
-                <Box sx={styles.headerContainer}>
-                    <Typography variant="h5" sx={styles.sidebarHeader}>Search & Filter</Typography>
+            <Box sx={FilterSidebarStyles.content}>
+                <Box sx={FilterSidebarStyles.headerContainer}>
+                    <Typography variant="h5" sx={FilterSidebarStyles.sidebarHeader}>Search</Typography>
                 </Box>
                 <Divider/>
 
                 {/* Search Section */}
                 <Box sx={{marginTop: '1em'}}>
-                    <Box sx={styles.searchBarContainer}>
+                    <Box sx={FilterSidebarStyles.searchBarContainer}>
                         <TextField
                             label="Search by Node Name"
                             variant="outlined"
                             value={searchTerm}
                             placeholder="Search..."
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            sx={styles.searchField}
+                            fullWidth
+                            sx={FilterSidebarStyles.searchField}
                         />
                         <Button
                             onClick={handleSearch}
                             variant="contained"
-                            sx={styles.searchButton}
+                            sx={FilterSidebarStyles.searchButton}
                         >
                             Search
                         </Button>
@@ -81,14 +82,14 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
 
                     {/* Results Block */}
                     {searchResults.length > 0 && (
-                        <Box sx={styles.resultsBlock}>
-                            <List sx={styles.resultsList}>
+                        <Box sx={FilterSidebarStyles.resultsBlock}>
+                            <List sx={FilterSidebarStyles.resultsList}>
                                 {searchResults.map((result) => (
                                     <ListItem
                                         key={result.id} // Use a unique identifier
                                         onClick={() => (result.nodeName !== 'N/A' ? handleNodeClick(result) : undefined)}
                                         sx={{
-                                            ...styles.resultItem,
+                                            ...FilterSidebarStyles.resultItem,
                                             cursor: result.nodeName === 'N/A' ? 'not-allowed' : 'pointer', // Disable cursor for "No nodes found"
                                          }}
                                     >
@@ -112,7 +113,7 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
                         alignItems: 'center',
                         marginBottom: '0.5em'
                     }}>
-                        <Typography variant="h6" sx={styles.filterHeader}>More...</Typography>
+                        <Typography variant="h6" sx={FilterSidebarStyles.filterHeader}>Filter</Typography>
                     </Box>
                     <Divider/>
 
@@ -137,7 +138,7 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
                         type="number"
                         value={libDays}
                         onChange={(e) => setLibDays(e.target.value)}
-                        sx={styles.filterField}
+                        sx={FilterSidebarStyles.filterField}
                     />
                     {/*                    <TextField
                         label="Number of Missed Releases"
@@ -156,7 +157,7 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
                     <Button
                         onClick={handleFilter}
                         variant="contained"
-                        sx={styles.applyButton}>
+                        sx={FilterSidebarStyles.applyButton}>
                         Apply Filters
                     </Button>
                 </Box>

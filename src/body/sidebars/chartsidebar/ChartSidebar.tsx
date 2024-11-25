@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './ChartSidebarStyles.tsx';
-import {Stats} from "../../../jsonutils/JSONStructureInterfaces.tsx";
+import {Stats} from "../../../filehandling/jsonutils/JSONStructureInterfaces.tsx";
 import {
     Accordion,
     AccordionDetails,

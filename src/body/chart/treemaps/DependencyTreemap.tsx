@@ -1,11 +1,11 @@
 import * as echarts from 'echarts';
-import {Graph} from "../../../jsonutils/JSONStructureInterfaces.tsx";
+import {Graph} from "../../../filehandling/jsonutils/JSONStructureInterfaces.tsx";
 import * as React from "react";
 import {ChartSidebarData} from "../../sidebars/sidebarutils/ChartSidebarUtils.tsx";
 import type {TreemapSeriesOption} from 'echarts/charts';
 import {transformJSONDataToTreemap, TreemapGenerator} from './TreemapGenerator';
 
-export class NormalDependenciesTreemap implements TreemapGenerator {
+export class DependencyTreemap implements TreemapGenerator {
     initChart(
         chartRef: HTMLDivElement,
         normalGraph: Graph,
@@ -33,11 +33,11 @@ export class NormalDependenciesTreemap implements TreemapGenerator {
                 tooltip: {
                     formatter: function (info: any) {
                         const name = info.name;
-                        const version = info.versionNumber || 'Unknown Version';
+                        const version = info.data.usedVersion || 'Unknown Version';
 
                         return [
                             '<div class="tooltip-title">' + echarts.format.encodeHTML(name) + '</div>',
-                            'Version: ' + version
+                            'Version: ' + version,
                         ].join('');
                     }
                 },

@@ -1,9 +1,8 @@
 import * as React from "react";
 import {useEffect, useRef, useState} from "react";
-import {Graph, Node} from "../../../jsonutils/JSONStructureInterfaces.tsx";
+import {Graph, Node} from "../../../filehandling/jsonutils/JSONStructureInterfaces.tsx";
 import NewFileButton from "../../buttons/NewFileButton.tsx";
-import ChartSidebar from "../../sidebars/chartsidebar/ChartSidebar.tsx";
-import FilterButton from "../../buttons/graphbuttons/FilterButton.tsx";
+import FilterButton from "../../buttons/filterbutton/FilterButton.tsx";
 import FilterSidebar from "../../sidebars/filtersidebar/FilterSidebar.tsx";
 import {ChartSidebarData, useChartSidebar} from "../../sidebars/sidebarutils/ChartSidebarUtils.tsx";
 import {useFilterSidebar} from "../../sidebars/sidebarutils/FilterSidebarUtils.tsx";
@@ -15,6 +14,8 @@ import {BodyStyles} from "../../BodyStyles.tsx";
 import NormDepButton from "../../buttons/graphbuttons/NormDepButton.tsx";
 import DevDepButton from "../../buttons/graphbuttons/DevDepButton.tsx";
 import {Box, ButtonGroup} from "@mui/material";
+import ChartSidebar from "../../sidebars/chartsidebar/ChartSidebar.tsx";
+import {filterContainerStyle} from "../../buttons/filterbutton/FilterButtonStyles.ts";
 
 interface BaseChartProps {
     initChart: (
@@ -60,7 +61,7 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
     } = useFilterSidebar(currentGraph, chartInstanceRef);
 
     // Updates the ChartSidebar when a node is clicked in the FilterSidebar search list
-    const handleNodeClickInFilterSidebar = (node : Node) => {
+    const handleNodeClickInFilterSidebar = (node: Node) => {
         // Set data for ChartSidebar based on the node clicked
         setChartSidebarData({
             name: node.nodeName,
@@ -92,14 +93,13 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
 
     useEffect(() => {
         if (currentGraph && chartRef.current) {
-            console.log("currentGraph is set:", currentGraph);
-
             chartInstanceRef.current = initChart(
                 chartRef.current,
                 currentGraph,
                 setChartSidebarData,
                 setIsChartSidebarVisible
             );
+
 
             const handleResize = () => {
                 chartInstanceRef.current?.resize();
@@ -113,7 +113,7 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
                 chartInstanceRef.current = null;
             };
         }
-    }, [currentGraph]);
+    }, [currentGraph, isFilterSidebarVisible]);
 
     const handleGraphSelection = (graphType: 'normalGraph' | 'devGraph') => {
         if (graphs) {
@@ -127,46 +127,20 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
     };
 
     //TODO Insert actual logic for updating and reverting library upgrades
-    const handleClick = (label: string) => {
+    const updateTreemap = (label: string) => {
         alert(`Button ${label} clicked`);
     };
 
+    //TODO Anders resizen, nicht auf window bezogen sondern mit der sidebar
     return (
         <main style={BodyStyles.mainContainer}>
-            <NewFileButton text="New File" action={handleBackButton}/>
-            {isFileDropped && (
+            <Box sx={{display: "flex", height: "100%"}}>
+                {/* Filter Sidebar and Filter Button */}
                 <Box>
-                    <Box style={BodyStyles.graphContainer}>
-                        <div className={chartClassName} ref={chartRef} style={{width: '100%', height: '90%'}}/>
+                    <Box sx={filterContainerStyle(isFilterSidebarVisible)}>
+                        <FilterButton text="" tooltip="Filter & Search" action={handleFilterButton}/>
                     </Box>
-
-                    {graphs && (
-                        <ButtonGroup style={BodyStyles.chartButtonColumn}>
-                            <NormDepButton text="N" tooltip="Normal Dependencies"
-                                           action={() => handleGraphSelection('normalGraph')}/>
-                            <DevDepButton text="D" tooltip="Dev Dependencies"
-                                          action={() => handleGraphSelection('devGraph')}/>
-                            <br/>
-                            <FilterButton text="" tooltip="Filter & Search" action={handleFilterButton}/>
-                            <UpdateButton text="" tooltip="Update Libraries" action={() => handleClick("Update")}/>
-                            <RevertButton text="" tooltip="Revert Updates" action={() => handleClick("Revert")}/>
-                        </ButtonGroup>
-                    )}
-
-                    {isChartSidebarVisible && (
-                        <ChartSidebar
-                            fullName={chartSidebarData?.name ?? "N/A"}
-                            versionNumber={chartSidebarData?.usedVersion ?? "N/A"}
-                            releaseDate={chartSidebarData?.releaseDate ?? "N/A"}
-                            ecosystem={chartSidebarData?.name === currentGraph?.root.rootName ? chartSidebarData?.ecosystem : undefined}
-                            repoURL={chartSidebarData?.name === currentGraph?.root.rootName ? chartSidebarData?.repoURL : undefined}
-                            revision={chartSidebarData?.name === currentGraph?.root.rootName ? chartSidebarData?.revision : undefined}
-                            stats={chartSidebarData?.stats}
-                            onClose={handleCloseChartSidebar}
-                        />
-                    )}
-
-                    {isFilterSidebarVisible && (
+                    {isFileDropped && isFilterSidebarVisible && (
                         <FilterSidebar
                             isOpen={isFilterSidebarVisible}
                             onClose={handleCloseFilterSidebar}
@@ -176,9 +150,79 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
                         />
                     )}
                 </Box>
-            )}
+
+                {/* Main Content */}
+                <Box sx={{
+                    flexGrow: 1,
+                    transition: "margin-left 0.3s ease",
+                    marginLeft: isFilterSidebarVisible ? '-300px' : '0',
+                }}>
+                    {/* Graph Buttons */}
+                    <ButtonGroup>
+                        <NewFileButton text="New File" action={handleBackButton}/>
+                    </ButtonGroup>
+                    {isFileDropped && graphs && (
+                        <ButtonGroup style={BodyStyles.chartButtonColumn}>
+                            <NormDepButton
+                                text="N"
+                                tooltip="Normal Dependencies"
+                                action={() => handleGraphSelection('normalGraph')}
+                            />
+                            <DevDepButton
+                                text="D"
+                                tooltip="Dev Dependencies"
+                                action={() => handleGraphSelection('devGraph')}
+                            />
+                            <br/>
+                            <UpdateButton
+                                text=""
+                                tooltip="Update Libraries"
+                                action={() => updateTreemap("Update")}
+                            />
+                            <RevertButton
+                                text=""
+                                tooltip="Revert Updates"
+                                action={() => updateTreemap("Revert")}
+                            />
+                        </ButtonGroup>
+                    )}
+
+                    {/* Graph */}
+                    {isFileDropped && (
+                        <Box style={BodyStyles.graphContainer}>
+                            <div className={chartClassName} ref={chartRef} style={{width: '100%', height: '90%'}}/>
+                        </Box>
+                    )}
+
+                    {/* Chart Sidebar */}
+                    {isChartSidebarVisible && (
+                        <ChartSidebar
+                            fullName={chartSidebarData?.name ?? "N/A"}
+                            versionNumber={chartSidebarData?.usedVersion ?? "N/A"}
+                            releaseDate={chartSidebarData?.releaseDate ?? "N/A"}
+                            ecosystem={
+                                chartSidebarData?.name === currentGraph?.root.rootName
+                                    ? chartSidebarData?.ecosystem
+                                    : undefined
+                            }
+                            repoURL={
+                                chartSidebarData?.name === currentGraph?.root.rootName
+                                    ? chartSidebarData?.repoURL
+                                    : undefined
+                            }
+                            revision={
+                                chartSidebarData?.name === currentGraph?.root.rootName
+                                    ? chartSidebarData?.revision
+                                    : undefined
+                            }
+                            stats={chartSidebarData?.stats}
+                            onClose={handleCloseChartSidebar}
+                        />
+                    )}
+                </Box>
+            </Box>
         </main>
-    );
+    )
 };
 
 export default BaseChart;
