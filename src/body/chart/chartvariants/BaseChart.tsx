@@ -58,7 +58,7 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
         handleFilterButton,
         handleSearch,
         handleCloseFilterSidebar,
-    } = useFilterSidebar(currentGraph, chartInstanceRef);
+    } = useFilterSidebar(currentGraph);
 
     // Updates the ChartSidebar when a node is clicked in the FilterSidebar search list
     const handleNodeClickInFilterSidebar = (node: Node) => {
@@ -131,7 +131,7 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
         alert(`Button ${label} clicked`);
     };
 
-    //TODO Anders resizen, nicht auf window bezogen sondern mit der sidebar
+    //TODO search muss gelöscht werden wenn filtersb geschlossen, filtersb schließen wenn chartsidebar offen
     return (
         <main style={BodyStyles.mainContainer}>
             <Box sx={{display: "flex", height: "100%"}}>
@@ -140,7 +140,7 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
                     <Box sx={filterContainerStyle(isFilterSidebarVisible)}>
                         <FilterButton text="" tooltip="Filter & Search" action={handleFilterButton}/>
                     </Box>
-                    {isFileDropped && isFilterSidebarVisible && (
+                    {!isChartSidebarVisible && isFileDropped && isFilterSidebarVisible && (
                         <FilterSidebar
                             isOpen={isFilterSidebarVisible}
                             onClose={handleCloseFilterSidebar}

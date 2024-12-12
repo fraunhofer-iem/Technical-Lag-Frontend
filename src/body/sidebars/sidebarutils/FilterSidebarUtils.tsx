@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {Graph, Node} from "../../../filehandling/jsonutils/JSONStructureInterfaces.tsx";
-import * as echarts from 'echarts';
 
 interface SearchResult extends Node {
     path: string[];
 }
 
-export const useFilterSidebar = (graph: Graph  | null, chartInstanceRef: React.RefObject<echarts.ECharts | null>) => {
+export const useFilterSidebar = (graph: Graph  | null) => {
     const [isFilterSidebarVisible, setIsFilterSidebarVisible] = useState(false);
     const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
 
@@ -33,22 +32,6 @@ export const useFilterSidebar = (graph: Graph  | null, chartInstanceRef: React.R
                 stats: [],
                 releaseDate: 0,
             },]);
-        }
-    };
-
-    const zoomToNode = (node: Node) => {
-        if (chartInstanceRef.current && node) {
-            console.log("Zooming to node:", node);
-            chartInstanceRef.current.dispatchAction({
-                type: 'zoomToNode',
-                targetNode: {
-                    name: node.nodeName,
-                    id: node.nodeId
-                },
-                zoomLevel: 2
-            });
-        } else {
-            console.error("Chart instance is not available");
         }
     };
 
@@ -118,7 +101,6 @@ export const useFilterSidebar = (graph: Graph  | null, chartInstanceRef: React.R
         searchResults,
         handleFilterButton,
         handleSearch,
-        zoomToNode,
         handleCloseFilterSidebar,
     };
 };

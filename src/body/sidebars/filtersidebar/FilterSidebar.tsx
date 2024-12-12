@@ -44,7 +44,7 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
                         height: '100%',
                         top: '44px',
                         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
-                        borderLeft: '5px solid',
+                        borderLeft: '3px solid',
 /*                        flexShrink: 0,
                         '& .MuiDrawer-paper': {
                             width: 450,
