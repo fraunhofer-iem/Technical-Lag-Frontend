@@ -16,6 +16,8 @@ import DevDepButton from "../../buttons/graphbuttons/DevDepButton.tsx";
 import {Box, ButtonGroup} from "@mui/material";
 import ChartSidebar from "../../sidebars/chartsidebar/ChartSidebar.tsx";
 import {filterContainerStyle} from "../../buttons/filterbutton/FilterButtonStyles.ts";
+import {revertTreemap, useTreemapActions} from "../chartupdates/TreemapActions.tsx";
+import {UpdateWindow} from "../chartupdates/UpdateWindow.tsx";
 
 interface BaseChartProps {
     initChart: (
@@ -34,6 +36,8 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
     const navigate = useNavigate();
     const chartRef = useRef<HTMLDivElement>(null);
     const chartInstanceRef = useRef<echarts.ECharts | null>(null);
+
+    const { isUpdateWindowVisible, updateTreemap, handleCloseUpdateWindow } = useTreemapActions();
 
     const handleBackButton = () => {
         setIsFileDropped(false);
@@ -126,11 +130,6 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
         }
     };
 
-    //TODO Insert actual logic for updating and reverting library upgrades
-    const updateTreemap = (label: string) => {
-        alert(`Button ${label} clicked`);
-    };
-
     //TODO search muss gelöscht werden wenn filtersb geschlossen, filtersb schließen wenn chartsidebar offen
     return (
         <main style={BodyStyles.mainContainer}>
@@ -177,15 +176,18 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
                             <UpdateButton
                                 text=""
                                 tooltip="Update Libraries"
-                                action={() => updateTreemap("Update")}
+                                action={() => updateTreemap()}
                             />
                             <RevertButton
                                 text=""
                                 tooltip="Revert Updates"
-                                action={() => updateTreemap("Revert")}
+                                action={() => revertTreemap("Revert")}
                             />
                         </ButtonGroup>
                     )}
+
+                    {/* UpdateWindow */}
+                    {isUpdateWindowVisible && <UpdateWindow onClose={handleCloseUpdateWindow} />}
 
                     {/* Graph */}
                     {isFileDropped && (

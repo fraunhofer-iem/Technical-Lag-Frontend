@@ -5,7 +5,6 @@ export const CookieConsentStyles = {
         left: '50%',
         transform: 'translateX(-50%)',
         width: '600px',
-        backgroundColor: 'var(--bg-color)',
         padding: '20px',
         borderRadius: '10px',
         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
@@ -29,15 +28,10 @@ export const CookieConsentStyles = {
     button: {
         padding: '10px 20px',
         border: 'none',
-        backgroundColor: 'var(--bg-color)',
-        color: 'var(--txt-color)',
         cursor: 'pointer',
         borderRadius: '5px',
         transition: 'background-color 0.3s ease, color 0.3s ease',
         marginRight: '0',
-    },
-    buttonHover: {
-        backgroundColor: 'var(--btn-bg-hover)',
     },
     manageCookies: {
         position: 'fixed' as const,
@@ -45,7 +39,6 @@ export const CookieConsentStyles = {
         left: '50%',
         transform: 'translateX(-50%)',
         width: '400px',
-        backgroundColor: 'var(--bg-color)',
         padding: '20px',
         borderRadius: '10px',
         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
