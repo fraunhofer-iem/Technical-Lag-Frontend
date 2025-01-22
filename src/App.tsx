@@ -14,8 +14,8 @@ import {ThemeProviderComponent} from "./themes_and_colors/ThemeContext.tsx";
 
 const App: React.FC = () => {
     return (
-        <ThemeProviderComponent>
-            <Router>
+        <Router>
+            <ThemeProviderComponent>
                 <ResponsiveAppBar/>
                 <Routes>
                     <Route path="/" element={<WelcomePage/>}/>
@@ -28,8 +28,8 @@ const App: React.FC = () => {
                 </Routes>
                 <CookieConsent/>
                 <StickyNoteComponent/>
-            </Router>
-        </ThemeProviderComponent>
+            </ThemeProviderComponent>
+        </Router>
     );
 };
 

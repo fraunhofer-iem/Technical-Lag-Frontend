@@ -32,7 +32,7 @@ const NewFileButton: React.FC<ButtonProps> = ({text, action}) => {
         >
             <AddIcon/>
             {text}
-        </Fab >
+        </Fab>
     );
 };
 

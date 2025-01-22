@@ -11,14 +11,23 @@ export const DragNDropStyles = {
     },
     description: {
         fontSize: '1.5rem',
-        marginBottom: '20px',
+        fontWeight: '500',
+        textAlign: 'center' as const,
+        marginBottom: '2rem',
+        maxWidth: '800px',
+        textShadow: '1px 1px 3px rgba(0, 0, 0, 0.3)',
+        animation: 'fadeIn 1.5s ease-in forwards',
     },
     requirements: {
-        fontSize: '1rem',
+        fontSize: '1.2rem',
+        fontWeight: '500',
         marginTop: '20px',
+        textShadow: '1px 1px 3px rgba(0, 0, 0, 0.2)',
+        animation: 'fadeIn 1.5s ease-in forwards',
     },
-    message: {
-        fontSize: '1rem',
-        marginTop: '20px',
+    footer: {
+        position: 'absolute' as const,
+        fontWeight: '500',
+        bottom: '100px',
     },
 };

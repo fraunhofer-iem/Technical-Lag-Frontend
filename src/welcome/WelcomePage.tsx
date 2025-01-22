@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom'; // Updated to use useNavigate for React Router v6
-import {WelcomePageStyles} from "./WelcomePageStyles";
-import {Button, Typography, useTheme} from "@mui/material";
-
+import {useNavigate} from 'react-router-dom';
+import {WelcomePageStyles} from './WelcomePageStyles';
+import {Button, Typography, useTheme} from '@mui/material';
+import ParticlesTheme from "../themes_and_colors/ParticlesTheme.tsx";
 
 const WelcomePage: React.FC = () => {
     const navigate = useNavigate();
@@ -23,21 +23,42 @@ const WelcomePage: React.FC = () => {
     };
 
     return (
-        <div style={WelcomePageStyles.container}>
-            <Typography variant={"h1"} gutterBottom style={WelcomePageStyles.title}>Technical Lag Analyzer</Typography>
-            <Typography style={WelcomePageStyles.description}>
-                This tool helps with analysing the technical lag to all of your projects in a user friendly way. It's
-                designed to improve your workflow and make your life easier.
-                LibYear Analyzer displays your project structure in a dependency tree to better visualise the areas of
-                improvement.
-                Get started by clicking the button below!
-            </Typography>
-            <Button variant="contained" size="large" style={getStartedButtonStyle} onClick={handleClick}
+            <div style={WelcomePageStyles.container}>
+                {/* Animated Particles Background */}
+                <ParticlesTheme/>
+
+                {/* Title */}
+                <Typography variant="h1" gutterBottom style={WelcomePageStyles.title}>
+                    Technical Lag Analyzer
+                </Typography>
+
+                {/* Description */}
+                <Typography style={WelcomePageStyles.description}>
+                    This tool helps with analyzing the technical lag in all of your projects in a user-friendly way.
+                    It's
+                    designed to improve your workflow and make your life easier. LibYear Analyzer displays your project
+                    structure in a dependency tree to better visualize the areas of improvement. Get started by clicking
+                    the
+                    button below!
+                </Typography>
+
+                {/* Get Started Button */}
+                <Button
+                    variant="contained"
+                    size="large"
+                    style={getStartedButtonStyle}
+                    onClick={handleClick}
                     onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}>
-                Get Started
-            </Button>
-        </div>
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    Get Started
+                </Button>
+
+                {/* A small footer */}
+                <Typography variant="body2" style={WelcomePageStyles.footer}>
+                    &copy; 2025 Technical Lag Analyzer. All rights reserved.
+                </Typography>
+            </div>
     );
 };
 

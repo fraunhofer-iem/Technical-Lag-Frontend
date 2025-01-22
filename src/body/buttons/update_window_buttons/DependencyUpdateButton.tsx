@@ -4,6 +4,7 @@ import {ButtonProps} from "../buttonInterface.ts";
 import {Button, Fade, Tooltip, useTheme} from "@mui/material";
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import UpdateWindowStyles from "../../chart/chartupdates/UpdateWindowStyles.ts";
+import {ThemeProviderComponent} from "../../../themes_and_colors/ThemeContext.tsx";
 
 const DependencyUpdateButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
     const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -16,20 +17,23 @@ const DependencyUpdateButton: React.FC<ButtonProps> = ({text, action, tooltip}) 
     };
 
     return (
-        <Tooltip title={tooltip} placement={"left"} arrow TransitionComponent={Fade} TransitionProps={{timeout: 600}}
-                 PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '10px', fontSize: "14px"},}}}>
-            <Button
-                style={dependencyButtonStyle}
-                size="medium"
-                variant="contained"
-                onClick={action}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-            >
-                <DoubleArrowIcon/>
-                {text}
-            </Button>
-        </Tooltip>
+        <ThemeProviderComponent>
+            <Tooltip title={tooltip} placement={"left"} arrow TransitionComponent={Fade}
+                     TransitionProps={{timeout: 600}}
+                     PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '10px', fontSize: "14px"},}}}>
+                <Button
+                    style={dependencyButtonStyle}
+                    size="medium"
+                    variant="contained"
+                    onClick={action}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    <DoubleArrowIcon/>
+                    {text}
+                </Button>
+            </Tooltip>
+        </ThemeProviderComponent>
     );
 };
 

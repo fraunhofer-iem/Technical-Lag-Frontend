@@ -35,6 +35,7 @@ export const UpdateWindow: React.FC<UpdateWindowProps> = ({onClose}) => {
         }
     };
 
+    //TODO trigger opening of filtersidebar for nodesearch
     const handleNodeInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         setNodeInput(value);

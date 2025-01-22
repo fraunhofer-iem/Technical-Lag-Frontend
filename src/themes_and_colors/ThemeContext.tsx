@@ -130,7 +130,7 @@ export const ThemeProviderComponent: React.FC<{ children: React.ReactNode }> = (
                         contrastText: '#ffffff',
                     },
                     text: {
-                        primary: '#ffffff',
+                        primary: '#dddddd',
                         secondary: '#b0bec5',
                         disabled: '#757575',
                     },
