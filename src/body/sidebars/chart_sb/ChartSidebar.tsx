@@ -26,10 +26,10 @@ interface SidebarProps {
     repoURL?: string,
     revision?: string;
     stats?: Stats[];
-    isOpen: boolean
+    isOpen: boolean;
+    pathToNode?: string;
 }
 
-//TODO Add a line where the path of the node in the graph is displayed
 const ChartSidebar: React.FC<SidebarProps> = ({
                                                   fullName,
                                                   versionNumber,
@@ -39,7 +39,8 @@ const ChartSidebar: React.FC<SidebarProps> = ({
                                                   repoURL,
                                                   revision,
                                                   stats,
-                                                  isOpen
+                                                  isOpen,
+                                                  pathToNode
                                               }) => {
     // Convert milliseconds to a Date object
     const formattedReleaseDate = !isNaN(parseInt(releaseDate))
@@ -281,6 +282,8 @@ const ChartSidebar: React.FC<SidebarProps> = ({
                     <Box>
                         <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Node:</strong> <span
                             style={{wordBreak: 'break-all'}}>{fullName}</span></Typography>
+                        <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Path:</strong> <span
+                            style={{wordBreak: 'break-all'}}>{pathToNode}</span></Typography>
                         <Typography style={ChartSidebarStyles.paragraph}><strong
                             style={ChartSidebarStyles.label}>Version:</strong> {versionNumber}</Typography>
                         <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Release Date:</strong> <span

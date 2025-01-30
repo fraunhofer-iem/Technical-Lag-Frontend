@@ -14,7 +14,6 @@ export const parseJSON = (
         reader.onload = (event) => {
             try {
                 const json = JSON.parse(event.target?.result as string);
-                console.log("Parsed JSON:", json);
                 const {normalGraph, devGraph} = transformData(json); // Destructure to get both graphs
                 setTransformedJSONData({normalGraph, devGraph});
                 setIsFileDropped(true); // Hide the FileDrop and show the chart

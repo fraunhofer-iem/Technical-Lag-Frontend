@@ -4,7 +4,7 @@ import {Graph, Node} from "../../../file_handling/json_utils/JSONStructureInterf
 import NewFileButton from "../../buttons/NewFileButton.tsx";
 import FilterCloseButton from "../../buttons/filter_sb_close_btn/FilterCloseButton.tsx";
 import FilterSidebar from "../../sidebars/filter_sb/FilterSidebar.tsx";
-import {ChartSidebarData, useChartSidebar} from "../../sidebars/sb_utils/ChartSidebarUtils.tsx";
+import {ChartSidebarData, searchNodesByName, useChartSidebar} from "../../sidebars/sb_utils/ChartSidebarUtils.tsx";
 import {useFilterSidebar} from "../../sidebars/sb_utils/FilterSidebarUtils.tsx";
 import * as echarts from 'echarts';
 import {useNavigate} from "react-router-dom";
@@ -18,6 +18,8 @@ import ChartSidebar from "../../sidebars/chart_sb/ChartSidebar.tsx";
 import {filterContainerStyle} from "../../buttons/filter_sb_close_btn/FilterCloseButtonStyles.ts";
 import {revertTreemap, useTreemapActions} from "../library_update_and_revert/TreemapActions.tsx";
 import {UpdateWindow} from "../library_update_and_revert/UpdateWindow.tsx";
+import {ChartCloseButtonStyles} from "../../buttons/chart_sb_close_btn/ChartCloseButtonStyles.ts";
+import ChartCloseButton from "../../buttons/chart_sb_close_btn/ChartCloseButton.tsx";
 
 interface BaseChartProps {
     initChart: (
@@ -37,7 +39,7 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
     const chartRef = useRef<HTMLDivElement>(null);
     const chartInstanceRef = useRef<echarts.ECharts | null>(null);
 
-    const { isUpdateWindowVisible, updateTreemap, handleCloseUpdateWindow } = useTreemapActions();
+    const {isUpdateWindowVisible, updateTreemap, handleCloseUpdateWindow} = useTreemapActions();
 
     const handleBackButton = () => {
         setIsFileDropped(false);
@@ -53,6 +55,7 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
         chartSidebarData,
         setChartSidebarData,
         setIsChartSidebarVisible,
+        handleChartButton,
         handleCloseChartSidebar,
     } = useChartSidebar();
 
@@ -66,12 +69,16 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
 
     // Updates the ChartSidebar when a node is clicked in the FilterSidebar search list
     const handleNodeClickInFilterSidebar = (node: Node) => {
+        if (!currentGraph) return;
+
+        const pathToNode = searchNodesByName(currentGraph, node.nodeName) ?? "Path not found";
         // Set data for ChartSidebar based on the node clicked
         setChartSidebarData({
             name: node.nodeName,
             usedVersion: node.usedVersion,
             releaseDate: node.releaseDate.toString(),
             stats: node.stats,
+            pathToNode: pathToNode,
         });
 
         // Display the ChartSidebar with node data
@@ -130,16 +137,17 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
         }
     };
 
-    //TODO search muss gelöscht werden wenn filtersb geschlossen, filtersb schließen wenn chartsidebar offen
     return (
         <main style={BodyStyles.mainContainer}>
             <Box sx={{display: "flex", height: "100%"}}>
                 {/* Filter Sidebar and Filter Button */}
                 <Box>
-                    <Box sx={filterContainerStyle(isFilterSidebarVisible)}>
-                        <FilterCloseButton text="" tooltip="Filter & Search" action={handleFilterButton}/>
-                    </Box>
-                    {!isChartSidebarVisible && isFileDropped && isFilterSidebarVisible && (
+                    {!isChartSidebarVisible && isFileDropped && (
+                        <Box sx={filterContainerStyle(isFilterSidebarVisible)}>
+                            <FilterCloseButton text="" tooltip="Filter & Search" action={handleFilterButton}/>
+                        </Box>
+                    )}
+                    {isFileDropped && isFilterSidebarVisible && (
                         <FilterSidebar
                             isOpen={isFilterSidebarVisible}
                             onClose={handleCloseFilterSidebar}
@@ -187,7 +195,7 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
                     )}
 
                     {/* UpdateWindow */}
-                    {isUpdateWindowVisible && <UpdateWindow onClose={handleCloseUpdateWindow} />}
+                    {isUpdateWindowVisible && <UpdateWindow onClose={handleCloseUpdateWindow}/>}
 
                     {/* Graph */}
                     {isFileDropped && (
@@ -197,31 +205,40 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
                     )}
 
                     {/* Chart Sidebar */}
-                    {isChartSidebarVisible && (
-                        <ChartSidebar
-                            fullName={chartSidebarData?.name ?? "N/A"}
-                            versionNumber={chartSidebarData?.usedVersion ?? "N/A"}
-                            releaseDate={chartSidebarData?.releaseDate ?? "N/A"}
-                            ecosystem={
-                                chartSidebarData?.name === currentGraph?.root.rootName
-                                    ? chartSidebarData?.ecosystem
-                                    : undefined
-                            }
-                            repoURL={
-                                chartSidebarData?.name === currentGraph?.root.rootName
-                                    ? chartSidebarData?.repoURL
-                                    : undefined
-                            }
-                            revision={
-                                chartSidebarData?.name === currentGraph?.root.rootName
-                                    ? chartSidebarData?.revision
-                                    : undefined
-                            }
-                            stats={chartSidebarData?.stats}
-                            onClose={handleCloseChartSidebar}
-                            isOpen={isChartSidebarVisible}
-                        />
-                    )}
+                    <Box>
+                        {isChartSidebarVisible && (
+                            <Box sx={ChartCloseButtonStyles.chartContainerStyle}>
+                                <ChartCloseButton text="" tooltip="Info" action={handleChartButton}/>
+                            </Box>
+                        )}
+                        {isChartSidebarVisible && (
+                            <ChartSidebar
+                                fullName={chartSidebarData?.name ?? "N/A"}
+                                versionNumber={chartSidebarData?.usedVersion ?? "N/A"}
+                                releaseDate={chartSidebarData?.releaseDate ?? "N/A"}
+                                ecosystem={
+                                    chartSidebarData?.name === currentGraph?.root.rootName
+                                        ? chartSidebarData?.ecosystem
+                                        : undefined
+                                }
+                                repoURL={
+                                    chartSidebarData?.name === currentGraph?.root.rootName
+                                        ? chartSidebarData?.repoURL
+                                        : undefined
+                                }
+                                revision={
+                                    chartSidebarData?.name === currentGraph?.root.rootName
+                                        ? chartSidebarData?.revision
+                                        : undefined
+                                }
+                                stats={chartSidebarData?.stats}
+                                onClose={handleCloseChartSidebar}
+                                isOpen={isChartSidebarVisible}
+                                //ToDO Make the Path work
+                                pathToNode={chartSidebarData?.pathToNode}
+                            />
+                        )}
+                    </Box>
                 </Box>
             </Box>
         </main>

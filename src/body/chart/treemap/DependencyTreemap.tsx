@@ -65,7 +65,6 @@ export class DependencyTreemap implements TreemapGenerator {
                 if (params.componentType === 'series' && params.seriesType === 'treemap') {
                     params.event.event.preventDefault();
                     const nodeData = params.data;
-                    console.log("Params:",  params.data)
                     setChartSidebarData(nodeData);
                     setIsChartSidebarVisible(true);
                 }
