@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {DarkModeButtonStyles} from "./DarkModeButtonStyles.tsx";
+import {DarkModeButtonStyles} from "./DarkModeButtonStyles.ts";
 import {Button, Fade, Tooltip, useTheme} from "@mui/material";
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useState} from "react";
-import {BodyStyles} from "../BodyStyles.tsx";
+import {BodyStyles} from "../BodyStyles.ts";
 import {Fab, useTheme} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 

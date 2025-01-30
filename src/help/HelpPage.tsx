@@ -1,5 +1,5 @@
 import React from 'react';
-import {HelpPageStyles} from './HelpPageStyles.tsx';
+import {HelpPageStyles} from './HelpPageStyles.ts';
 import {Box, Typography} from "@mui/material";
 
 const HelpPage: React.FC = () => {

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {HelpButtonStyles} from './HelpButtonStyles';
+import {HelpButtonStyles} from './HelpButtonStyles.ts';
 import {faQuestion} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Button, Fade, Tooltip, useTheme} from "@mui/material";

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Box, Container, Link as MUILink, Typography, useTheme} from "@mui/material";
 import {Link} from "react-router-dom";
-import {columnStyle, copyrightStyle, footerBoxStyle, footerContainerStyle, linkStyle, rowStyle,} from "./FooterStyles";
+import {columnStyle, copyrightStyle, footerBoxStyle, footerContainerStyle, linkStyle, rowStyle,} from "./FooterStyles.ts";
 
 interface FooterProps {
     isFooterOpen: boolean;

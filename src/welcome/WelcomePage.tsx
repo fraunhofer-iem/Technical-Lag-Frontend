@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {WelcomePageStyles} from './WelcomePageStyles';
+import {WelcomePageStyles} from './WelcomePageStyles.ts';
 import {Button, Typography, useTheme} from '@mui/material';
 import ParticlesTheme from "../themes_and_colors/ParticlesTheme.tsx";
 

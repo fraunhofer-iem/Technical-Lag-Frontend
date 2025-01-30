@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import Footer from '../Footer.tsx';
-import { stickyNoteContainerStyle, stickyNoteStyle } from "./StickyNoteStyles";
+import { stickyNoteContainerStyle, stickyNoteStyle } from "./StickyNoteStyles.ts";
 
 const StickyNoteComponent: React.FC = () => {
     const [isFooterOpen, setIsFooterOpen] = useState<boolean>(false);
