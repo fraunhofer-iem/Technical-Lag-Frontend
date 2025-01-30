@@ -21,14 +21,15 @@ export class DependencyTreemap implements TreemapGenerator {
 
             const transformedData = transformJSONDataToTreemap(normalGraph).children;
 
-            this.applyDecalsAndColorsToChildren(transformedData);
+/*            this.applyDecalsAndColorsToChildren(transformedData);*/
 
             const option = {
                 title: {
-                    text: "Normal Dependencies for: " + rootName,
+                    text: "Dependencies for: " + rootName,
                     subtext: 'Version: ' + rootVersion,
                     left: 'center',
-                    top: 'top'
+                    top: 'top',
+                    color: "#fff",
                 },
                 tooltip: {
                     formatter: function (info: any) {
@@ -41,8 +42,6 @@ export class DependencyTreemap implements TreemapGenerator {
                         ].join('');
                     }
                 },
-                /*color: ['#62a995'],*/
-                textColor: ['#000'],
                 series: [{
                     darkMode: true,
                     name: rootName,
@@ -51,7 +50,12 @@ export class DependencyTreemap implements TreemapGenerator {
                     leafDepth: 1,
                     colorMappingBy: 'id',
                     levels: this.getLevelOption(),
-                    data: transformedData
+                    data: transformedData,
+                    label: {
+                        fontSize: 15,
+                        color: '#000',
+                        fontWeight: 'bold'
+                    }
                 }]
             };
 
@@ -82,7 +86,7 @@ export class DependencyTreemap implements TreemapGenerator {
                 itemStyle: {
                     borderColor: '#555',
                     borderWidth: 4,
-                    gapWidth: 4
+                    gapWidth: 4,
                 }
             },
             {
@@ -90,8 +94,8 @@ export class DependencyTreemap implements TreemapGenerator {
                 itemStyle: {
                     borderColorSaturation: 0.7,
                     gapWidth: 2,
-                    borderWidth: 2
-                }
+                    borderWidth: 2,
+                },
             },
             {
                 colorSaturation: [0.3, 0.5],

@@ -135,7 +135,7 @@ export const ThemeProviderComponent: React.FC<{ children: React.ReactNode }> = (
                         disabled: '#757575',
                     },
                     background: {
-                        default: '#121212',
+                        default: '#000000',
                         paper: '#1e1e1e',
                     },
                     action: {
