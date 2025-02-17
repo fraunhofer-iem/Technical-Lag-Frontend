@@ -16,14 +16,16 @@ const UpdateSingleWindowStyles = {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: '600px',
-        height: '360px',
+        width: '650px',
+        height: 'auto',
+        maxHeight: '80vh',
         borderRadius: '8px',
         boxShadow: `0 4px 6px ${theme.palette.grey[500]}`,
         padding: '20px',
         textAlign: 'center',
         backgroundColor: theme.palette.background.paper,
         color: theme.palette.text.primary,
+        overflowY: 'auto',
     }),
     closeButton: {
         padding: '8px 16px',
@@ -47,19 +49,37 @@ const UpdateSingleWindowStyles = {
         justifyContent: 'space-around',
         marginTop: '40px',
     },
-    formControl: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        marginTop: "40px",
-    },
-    textField: {
-        minWidth: "200px",
-    },
     dropdown: {
-        marginTop: "40px",
+        marginTop: "20px",
         minWidth: "200px",
     },
+    list: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px',
+    },
+    listContainer: (theme: Theme): SxProps<Theme> => ({
+        marginTop: '20px',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        width: '80%',
+        maxWidth: '400px',
+        maxHeight: '300px',
+        overflowY: 'auto',
+        border: `1px solid ${theme.palette.grey[300]}`,
+        borderRadius: '4px',
+        padding: '10px',
+    }),
+    listItem: (theme: Theme): SxProps<Theme> => ({
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '8px',
+        borderBottom: `1px solid ${theme.palette.grey[200]}`,
+        '&:last-child': {
+            borderBottom: 'none',
+        }
+    })
 };
 
 export default UpdateSingleWindowStyles;

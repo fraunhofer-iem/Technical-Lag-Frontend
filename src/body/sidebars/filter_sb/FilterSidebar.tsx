@@ -1,21 +1,41 @@
-import React, {useState} from 'react';
-import {FilterSidebarStyles} from './FilterSidebarStyles.ts';
-import {Box, Button, Checkbox, Divider, Drawer, List, ListItem, Pagination, TextField, Typography} from "@mui/material";
+import React, { useState } from 'react';
+import { FilterSidebarStyles } from './FilterSidebarStyles.ts';
+import {
+    Box,
+    Button,
+    Checkbox,
+    Divider,
+    Drawer,
+    List,
+    ListItem,
+    Pagination,
+    TextField,
+    Typography,
+} from "@mui/material";
+import {UpdateSingleWindow} from "../../chart/library_update_and_revert/UpdateSingleWIndow.tsx";
+
 
 interface SidebarProps {
     onClose: () => void;
     onSearch: (searchTerm: string) => void;
     searchResults: any[];
     onResultClick: (node: any) => void;
-    isOpen: boolean
+    isOpen: boolean;
 }
 
-const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick, searchResults, isOpen}) => {
+const FilterSidebar: React.FC<SidebarProps> = ({
+                                                   onClose,
+                                                   onSearch,
+                                                   onResultClick,
+                                                   searchResults,
+                                                   isOpen,
+                                               }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [libDays, setLibDays] = useState("");
     const [selectedItems, setSelectedItems] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [selectAllChecked, setSelectAllChecked] = useState(false);
+    const [isUpdateWindowOpen, setIsUpdateWindowOpen] = useState(false);
     const resultsPerPage = 6;
 
     const handleSearch = () => {
@@ -23,12 +43,11 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
         setCurrentPage(1); // Reset to the first page on new search
     };
 
-    const handleNodeClick = (node: Node) => {
+    const handleNodeClick = (node: any) => {
         onResultClick(node);
         onClose();
     };
 
-    //TODO Filter implementieren
     const handleFilter = () => {
         onSearch(searchTerm);
     };
@@ -65,33 +84,38 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
     );
 
     const handleOpenWindow = () => {
-        // For demonstration, we'll just log the selected items
-        console.log("Opening window with selected items:", selectedItems);
-        // Here you can implement the logic to open a new window with the selected items
+        setIsUpdateWindowOpen(true);
     };
 
+    const handleCloseUpdateWindow = () => {
+        setIsUpdateWindowOpen(false);
+    };
 
     return (
-        <Drawer anchor="right" open={isOpen} onClose={onClose} variant="persistent"
-                PaperProps={{
-                    sx: {
-                        width: '460px',
-                        height: '100%',
-                        top: '44px',
-                        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
-                        borderLeft: '3px solid',
-                    },
-                }}
+        <Drawer
+            anchor="right"
+            open={isOpen}
+            onClose={onClose}
+            variant="persistent"
+            PaperProps={{
+                sx: {
+                    width: '460px',
+                    height: '100%',
+                    top: '44px',
+                    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+                    borderLeft: '3px solid',
+                },
+            }}
         >
-            {/* Header */}
             <Box sx={FilterSidebarStyles.content}>
                 <Box sx={FilterSidebarStyles.headerContainer}>
-                    <Typography variant="h5" sx={FilterSidebarStyles.sidebarHeader}>Search</Typography>
+                    <Typography variant="h5" sx={FilterSidebarStyles.sidebarHeader}>
+                        Search
+                    </Typography>
                 </Box>
-                <Divider/>
+                <Divider />
 
-                {/* Search Section */}
-                <Box sx={{marginTop: '1em'}}>
+                <Box sx={{ marginTop: '1em' }}>
                     <Box sx={FilterSidebarStyles.searchBarContainer}>
                         <TextField
                             label="Search by Node Name"
@@ -111,19 +135,21 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
                         </Button>
                     </Box>
 
-                    {/* Results Block */}
                     {searchResults.length > 0 && (
                         <Box sx={FilterSidebarStyles.resultsBlock}>
                             <List sx={FilterSidebarStyles.resultsList}>
                                 {currentPageResults.map((result) => (
                                     <ListItem
                                         key={result.id}
-                                        onClick={() =>
-                                            result.nodeName !== 'N/A' ? handleNodeClick(result) : undefined
-                                        }
+                                        onContextMenu={(e) => {
+                                            e.preventDefault(); // Prevent the default context menu
+                                            if (result.nodeName !== 'N/A') {
+                                                handleNodeClick(result);
+                                            }
+                                        }}
                                         sx={{
                                             ...FilterSidebarStyles.resultItem,
-                                            cursor: result.nodeName === 'N/A' ? 'not-allowed' : 'pointer',
+                                            cursor: result.nodeName === 'N/A' ? 'not-allowed' : 'context-menu',
                                         }}
                                     >
                                         <Checkbox
@@ -169,18 +195,13 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
                         </Box>
                     )}
 
-                    {/* Divider */}
-                    <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        marginBottom: '0.5em'
-                    }}>
-                        <Typography variant="h6" sx={FilterSidebarStyles.filterHeader}>Filter</Typography>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5em' }}>
+                        <Typography variant="h6" sx={FilterSidebarStyles.filterHeader}>
+                            Filter
+                        </Typography>
                     </Box>
-                    <Divider/>
+                    <Divider />
 
-                    {/* Filter Section */}
                     <TextField
                         label="Lag in Days"
                         type="number"
@@ -188,14 +209,18 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
                         onChange={(e) => setLibDays(e.target.value)}
                         sx={FilterSidebarStyles.filterField}
                     />
-                    <Button
-                        onClick={handleFilter}
-                        variant="contained"
-                        sx={FilterSidebarStyles.applyButton}>
+                    <Button onClick={handleFilter} variant="contained" sx={FilterSidebarStyles.applyButton}>
                         Apply Filters
                     </Button>
                 </Box>
             </Box>
+
+            {isUpdateWindowOpen && (
+                <UpdateSingleWindow
+                    onClose={handleCloseUpdateWindow}
+                    selectedItems={selectedItems}
+                />
+            )}
         </Drawer>
     );
 };
