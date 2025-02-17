@@ -2,12 +2,13 @@ import {SxProps, Theme} from "@mui/material";
 
 export const filterContainerStyle = (isFilterSidebarOpen: boolean): SxProps<Theme> => ({
     position: "fixed",
-    right: isFilterSidebarOpen ? '450px' : '0px',
+    right: isFilterSidebarOpen ? '460px' : '0px',
     top: "50px",
     transition: "right 0.3s ease-out",
     width: "auto",
     display: "flex",
     justifyContent: "center",
+    zIndex: 5000,
 });
 
 export const FilterCloseButtonStyles = {

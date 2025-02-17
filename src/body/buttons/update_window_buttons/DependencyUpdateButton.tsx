@@ -3,7 +3,7 @@ import {useState} from "react";
 import {ButtonProps} from "../buttonInterface.ts";
 import {Button, Fade, Tooltip, useTheme} from "@mui/material";
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
-import UpdateWindowStyles from "../../chart/library_update_and_revert/UpdateWindowStyles.ts";
+import UpdateAllWindowStyles from "../../chart/library_update_and_revert/UpdateAllWindowStyles.ts";
 import {ThemeProviderComponent} from "../../../themes_and_colors/ThemeContext.tsx";
 
 const DependencyUpdateButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
@@ -11,7 +11,7 @@ const DependencyUpdateButton: React.FC<ButtonProps> = ({text, action, tooltip}) 
     const theme = useTheme();
 
     const dependencyButtonStyle = {
-        ...UpdateWindowStyles.updateButton,
+        ...UpdateAllWindowStyles.updateButton,
         backgroundColor: isHovered ? theme.palette.primary.light : theme.palette.primary.main,
         color: theme.palette.primary.contrastText
     };

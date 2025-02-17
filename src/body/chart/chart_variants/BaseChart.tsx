@@ -17,7 +17,7 @@ import {Box, ButtonGroup} from "@mui/material";
 import ChartSidebar from "../../sidebars/chart_sb/ChartSidebar.tsx";
 import {filterContainerStyle} from "../../buttons/filter_sb_close_btn/FilterCloseButtonStyles.ts";
 import {revertTreemap, useTreemapActions} from "../library_update_and_revert/TreemapActions.tsx";
-import {UpdateWindow} from "../library_update_and_revert/UpdateWindow.tsx";
+import {UpdateAllWindow} from "../library_update_and_revert/UpdateAllWindow.tsx";
 import {ChartCloseButtonStyles} from "../../buttons/chart_sb_close_btn/ChartCloseButtonStyles.ts";
 import ChartCloseButton from "../../buttons/chart_sb_close_btn/ChartCloseButton.tsx";
 
@@ -194,8 +194,8 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
                         </ButtonGroup>
                     )}
 
-                    {/* UpdateWindow */}
-                    {isUpdateWindowVisible && <UpdateWindow onClose={handleCloseUpdateWindow}/>}
+                    {/* UpdateAllWindow */}
+                    {isUpdateWindowVisible && <UpdateAllWindow onClose={handleCloseUpdateWindow}/>}
 
                     {/* Graph */}
                     {isFileDropped && (

@@ -1,10 +1,6 @@
 import React, {useState} from 'react';
 import {FilterSidebarStyles} from './FilterSidebarStyles.ts';
-import {Box, Button, Divider, Drawer, List, ListItem, TextField, Typography} from "@mui/material";
-
-/*import {DateField, LocalizationProvider} from "@mui/x-date-pickers";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";*/
-
+import {Box, Button, Checkbox, Divider, Drawer, List, ListItem, Pagination, TextField, Typography} from "@mui/material";
 
 interface SidebarProps {
     onClose: () => void;
@@ -16,14 +12,15 @@ interface SidebarProps {
 
 const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick, searchResults, isOpen}) => {
     const [searchTerm, setSearchTerm] = useState("");
-    /*    const [versionNumber, setVersionNumber] = useState("");*/
-    /*    const [releaseDate, setReleaseDate] = useState("");*/
     const [libDays, setLibDays] = useState("");
-    /*const [numberOfMissedReleases, setNumberOfMissedReleases] = useState("");*/
-    /*    const [releaseFrequency, setReleaseFrequency] = useState("");*/
+    const [selectedItems, setSelectedItems] = useState<any[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [selectAllChecked, setSelectAllChecked] = useState(false);
+    const resultsPerPage = 6;
 
     const handleSearch = () => {
         onSearch(searchTerm);
+        setCurrentPage(1); // Reset to the first page on new search
     };
 
     const handleNodeClick = (node: Node) => {
@@ -36,19 +33,53 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
         onSearch(searchTerm);
     };
 
+    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, result: any) => {
+        event.stopPropagation(); // Stop the event from propagating to the ListItem
+        setSelectedItems((prevSelected) =>
+            prevSelected.includes(result)
+                ? prevSelected.filter((item) => item !== result)
+                : [...prevSelected, result]
+        );
+    };
+
+    const handleSelectAll = () => {
+        if (selectAllChecked) {
+            // Deselect all items
+            setSelectedItems([]);
+        } else {
+            // Select all items
+            setSelectedItems(
+                searchResults.filter((result) => result.nodeName !== 'N/A')
+            );
+        }
+        setSelectAllChecked(!selectAllChecked);
+    };
+
+    const handlePaginationChange = (_event: any, value: number) => {
+        setCurrentPage(value);
+    };
+
+    const currentPageResults = searchResults.slice(
+        (currentPage - 1) * resultsPerPage,
+        currentPage * resultsPerPage
+    );
+
+    const handleOpenWindow = () => {
+        // For demonstration, we'll just log the selected items
+        console.log("Opening window with selected items:", selectedItems);
+        // Here you can implement the logic to open a new window with the selected items
+    };
+
+
     return (
         <Drawer anchor="right" open={isOpen} onClose={onClose} variant="persistent"
                 PaperProps={{
                     sx: {
-                        width: '450px',
+                        width: '460px',
                         height: '100%',
                         top: '44px',
                         boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
                         borderLeft: '3px solid',
-/*                        flexShrink: 0,
-                        '& .MuiDrawer-paper': {
-                            width: 450,
-                        },*/
                     },
                 }}
         >
@@ -84,15 +115,21 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
                     {searchResults.length > 0 && (
                         <Box sx={FilterSidebarStyles.resultsBlock}>
                             <List sx={FilterSidebarStyles.resultsList}>
-                                {searchResults.map((result) => (
+                                {currentPageResults.map((result) => (
                                     <ListItem
-                                        key={result.id} // Use a unique identifier
-                                        onClick={() => (result.nodeName !== 'N/A' ? handleNodeClick(result) : undefined)}
+                                        key={result.id}
+                                        onClick={() =>
+                                            result.nodeName !== 'N/A' ? handleNodeClick(result) : undefined
+                                        }
                                         sx={{
                                             ...FilterSidebarStyles.resultItem,
-                                            cursor: result.nodeName === 'N/A' ? 'not-allowed' : 'pointer', // Disable cursor for "No nodes found"
-                                         }}
+                                            cursor: result.nodeName === 'N/A' ? 'not-allowed' : 'pointer',
+                                        }}
                                     >
+                                        <Checkbox
+                                            checked={selectedItems.includes(result)}
+                                            onChange={(event) => handleCheckboxChange(event, result)}
+                                        />
                                         {result.nodeName === "N/A" ? (
                                             <Typography sx={{ color: 'gray', fontStyle: 'italic' }}>
                                                 No nodes found
@@ -103,6 +140,32 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
                                     </ListItem>
                                 ))}
                             </List>
+                            <Box sx={FilterSidebarStyles.paginationContainer}>
+                                <Pagination
+                                    count={Math.ceil(searchResults.length / resultsPerPage)}
+                                    page={currentPage}
+                                    onChange={handlePaginationChange}
+                                    color="primary"
+                                />
+                            </Box>
+                            <Button
+                                onClick={handleSelectAll}
+                                variant="outlined"
+                                sx={FilterSidebarStyles.selectAllButton}
+                            >
+                                {selectAllChecked ? "Deselect All" : "Select All"}
+                            </Button>
+                            <Typography sx={FilterSidebarStyles.selectedCounter}>
+                                Selected: {selectedItems.length} items
+                            </Typography>
+                            <Button
+                                onClick={handleOpenWindow}
+                                variant="contained"
+                                sx={FilterSidebarStyles.openSelectedButton}
+                                disabled={selectedItems.length === 0}
+                            >
+                                Open Selected
+                            </Button>
                         </Box>
                     )}
 
@@ -118,21 +181,6 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
                     <Divider/>
 
                     {/* Filter Section */}
-                    {/*                    <TextField
-                        label="Version Number"
-                        variant="outlined"
-                        value={versionNumber}
-                        onChange={(e) => setVersionNumber(e.target.value)}
-                        sx={styles.field}
-                    />*/}
-                    {/*                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateField
-                            label="Release Date"
-                            value={releaseDate}
-                            onChange={(e) => setReleaseDate(e.target.value)}
-                            sx={styles.field}
-                        />
-                    </LocalizationProvider>*/}
                     <TextField
                         label="Lag in Days"
                         type="number"
@@ -140,20 +188,6 @@ const FilterSidebar: React.FC<SidebarProps> = ({onClose, onSearch, onResultClick
                         onChange={(e) => setLibDays(e.target.value)}
                         sx={FilterSidebarStyles.filterField}
                     />
-                    {/*                    <TextField
-                        label="Number of Missed Releases"
-                        type="number"
-                        value={numberOfMissedReleases}
-                        onChange={(e) => setNumberOfMissedReleases(e.target.value)}
-                        sx={styles.field}
-                    />*/}
-                    {/*                    <TextField
-                        label="Release Frequency"
-                        type="number"
-                        value={releaseFrequency}
-                        onChange={(e) => setReleaseFrequency(e.target.value)}
-                        sx={styles.field}
-                    />*/}
                     <Button
                         onClick={handleFilter}
                         variant="contained"

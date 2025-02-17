@@ -3,7 +3,7 @@ import {useState} from "react";
 import {ButtonProps} from "../buttonInterface.ts";
 import {Button, Fade, Tooltip, useTheme} from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-import UpdateWindowStyles from "../../chart/library_update_and_revert/UpdateWindowStyles.ts";
+import UpdateAllWindowStyles from "../../chart/library_update_and_revert/UpdateAllWindowStyles.ts";
 import {ThemeProviderComponent} from "../../../themes_and_colors/ThemeContext.tsx";
 
 const CloseButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
@@ -11,7 +11,7 @@ const CloseButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
     const theme = useTheme();
 
     const closeButtonStyle = {
-        ...UpdateWindowStyles.closeButton,
+        ...UpdateAllWindowStyles.closeButton,
         backgroundColor: isHovered ? theme.palette.primary.light : theme.palette.primary.main,
         color: theme.palette.primary.contrastText
     };
