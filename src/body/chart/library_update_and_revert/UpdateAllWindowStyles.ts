@@ -1,6 +1,6 @@
 import { SxProps, Theme } from '@mui/material';
 
-const UpdateWindowStyles = {
+const UpdateAllWindowStyles = {
     overlay: {
         position: 'fixed' as const,
         top: 0,
@@ -17,7 +17,7 @@ const UpdateWindowStyles = {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: '600px',
-        height: '400px',
+        height: '360px',
         borderRadius: '8px',
         boxShadow: `0 4px 6px ${theme.palette.grey[500]}`,
         padding: '20px',
@@ -62,4 +62,4 @@ const UpdateWindowStyles = {
     },
 };
 
-export default UpdateWindowStyles;
+export default UpdateAllWindowStyles;

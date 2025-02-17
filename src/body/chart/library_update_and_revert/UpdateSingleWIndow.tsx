@@ -1,18 +1,16 @@
 import React, {useState} from "react";
 import {
-    Box,
-    Checkbox,
+    Box, Checkbox,
     FormControl,
     FormControlLabel,
     InputLabel,
     MenuItem,
     RadioGroup,
-    Select,
-    TextField,
+    Select, TextField,
     Typography,
     useTheme
 } from "@mui/material";
-import UpdateWindowStyles from "./UpdateWindowStyles.ts";
+import UpdateSingleWindowStyles from "./UpdateSingleWindowStyles.ts";
 import CloseButton from "../../buttons/update_window_buttons/CloseButton.tsx";
 import DependencyUpdateButton from "../../buttons/update_window_buttons/DependencyUpdateButton.tsx";
 
@@ -20,7 +18,7 @@ interface UpdateWindowProps {
     onClose: () => void;
 }
 
-export const UpdateWindow: React.FC<UpdateWindowProps> = ({onClose}) => {
+export const UpdateSingleWindow: React.FC<UpdateWindowProps> = ({onClose}) => {
     const theme = useTheme();
     const [selectAllNodes, setSelectAllNodes] = useState(false);
     const [nodeInput, setNodeInput] = useState("");
@@ -45,19 +43,22 @@ export const UpdateWindow: React.FC<UpdateWindowProps> = ({onClose}) => {
     };
 
     return (
-        <Box sx={UpdateWindowStyles.overlay}>
-            <Box sx={UpdateWindowStyles.window(theme)}>
+        <Box sx={UpdateSingleWindowStyles.overlay}>
+            <Box sx={UpdateSingleWindowStyles.window(theme)}>
                 {/* Close Button positioned at the top right */}
-                <Box sx={UpdateWindowStyles.closeButtonContainer}>
+                <Box sx={UpdateSingleWindowStyles.closeButtonContainer}>
                     <CloseButton text="" tooltip="Close" action={onClose}/>
                 </Box>
 
                 {/* Header and Body */}
-                <Typography variant="h4">Update Libraries</Typography>
-                <Typography>Do you want to proceed with updating the libraries?</Typography>
+                <Typography variant="h4">Update Selected Libraries</Typography>
+                <Typography sx={{marginTop: "10px"}}>Do you want to proceed with updating the selected libraries?
+                    Remember, <span style={{fontWeight: '800', color: "red"}}>updating all libraries</span> at once is also
+                    possible via the update button!</Typography>
+                <Typography sx={{marginTop: "10px"}}>Choose the update step size:</Typography>
 
                 {/* Checkbox and Text Field */}
-                <FormControl sx={UpdateWindowStyles.formControl}>
+                <FormControl sx={UpdateSingleWindowStyles.formControl}>
                     <RadioGroup
                         row
                         value={selectAllNodes ? "all" : "one"}
@@ -67,7 +68,7 @@ export const UpdateWindow: React.FC<UpdateWindowProps> = ({onClose}) => {
                             control={<Checkbox checked={selectAllNodes}
                                                onChange={handleSelectAllChange}
                                                color="primary"
-                                               />}
+                            />}
                             value="all"
                             label="Select all nodes"
                             labelPlacement="start"
@@ -80,19 +81,19 @@ export const UpdateWindow: React.FC<UpdateWindowProps> = ({onClose}) => {
                                 disabled={selectAllNodes}
                                 size="small"
                                 label="Node:"
-                                sx={UpdateWindowStyles.textField}
-                            /> {/*TODO dropdown of all available nodes that match input*/}
+                                sx={UpdateSingleWindowStyles.textField}
+                            /> TODO dropdown of all available nodes that match input
                         </Box>
                     </RadioGroup>
                 </FormControl>
 
                 {/* Dropdown Menu */}
-                <FormControl sx={UpdateWindowStyles.dropdown}>
+                <FormControl sx={UpdateSingleWindowStyles.dropdown}>
                     <InputLabel id="update-type-label">Update Type</InputLabel>
                     <Select
                         labelId="update-type-label"
                         value={updateType}
-                        onChange={(e => setUpdateType(e.target.value as string))}
+                        onChange={(e => setUpdateType(e.target.value))}
                         defaultValue="major"
                         variant="outlined"
                     >
@@ -103,8 +104,9 @@ export const UpdateWindow: React.FC<UpdateWindowProps> = ({onClose}) => {
                 </FormControl>
 
                 {/* Dependency Update Button */}
-                <Box sx={UpdateWindowStyles.buttonGroup}>
-                    <DependencyUpdateButton text="Update" tooltip="Proceed with the update" action={() => {}}/> {/*TODO action of updating tree*/}
+                <Box sx={UpdateSingleWindowStyles.buttonGroup}>
+                    <DependencyUpdateButton text="Update" tooltip="Proceed with the update" action={() => {
+                    }}/> {/*TODO action of updating tree*/}
                 </Box>
             </Box>
         </Box>
