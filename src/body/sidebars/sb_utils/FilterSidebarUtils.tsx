@@ -1,13 +1,15 @@
 import { useState } from "react";
-import {Graph, Node} from "../../../file_handling/json_utils/JSONStructureInterfaces.tsx";
+import { Graph, Node } from "../../../file_handling/json_utils/JSONStructureInterfaces.tsx";
 
 interface SearchResult extends Node {
     path: string[];
 }
 
-export const useFilterSidebar = (graph: Graph  | null) => {
+export const useFilterSidebar = (graph: Graph | null) => {
     const [isFilterSidebarVisible, setIsFilterSidebarVisible] = useState(false);
-    const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+    const [originalSearchResults, setOriginalSearchResults] = useState<SearchResult[]>([]);
+    const [filteredSearchResults, setFilteredSearchResults] = useState<SearchResult[]>([]);
+    const [filterValue, setFilterValue] = useState<number | null>(null);
 
     const handleFilterButton = () => {
         setIsFilterSidebarVisible(!isFilterSidebarVisible);
@@ -20,24 +22,51 @@ export const useFilterSidebar = (graph: Graph  | null) => {
         if (searchResult.length > 0) {
             console.log("Search result found:", searchResult);
             searchResult.sort((a, b) => a.nodeName.localeCompare(b.nodeName)); // sort alphabetically
-            setSearchResults(searchResult);
+            setOriginalSearchResults(searchResult);
+            setFilteredSearchResults(filterResultsByLibDays(searchResult, filterValue));
         } else {
             console.error("No search result found");
-            setSearchResults([
+            setOriginalSearchResults([
                 {
-                nodeName: "N/A",
-                path: [],
-                nodeId: "N/A",
-                usedVersion: "",
-                stats: [],
-                releaseDate: 0,
-            },]);
+                    nodeName: "N/A",
+                    path: [],
+                    nodeId: "N/A",
+                    usedVersion: "",
+                    stats: [],
+                    releaseDate: 0,
+                },
+            ]);
+            setFilteredSearchResults([
+                {
+                    nodeName: "N/A",
+                    path: [],
+                    nodeId: "N/A",
+                    usedVersion: "",
+                    stats: [],
+                    releaseDate: 0,
+                },
+            ]);
         }
     };
 
     const handleCloseFilterSidebar = () => {
         setIsFilterSidebarVisible(false);
-        setSearchResults([]);
+        setFilteredSearchResults([]);
+        setFilterValue(null);
+    };
+
+    const handleFilter = (libDays: number) => {
+        if (libDays === 0) {
+            setFilteredSearchResults([...originalSearchResults]);
+        } else {
+            setFilterValue(libDays);
+            setFilteredSearchResults(filterResultsByLibDays(originalSearchResults, libDays));
+        }
+    };
+
+    const clearFilter = () => {
+        setFilterValue(null);
+        setFilteredSearchResults([...originalSearchResults]);
     };
 
     const searchNodesByName = (graph: Graph, name: string): SearchResult[] => {
@@ -96,11 +125,20 @@ export const useFilterSidebar = (graph: Graph  | null) => {
         return dfs(rootNode.rootId) ? path : null;
     };
 
+    const filterResultsByLibDays = (results: SearchResult[], libDays: number | null) => {
+        if (libDays === null) return results;
+        return results.filter((result) =>
+            result.stats.some((stat) => stat.stats.technicalLag.libDays >= libDays)
+        );
+    };
+
     return {
         isFilterSidebarVisible,
-        searchResults,
+        searchResults: filteredSearchResults,
         handleFilterButton,
         handleSearch,
         handleCloseFilterSidebar,
+        handleFilter,
+        clearFilter,
     };
 };

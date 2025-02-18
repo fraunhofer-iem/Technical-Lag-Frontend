@@ -7,9 +7,9 @@ const UpdateAllWindowStyles = {
         left: 0,
         width: '100vw',
         height: '100vh',
-        backgroundColor: 'rgba(0, 0, 0, 0.2)', // Semi-transparent background
-        zIndex: 1050,
-        backdropFilter: 'blur(5px)', // Apply blur to the background
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        zIndex: 1500,
+        backdropFilter: 'blur(5px)',
     },
     window: (theme: Theme): SxProps<Theme> => ({
         position: 'absolute',

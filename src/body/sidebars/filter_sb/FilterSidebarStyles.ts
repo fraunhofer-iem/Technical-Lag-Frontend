@@ -34,13 +34,22 @@ export const FilterSidebarStyles = {
     filterField: {
         marginBottom: '15px',
         marginTop: '15px',
-        width: '100%'
+        width: '100%',
     },
     searchButton: {
         marginTop: '5px',
         marginBottom: '15px',
     },
+    filterButtonContainer: {
+        display: 'flex',
+        gap: '10px',
+        marginTop: '15px',
+    },
     applyButton: {
+        marginTop: '5px',
+        marginBottom: '15px',
+    },
+    clearButton: {
         marginTop: '5px',
         marginBottom: '15px',
     },

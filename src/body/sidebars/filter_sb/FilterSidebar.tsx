@@ -12,8 +12,7 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import {UpdateSingleWindow} from "../../chart/library_update_and_revert/UpdateSingleWIndow.tsx";
-
+import { UpdateSingleWindow } from "../../chart/library_update_and_revert/UpdateSingleWIndow.tsx";
 
 interface SidebarProps {
     onClose: () => void;
@@ -21,6 +20,8 @@ interface SidebarProps {
     searchResults: any[];
     onResultClick: (node: any) => void;
     isOpen: boolean;
+    handleFilter: (libDays: number) => void;
+    clearFilter: () => void;
 }
 
 const FilterSidebar: React.FC<SidebarProps> = ({
@@ -29,9 +30,11 @@ const FilterSidebar: React.FC<SidebarProps> = ({
                                                    onResultClick,
                                                    searchResults,
                                                    isOpen,
+                                                   handleFilter,
+                                                   clearFilter,
                                                }) => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [libDays, setLibDays] = useState("");
+    const [libDays, setLibDays] = useState<number | null>(null);
     const [selectedItems, setSelectedItems] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [selectAllChecked, setSelectAllChecked] = useState(false);
@@ -46,10 +49,6 @@ const FilterSidebar: React.FC<SidebarProps> = ({
     const handleNodeClick = (node: any) => {
         onResultClick(node);
         onClose();
-    };
-
-    const handleFilter = () => {
-        onSearch(searchTerm);
     };
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, result: any) => {
@@ -91,11 +90,33 @@ const FilterSidebar: React.FC<SidebarProps> = ({
         setIsUpdateWindowOpen(false);
     };
 
+    const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        setLibDays(value ? Number(value) : null);
+    };
+
+    const handleApplyFilter = () => {
+        if (libDays === null) {
+            clearFilter();
+        } else {
+            handleFilter(libDays);
+        }
+    };
+
+    const handleClearFilter = () => {
+        clearFilter();
+        setLibDays(null);
+    };
+
+    const handleCloseSidebar = () => {
+        onClose();
+    };
+
     return (
         <Drawer
             anchor="right"
             open={isOpen}
-            onClose={onClose}
+            onClose={handleCloseSidebar}
             variant="persistent"
             PaperProps={{
                 sx: {
@@ -123,6 +144,11 @@ const FilterSidebar: React.FC<SidebarProps> = ({
                             value={searchTerm}
                             placeholder="Search..."
                             onChange={(e) => setSearchTerm(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleSearch();
+                                }
+                            }}
                             fullWidth
                             sx={FilterSidebarStyles.searchField}
                         />
@@ -205,13 +231,18 @@ const FilterSidebar: React.FC<SidebarProps> = ({
                     <TextField
                         label="Lag in Days"
                         type="number"
-                        value={libDays}
-                        onChange={(e) => setLibDays(e.target.value)}
+                        value={libDays ?? ''}
+                        onChange={handleFilterChange}
                         sx={FilterSidebarStyles.filterField}
                     />
-                    <Button onClick={handleFilter} variant="contained" sx={FilterSidebarStyles.applyButton}>
-                        Apply Filters
-                    </Button>
+                    <Box sx={FilterSidebarStyles.filterButtonContainer}>
+                        <Button onClick={handleApplyFilter} variant="contained" sx={FilterSidebarStyles.applyButton}>
+                            Apply Filter
+                        </Button>
+                        <Button onClick={handleClearFilter} variant="contained" sx={FilterSidebarStyles.clearButton}>
+                            Clear Filter
+                        </Button>
+                    </Box>
                 </Box>
             </Box>
 

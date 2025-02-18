@@ -8,7 +8,7 @@ export const filterContainerStyle = (isFilterSidebarOpen: boolean): SxProps<Them
     width: "auto",
     display: "flex",
     justifyContent: "center",
-    zIndex: 5000,
+    zIndex: 1100,
 });
 
 export const FilterCloseButtonStyles = {

@@ -65,6 +65,8 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
         handleFilterButton,
         handleSearch,
         handleCloseFilterSidebar,
+        handleFilter,
+        clearFilter,
     } = useFilterSidebar(currentGraph);
 
     // Updates the ChartSidebar when a node is clicked in the FilterSidebar search list
@@ -154,6 +156,8 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
                             onSearch={handleSearch}
                             searchResults={searchResults}
                             onResultClick={handleNodeClickInFilterSidebar}
+                            handleFilter={handleFilter}
+                            clearFilter={clearFilter}
                         />
                     )}
                 </Box>
