@@ -4,7 +4,7 @@ import {Graph, Node} from "../../../file_handling/json_utils/JSONStructureInterf
 import NewFileButton from "../../buttons/NewFileButton.tsx";
 import FilterCloseButton from "../../buttons/filter_sb_close_btn/FilterCloseButton.tsx";
 import FilterSidebar from "../../sidebars/filter_sb/FilterSidebar.tsx";
-import {ChartSidebarData, searchNodesByName, useChartSidebar} from "../../sidebars/sb_utils/ChartSidebarUtils.tsx";
+import {ChartSidebarData, useChartSidebar} from "../../sidebars/sb_utils/ChartSidebarUtils.tsx";
 import {useFilterSidebar} from "../../sidebars/sb_utils/FilterSidebarUtils.tsx";
 import * as echarts from 'echarts';
 import {useNavigate} from "react-router-dom";
@@ -20,6 +20,8 @@ import {revertTreemap, useTreemapActions} from "../library_update_and_revert/Tre
 import {UpdateAllWindow} from "../library_update_and_revert/UpdateAllWindow.tsx";
 import {chartContainerStyle} from "../../buttons/chart_sb_close_btn/ChartCloseButtonStyles.ts";
 import ChartCloseButton from "../../buttons/chart_sb_close_btn/ChartCloseButton.tsx";
+import {searchChartNodesByName} from "../../sidebars/sb_utils/NodeSearch.ts";
+import {useFilterSidebarSearchAndFiltering} from "../../sidebars/sb_utils/FilterSidebarSearchAndFiltering.ts";
 
 interface BaseChartProps {
     initChart: (
@@ -51,6 +53,14 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
     };
 
     const {
+        searchResults,
+        handleSearch,
+        handleFilter,
+        clearFilterAndResults,
+        resetFilter
+    } = useFilterSidebarSearchAndFiltering(currentGraph);
+
+    const {
         isChartSidebarVisible,
         chartSidebarData,
         setChartSidebarData,
@@ -61,26 +71,23 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
 
     const {
         isFilterSidebarVisible,
-        searchResults,
         handleFilterButton,
-        handleSearch,
-        handleCloseFilterSidebar,
-        handleFilter,
-        clearFilter,
-    } = useFilterSidebar(currentGraph);
+        handleCloseFilterSidebar
+    } = useFilterSidebar(clearFilterAndResults);
 
     // Updates the ChartSidebar when a node is clicked in the FilterSidebar search list
     const handleNodeClickInFilterSidebar = (node: Node) => {
         if (!currentGraph) return;
 
-        const pathToNode = searchNodesByName(currentGraph, node.nodeName) ?? "Path not found";
+/*
+        const pathToNode = searchChartNodesByName(currentGraph, node.nodeName) ?? "Path not found";
+*/
         // Set data for ChartSidebar based on the node clicked
         setChartSidebarData({
             name: node.nodeName,
             usedVersion: node.usedVersion,
             releaseDate: node.releaseDate.toString(),
             stats: node.stats,
-            pathToNode: pathToNode,
         });
 
         // Display the ChartSidebar with node data
@@ -162,7 +169,8 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
                             searchResults={searchResults}
                             onResultClick={handleNodeClickInFilterSidebar}
                             handleFilter={handleFilter}
-                            clearFilter={clearFilter}
+                            resetFilter={resetFilter}
+                            clearFilter={clearFilterAndResults}
                         />
                     )}
                 </Box>
@@ -243,8 +251,7 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
                                 stats={chartSidebarData?.stats}
                                 onClose={handleCloseChartSidebar}
                                 isOpen={isChartSidebarVisible}
-                                //ToDO Make the Path work
-                                pathToNode={chartSidebarData?.pathToNode}
+                                pathToNode={searchChartNodesByName(currentGraph, chartSidebarData?.name)}
                             />
                         )}
                     </Box>

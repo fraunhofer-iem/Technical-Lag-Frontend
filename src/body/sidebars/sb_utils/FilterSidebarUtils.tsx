@@ -1,144 +1,20 @@
-import { useState } from "react";
-import { Graph, Node } from "../../../file_handling/json_utils/JSONStructureInterfaces.tsx";
+import {useState} from "react";
 
-interface SearchResult extends Node {
-    path: string[];
-}
-
-export const useFilterSidebar = (graph: Graph | null) => {
+export const useFilterSidebar = (clearFilterAndResults: () => void) => {
     const [isFilterSidebarVisible, setIsFilterSidebarVisible] = useState(false);
-    const [originalSearchResults, setOriginalSearchResults] = useState<SearchResult[]>([]);
-    const [filteredSearchResults, setFilteredSearchResults] = useState<SearchResult[]>([]);
-    const [filterValue, setFilterValue] = useState<number | null>(null);
 
     const handleFilterButton = () => {
         setIsFilterSidebarVisible(!isFilterSidebarVisible);
-    };
-
-    const handleSearch = (searchTerm: string) => {
-        if (!graph) return;
-
-        const searchResult = searchNodesByName(graph, searchTerm);
-        if (searchResult.length > 0) {
-            console.log("Search result found:", searchResult);
-            searchResult.sort((a, b) => a.nodeName.localeCompare(b.nodeName)); // sort alphabetically
-            setOriginalSearchResults(searchResult);
-            setFilteredSearchResults(filterResultsByLibDays(searchResult, filterValue));
-        } else {
-            console.error("No search result found");
-            setOriginalSearchResults([
-                {
-                    nodeName: "N/A",
-                    path: [],
-                    nodeId: "N/A",
-                    usedVersion: "",
-                    stats: [],
-                    releaseDate: 0,
-                },
-            ]);
-            setFilteredSearchResults([
-                {
-                    nodeName: "N/A",
-                    path: [],
-                    nodeId: "N/A",
-                    usedVersion: "",
-                    stats: [],
-                    releaseDate: 0,
-                },
-            ]);
-        }
+        clearFilterAndResults();
     };
 
     const handleCloseFilterSidebar = () => {
         setIsFilterSidebarVisible(false);
-        setFilteredSearchResults([]);
-        setFilterValue(null);
-    };
-
-    const handleFilter = (libDays: number) => {
-        if (libDays === 0) {
-            setFilteredSearchResults([...originalSearchResults]);
-        } else {
-            setFilterValue(libDays);
-            setFilteredSearchResults(filterResultsByLibDays(originalSearchResults, libDays));
-        }
-    };
-
-    const clearFilter = () => {
-        setFilterValue(null);
-        setFilteredSearchResults([...originalSearchResults]);
-    };
-
-    const searchNodesByName = (graph: Graph, name: string): SearchResult[] => {
-        const results: SearchResult[] = [];
-
-        // Traverse nodes to find matches by name
-        graph.nodes.forEach((node) => {
-            if (node.nodeName?.toLowerCase().includes(name.toLowerCase())) {
-                // Find path from root to node using edges
-                const path = findPathToNode(graph, node);
-                if (path) {
-                    results.push({ ...node, path });
-                }
-            }
-        });
-
-        return results;
-    };
-
-    const findPathToNode = (graph: Graph, targetNode: Node): string[] | null => {
-        const visited = new Set();
-        const path: string[] = [];
-
-        // Start the search from the root node
-        const rootNode = graph.root;
-        if (!rootNode) return null;
-
-        path.push(rootNode.rootName);
-
-        const dfs = (nodeId: string): boolean => {
-            if (visited.has(nodeId)) return false;
-            visited.add(nodeId);
-
-            const currentNode = graph.nodes.find((n) => n.nodeId === nodeId);
-            if (currentNode) {
-                path.push(currentNode.nodeName);
-                if (currentNode.nodeId === targetNode.nodeId) return true;
-            }
-
-            // Find neighbors of the current node based on edges
-            for (const edge of graph.edges) {
-                let nextNodeId: string | null = null;
-
-                if (edge.from === nodeId) {
-                    nextNodeId = edge.to;
-                } else if (edge.to === nodeId) {
-                    nextNodeId = edge.from;
-                }
-                if (nextNodeId && dfs(nextNodeId)) return true;
-            }
-
-            if (currentNode) path.pop();
-            return false;
-        };
-
-        return dfs(rootNode.rootId) ? path : null;
-    };
-
-    const filterResultsByLibDays = (results: SearchResult[], libDays: number | null) => {
-        if (libDays === null) return results;
-        return results.filter((result) =>
-            result.stats.some((stat) => stat.stats.technicalLag.libDays >= libDays)
-        );
     };
 
     return {
         isFilterSidebarVisible,
-        searchResults: filteredSearchResults,
         handleFilterButton,
-        handleSearch,
-        handleCloseFilterSidebar,
-        handleFilter,
-        clearFilter,
+        handleCloseFilterSidebar
     };
 };

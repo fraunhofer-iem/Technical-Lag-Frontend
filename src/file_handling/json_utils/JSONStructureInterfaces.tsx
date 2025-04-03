@@ -58,7 +58,7 @@ export interface Node {
     nodeId: string;
     usedVersion: string;
     stats: Stats[];
-    releaseDate: number; //TODO if dayjs is used
+    releaseDate: number;
 }
 
 export interface Edge {

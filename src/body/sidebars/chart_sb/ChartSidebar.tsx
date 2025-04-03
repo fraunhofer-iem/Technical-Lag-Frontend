@@ -59,18 +59,6 @@ const ChartSidebar: React.FC<SidebarProps> = ({
     type VersionType = 'Minor' | 'Major' | 'Patch';
     const [versionType, setVersionType] = React.useState<VersionType>('Major');
 
-    /*    const [isAccordionStatisticsHovered, setIsAccordionStatisticsHovered] = React.useState(false);
-        const [isAccordionNodeHovered, setIsAccordionNodeHovered] = React.useState(false);
-        const [isAccordionChildrenHovered, setIsAccordionChildrenHovered] = React.useState(false);
-
-        const [isAccordionStatisticsActive, setIsAccordionStatisticsActive] = React.useState(false);
-        const [isAccordionNodeActive, setIsAccordionNodeActive] = React.useState(false);
-        const [isAccordionChildrenActive, setIsAccordionChildrenActive] = React.useState(false);
-
-        const handleVersionTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-            setVersionType(event.target.value as VersionType);
-        };*/
-
     const getStatsByVersionType = (versionType: VersionType) => {
         const defaultStats = {
             technicalLag: {
@@ -156,7 +144,7 @@ const ChartSidebar: React.FC<SidebarProps> = ({
 
         return (
             <Box>
-                <Divider/>
+                <Divider sx={{borderBottomWidth: 3, marginTop: '20px', marginBottom: '15px'}}/>
                 <Button
                     variant="contained"
                     onClick={() => {
@@ -187,18 +175,23 @@ const ChartSidebar: React.FC<SidebarProps> = ({
                         <Accordion expanded={isTechnicalLagNodeOpen}
                                    onChange={() => setIsTechnicalLagNodeOpen(!isTechnicalLagNodeOpen)}>
                             <AccordionSummary expandIcon={<ExpandMore/>}>
-                                <Typography variant="h6" >Current Node</Typography>
+                                <Typography variant="h6">Current Node</Typography>
                             </AccordionSummary>
                             <AccordionDetails sx={ChartSidebarStyles.accordionDetails}>
-                                <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Lag in
+                                <Typography style={ChartSidebarStyles.paragraph}><strong
+                                    style={ChartSidebarStyles.label}>Lag in
                                     Days:</strong> {formatNumber(lagData.libDays)}</Typography>
-                                <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Newest
+                                <Typography style={ChartSidebarStyles.paragraph}><strong
+                                    style={ChartSidebarStyles.label}>Newest
                                     Version:</strong> {lagData.version}</Typography>
-                                <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Missed
+                                <Typography style={ChartSidebarStyles.paragraph}><strong
+                                    style={ChartSidebarStyles.label}>Missed
                                     Releases:</strong> {formatNumber(lagData.numberOfMissedReleases)}</Typography>
                                 <Typography style={ChartSidebarStyles.paragraph}><strong
-                                    style={ChartSidebarStyles.label}>Distance:&nbsp;</strong>{formatNumber(renderDistance())}</Typography>
-                                <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Release
+                                    style={ChartSidebarStyles.label}>Distance:&nbsp;</strong>{formatNumber(renderDistance())}
+                                </Typography>
+                                <Typography style={ChartSidebarStyles.paragraph}><strong
+                                    style={ChartSidebarStyles.label}>Release
                                     Frequency:</strong> {formatNumber(lagData.releaseFrequency.releasesPerMonth)} per
                                     Month</Typography>
                             </AccordionDetails>
@@ -210,44 +203,54 @@ const ChartSidebar: React.FC<SidebarProps> = ({
                                 <Typography variant="h6">Children</Typography>
                             </AccordionSummary>
                             <AccordionDetails sx={ChartSidebarStyles.accordionDetails}>
-                                <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Lag in Days:</strong></Typography>
+                                <Typography style={ChartSidebarStyles.paragraph}><strong
+                                    style={ChartSidebarStyles.label}>Lag in Days:</strong></Typography>
                                 <List style={ChartSidebarStyles.list}>
                                     <ListItem style={ChartSidebarStyles.listItem}><strong
                                         style={ChartSidebarStyles.label}>Avg:</strong> {formatNumber(childrenData.libDays.average)}
                                     </ListItem>
-                                    <ListItem style={ChartSidebarStyles.listItem}><strong style={ChartSidebarStyles.label}>Std
+                                    <ListItem style={ChartSidebarStyles.listItem}><strong
+                                        style={ChartSidebarStyles.label}>Std
                                         Dev:</strong> {formatNumber(childrenData.libDays.stdDev)}</ListItem>
                                 </List>
                                 <Box>
-                                    <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Missed
+                                    <Typography style={ChartSidebarStyles.paragraph}><strong
+                                        style={ChartSidebarStyles.label}>Missed
                                         Releases:</strong></Typography>
                                     <List style={ChartSidebarStyles.list}>
                                         <ListItem style={ChartSidebarStyles.listItem}><strong
                                             style={ChartSidebarStyles.label}>Avg:</strong> {formatNumber(childrenData.missedReleases.average)}
                                         </ListItem>
-                                        <ListItem style={ChartSidebarStyles.listItem}><strong style={ChartSidebarStyles.label}>Std
+                                        <ListItem style={ChartSidebarStyles.listItem}><strong
+                                            style={ChartSidebarStyles.label}>Std
                                             Dev:</strong> {formatNumber(childrenData.missedReleases.stdDev)}</ListItem>
                                     </List>
                                 </Box>
                                 <Box>
-                                    <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Distance:</strong></Typography>
+                                    <Typography style={ChartSidebarStyles.paragraph}><strong
+                                        style={ChartSidebarStyles.label}>Distance:</strong></Typography>
                                     <List style={ChartSidebarStyles.list}>
-                                        <ListItem style={ChartSidebarStyles.listItem}><strong style={ChartSidebarStyles.label}>First
+                                        <ListItem style={ChartSidebarStyles.listItem}><strong
+                                            style={ChartSidebarStyles.label}>First
                                             Avg:</strong> {formatNumber(childrenData.distanceFirst.average)}</ListItem>
-                                        <ListItem style={ChartSidebarStyles.listItem}><strong style={ChartSidebarStyles.label}>Second
+                                        <ListItem style={ChartSidebarStyles.listItem}><strong
+                                            style={ChartSidebarStyles.label}>Second
                                             Avg:</strong> {formatNumber(childrenData.distanceSecond.average)}</ListItem>
-                                        <ListItem style={ChartSidebarStyles.listItem}><strong style={ChartSidebarStyles.label}>Third
+                                        <ListItem style={ChartSidebarStyles.listItem}><strong
+                                            style={ChartSidebarStyles.label}>Third
                                             Avg:</strong> {formatNumber(childrenData.distanceThird.average)}</ListItem>
                                     </List>
                                 </Box>
                                 <Box>
-                                    <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Release
+                                    <Typography style={ChartSidebarStyles.paragraph}><strong
+                                        style={ChartSidebarStyles.label}>Release
                                         Frequency:</strong></Typography>
                                     <List style={ChartSidebarStyles.list}>
                                         <ListItem style={ChartSidebarStyles.listItem}><strong
                                             style={ChartSidebarStyles.label}>Avg:</strong> {formatNumber(childrenData.releaseFrequency.average)}
                                         </ListItem>
-                                        <ListItem style={ChartSidebarStyles.listItem}><strong style={ChartSidebarStyles.label}>Std
+                                        <ListItem style={ChartSidebarStyles.listItem}><strong
+                                            style={ChartSidebarStyles.label}>Std
                                             Dev:</strong> {formatNumber(childrenData.releaseFrequency.stdDev)}
                                         </ListItem>
                                     </List>
@@ -277,27 +280,33 @@ const ChartSidebar: React.FC<SidebarProps> = ({
                 <Box sx={ChartSidebarStyles.headerContainer}>
                     <Typography variant="h5" sx={ChartSidebarStyles.sidebarHeader}>Node Information</Typography>
                 </Box>
-                <Divider/>
+                <Divider sx={{borderBottomWidth: 3}}/>
                 {fullName && (
                     <Box>
-                        <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Node:</strong> <span
+                        <Typography style={ChartSidebarStyles.paragraph}><strong
+                            style={ChartSidebarStyles.label}>Node:</strong> <span
                             style={{wordBreak: 'break-all'}}>{fullName}</span></Typography>
-                        <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Path:</strong> <span
+                        <Typography style={ChartSidebarStyles.paragraph}><strong
+                            style={ChartSidebarStyles.label}>Path:</strong> <span
                             style={{wordBreak: 'break-all'}}>{pathToNode}</span></Typography>
                         <Typography style={ChartSidebarStyles.paragraph}><strong
                             style={ChartSidebarStyles.label}>Version:</strong> {versionNumber}</Typography>
-                        <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Release Date:</strong> <span
+                        <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Release
+                            Date:</strong> <span
                             style={{wordBreak: 'break-all'}}>{formattedReleaseDate}</span></Typography>
                     </Box>
                 )}
 
                 {ecosystem && repoURL && revision && (
                     <Box>
-                        <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Ecosystem:</strong> <span
+                        <Typography style={ChartSidebarStyles.paragraph}><strong
+                            style={ChartSidebarStyles.label}>Ecosystem:</strong> <span
                             style={{wordBreak: 'break-all'}}>{ecosystem}</span></Typography>
-                        <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Repository:</strong> <span
+                        <Typography style={ChartSidebarStyles.paragraph}><strong
+                            style={ChartSidebarStyles.label}>Repository:</strong> <span
                             style={{wordBreak: 'break-all'}}>{repoURL}</span></Typography>
-                        <Typography style={ChartSidebarStyles.paragraph}><strong style={ChartSidebarStyles.label}>Revision:</strong> <span
+                        <Typography style={ChartSidebarStyles.paragraph}><strong
+                            style={ChartSidebarStyles.label}>Revision:</strong> <span
                             style={{wordBreak: 'break-all'}}>{revision}</span></Typography>
                     </Box>
                 )}

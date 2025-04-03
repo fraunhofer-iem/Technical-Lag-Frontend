@@ -1,8 +1,8 @@
 export const FilterSidebarStyles = {
     headerContainer: {
         display: 'flex',
-        justifyContent: 'space-between',
         alignItems: 'center',
+        justifyContent: 'space-between',
         marginBottom: '1em',
     },
     sidebarHeader: {

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FilterSidebarStyles } from './FilterSidebarStyles.ts';
+import React, {useState} from 'react';
+import {FilterSidebarStyles} from './FilterSidebarStyles.ts';
 import {
     Box,
     Button,
@@ -12,7 +12,7 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import { UpdateSingleWindow } from "../../chart/library_update_and_revert/UpdateSingleWIndow.tsx";
+import {UpdateSingleWindow} from "../../chart/library_update_and_revert/UpdateSingleWIndow.tsx";
 
 interface SidebarProps {
     onClose: () => void;
@@ -21,6 +21,7 @@ interface SidebarProps {
     onResultClick: (node: any) => void;
     isOpen: boolean;
     handleFilter: (libDays: number) => void;
+    resetFilter: () => void;
     clearFilter: () => void;
 }
 
@@ -31,7 +32,8 @@ const FilterSidebar: React.FC<SidebarProps> = ({
                                                    searchResults,
                                                    isOpen,
                                                    handleFilter,
-                                                   clearFilter,
+                                                   resetFilter,
+                                                   clearFilter
                                                }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [libDays, setLibDays] = useState<number | null>(null);
@@ -49,6 +51,7 @@ const FilterSidebar: React.FC<SidebarProps> = ({
     const handleNodeClick = (node: any) => {
         onResultClick(node);
         onClose();
+        clearFilter();
     };
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, result: any) => {
@@ -97,19 +100,20 @@ const FilterSidebar: React.FC<SidebarProps> = ({
 
     const handleApplyFilter = () => {
         if (libDays === null) {
-            clearFilter();
+            resetFilter();
         } else {
             handleFilter(libDays);
         }
     };
 
     const handleClearFilter = () => {
-        clearFilter();
+        resetFilter();
         setLibDays(null);
     };
 
     const handleCloseSidebar = () => {
         onClose();
+        clearFilter();
     };
 
     return (
@@ -135,9 +139,9 @@ const FilterSidebar: React.FC<SidebarProps> = ({
                         Search
                     </Typography>
                 </Box>
-                <Divider />
+                <Divider sx={{ borderBottomWidth: 3 }}/>
 
-                <Box sx={{ marginTop: '1em' }}>
+                <Box sx={{marginTop: '1em'}}>
                     <Box sx={FilterSidebarStyles.searchBarContainer}>
                         <TextField
                             label="Search by Node Name"
@@ -184,7 +188,7 @@ const FilterSidebar: React.FC<SidebarProps> = ({
                                             onChange={(event) => handleCheckboxChange(event, result)}
                                         />
                                         {result.nodeName === "N/A" ? (
-                                            <Typography sx={{ color: 'gray', fontStyle: 'italic' }}>
+                                            <Typography sx={{color: 'gray', fontStyle: 'italic'}}>
                                                 No nodes found
                                             </Typography>
                                         ) : (
@@ -222,12 +226,17 @@ const FilterSidebar: React.FC<SidebarProps> = ({
                         </Box>
                     )}
 
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5em' }}>
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: '0.5em'
+                    }}>
                         <Typography variant="h6" sx={FilterSidebarStyles.filterHeader}>
                             Filter
                         </Typography>
                     </Box>
-                    <Divider />
+                    <Divider sx={{ borderBottomWidth: 3 }}/>
 
                     <TextField
                         label="Lag in Days"
