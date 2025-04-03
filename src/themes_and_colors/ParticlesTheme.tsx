@@ -1,7 +1,6 @@
-// ParticlesTheme.tsx
 import React, {useCallback} from "react";
 import Particles from 'react-tsparticles';
-import type {Container, Engine} from "tsparticles-engine";
+import type {Container, Engine, IOutModes} from "tsparticles-engine";
 import {useTheme} from '@mui/material/styles';
 import {loadSlim} from "tsparticles-slim";
 import {ThemeProviderComponent} from "./ThemeContext.tsx";
@@ -29,7 +28,7 @@ const ParticlesTheme: React.FC = () => {
             },
             move: {
                 enable: true,
-                outModes: "bounce",
+                outModes: { default: "bounce" } as IOutModes,
                 random: false,
                 speed: 0.5,
                 straight: false,
