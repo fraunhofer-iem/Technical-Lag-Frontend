@@ -40,9 +40,9 @@ export const ThemeProviderComponent: React.FC<{ children: React.ReactNode }> = (
             ...(mode === 'light'
                 ? {
                     primary: {
-                        light: '#66b3a5',
-                        main: '#34a19d',
-                        dark: '#00796b',
+                        light: '#46C4A0',
+                        main: '#06A77D',
+                        dark: '#048560',
                         contrastText: '#ffffff',
                     },
                     secondary: {
@@ -82,7 +82,7 @@ export const ThemeProviderComponent: React.FC<{ children: React.ReactNode }> = (
                     },
                     background: {
                         default: '#fafafa',
-                        paper: '#ffffff',
+                        paper: '#fafafa',
                     },
                     action: {
                         active: '#001e3c',
@@ -94,9 +94,9 @@ export const ThemeProviderComponent: React.FC<{ children: React.ReactNode }> = (
                 }
                 : {
                     primary: {
-                        light: '#64b5f6',
-                        main: '#2196f3',
-                        dark: '#1976d2',
+                        light: '#5C88E1',
+                        main: '#1759D4',
+                        dark: '#103FA0',
                         contrastText: '#ffffff',
                     },
                     secondary: {
@@ -136,7 +136,7 @@ export const ThemeProviderComponent: React.FC<{ children: React.ReactNode }> = (
                     },
                     background: {
                         default: '#000000',
-                        paper: '#1e1e1e',
+                        paper: '#000000',
                     },
                     action: {
                         active: '#ffffff',
