@@ -32,8 +32,6 @@ export const ThemeProviderComponent: React.FC<{ children: React.ReactNode }> = (
 
     const contextValue = useMemo(() => ({ toggleTheme, mode }), [toggleTheme, mode]);
 
-
-    //TODO Change colors
     const theme = createTheme({
         palette: {
             mode,
