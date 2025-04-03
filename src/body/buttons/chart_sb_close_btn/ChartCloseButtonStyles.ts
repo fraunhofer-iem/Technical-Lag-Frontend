@@ -1,5 +1,18 @@
+import {SxProps, Theme} from "@mui/material";
+
+export const chartContainerStyle = (isFilterSidebarOpen: boolean): SxProps<Theme> => ({
+    position: "fixed",
+    right: isFilterSidebarOpen ? '460px' : '0px',
+    top: "50px",
+    transition: "right 0.3s ease-out",
+    width: "auto",
+    display: "flex",
+    justifyContent: "center",
+    zIndex: 1100,
+});
+
 export const ChartCloseButtonStyles = {
-    filterButton: {
+    chartButton: {
         padding: "10px 20px",
         top: "10px",
         border: 'none',
@@ -15,13 +28,5 @@ export const ChartCloseButtonStyles = {
         textAlign: 'center' as const,
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
     },
-    chartContainerStyle: {
-        position: "fixed",
-        right: '450px',
-        top: "50px",
-        transition: "right 0.3s ease-out",
-        width: "auto",
-        display: "flex",
-        justifyContent: "center",
-    }
 };
+

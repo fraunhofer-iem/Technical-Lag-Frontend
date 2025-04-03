@@ -18,7 +18,7 @@ import ChartSidebar from "../../sidebars/chart_sb/ChartSidebar.tsx";
 import {filterContainerStyle} from "../../buttons/filter_sb_close_btn/FilterCloseButtonStyles.ts";
 import {revertTreemap, useTreemapActions} from "../library_update_and_revert/TreemapActions.tsx";
 import {UpdateAllWindow} from "../library_update_and_revert/UpdateAllWindow.tsx";
-import {ChartCloseButtonStyles} from "../../buttons/chart_sb_close_btn/ChartCloseButtonStyles.ts";
+import {chartContainerStyle} from "../../buttons/chart_sb_close_btn/ChartCloseButtonStyles.ts";
 import ChartCloseButton from "../../buttons/chart_sb_close_btn/ChartCloseButton.tsx";
 
 interface BaseChartProps {
@@ -139,6 +139,11 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
         }
     };
 
+    const handleOpenChartSidebar = () => {
+        handleCloseFilterSidebar(); // Close filter sidebar
+        handleChartButton();
+    };
+
     return (
         <main style={BodyStyles.mainContainer}>
             <Box sx={{display: "flex", height: "100%"}}>
@@ -211,8 +216,8 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
                     {/* Chart Sidebar */}
                     <Box>
                         {isChartSidebarVisible && (
-                            <Box sx={ChartCloseButtonStyles.chartContainerStyle}>
-                                <ChartCloseButton text="" tooltip="Info" action={handleChartButton}/>
+                            <Box sx={chartContainerStyle(isChartSidebarVisible)}>
+                                <ChartCloseButton text="" tooltip="Info" action={handleOpenChartSidebar}/>
                             </Box>
                         )}
                         {isChartSidebarVisible && (

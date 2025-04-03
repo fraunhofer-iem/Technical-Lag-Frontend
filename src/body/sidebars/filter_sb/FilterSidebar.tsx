@@ -123,6 +123,7 @@ const FilterSidebar: React.FC<SidebarProps> = ({
                     width: '460px',
                     height: '100%',
                     top: '44px',
+                    zIndex: 1100,
                     boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
                     borderLeft: '3px solid',
                 },

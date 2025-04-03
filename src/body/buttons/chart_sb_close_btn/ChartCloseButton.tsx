@@ -10,7 +10,7 @@ const ChartCloseButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
     const theme = useTheme();
 
     const chartButtonStyle = {
-        ...ChartCloseButtonStyles.filterButton,
+        ...ChartCloseButtonStyles.chartButton,
         backgroundColor: isHovered ? theme.palette.primary.light : theme.palette.primary.main,
         color: theme.palette.primary.contrastText
     };

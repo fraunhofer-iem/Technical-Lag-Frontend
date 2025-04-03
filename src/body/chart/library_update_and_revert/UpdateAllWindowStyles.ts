@@ -8,7 +8,7 @@ const UpdateAllWindowStyles = {
         width: '100vw',
         height: '100vh',
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
-        zIndex: 1500,
+        zIndex: 1200,
         backdropFilter: 'blur(5px)',
     },
     window: (theme: Theme): SxProps<Theme> => ({
