@@ -16,8 +16,10 @@ const FilterCloseButton: React.FC<ButtonProps> = ({text, action, tooltip}) => {
     };
 
     return (
-        <Tooltip title={tooltip} placement={"left"} arrow TransitionComponent={Fade} TransitionProps={{timeout: 600}}
-                 PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '10px', fontSize: "14px"},}}}>
+        <Tooltip title={tooltip} placement={"left"} arrow slots={{transition: Fade}} slotProps={{
+            transition: {timeout: 600},
+            popper: {sx: {'& .MuiTooltip-tooltip': {padding: '10px', fontSize: "14px"}}}
+        }}>
             <Button
                 style={filterButtonStyle}
                 size="medium"

@@ -21,9 +21,10 @@ const HelpButton: React.FC = () => {
     }
 
     return (
-        <Tooltip title={"Need Help? Click me!"} placement={"bottom"} arrow TransitionComponent={Fade}
-                 TransitionProps={{timeout: 600}}
-                 PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '8px', fontSize: "12px"},}}}>
+        <Tooltip title={"Need Help? Click me!"} placement={"bottom"} arrow slots={{transition: Fade}} slotProps={{
+            transition: {timeout: 600},
+            popper: {sx: {'& .MuiTooltip-tooltip': {padding: '8px', fontSize: "12px"}}}
+        }}>
             <Button
                 onClick={handleHelpClick}
                 onMouseEnter={() => setIsHovered(true)}

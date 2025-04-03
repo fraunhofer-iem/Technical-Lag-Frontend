@@ -17,9 +17,11 @@ const DarkModeButton: React.FC = () => {
 
     return (
         <Tooltip title={mode === 'dark' ? "Light it up!" : "Vampire Mode"} placement={"bottom"} arrow
-                 TransitionComponent={Fade}
-                 TransitionProps={{timeout: 600}}
-                 PopperProps={{sx: {'& .MuiTooltip-tooltip': {padding: '8px', fontSize: "12px"},}}}>
+                 slots={{transition: Fade}}
+                 slotProps={{
+                     transition: {timeout: 600},
+                     popper: {sx: {'& .MuiTooltip-tooltip': {padding: '8px', fontSize: "12px"}}}
+                 }}>
             <Button
                 onClick={handleToggleDarkMode}
                 onMouseEnter={() => setIsHovered(true)}
