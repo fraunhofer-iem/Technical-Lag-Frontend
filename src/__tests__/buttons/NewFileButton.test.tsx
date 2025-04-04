@@ -1,13 +1,12 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import {fireEvent, render, screen} from "@testing-library/react";
 import NewFileButton from "../../body/buttons/NewFileButton.tsx";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import "@testing-library/jest-dom";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
 
 describe("NewFileButton", () => {
     test("renders button with provided text", () => {
         render(
             <ThemeProvider theme={createTheme()}>
-                <NewFileButton text="New File" />
+                <NewFileButton text="New File"/>
             </ThemeProvider>
         );
 
@@ -19,11 +18,11 @@ describe("NewFileButton", () => {
 
         render(
             <ThemeProvider theme={createTheme()}>
-                <NewFileButton text="New File" action={mockAction} />
+                <NewFileButton text="New File" action={mockAction}/>
             </ThemeProvider>
         );
 
-        fireEvent.click(screen.getByRole("button", { name: /newfile/i }));
+        fireEvent.click(screen.getByRole("button", {name: /newfile/i}));
 
         expect(mockAction).toHaveBeenCalledTimes(1);
     });
@@ -31,16 +30,16 @@ describe("NewFileButton", () => {
     test("changes styles on hover", () => {
         render(
             <ThemeProvider theme={createTheme()}>
-                <NewFileButton text="New File" />
+                <NewFileButton text="New File"/>
             </ThemeProvider>
         );
 
-        const button = screen.getByRole("button", { name: /newfile/i });
+        const button = screen.getByRole("button", {name: /newfile/i});
 
         // Hover over the button
         fireEvent.mouseEnter(button);
 
-        // Ensure the font weight becomes bold (as defined in your hover state)
+        // Ensure the font weight becomes bold (as defined in hover state)
         expect(button).toHaveStyle("font-weight: bold");
 
         // Remove hover
