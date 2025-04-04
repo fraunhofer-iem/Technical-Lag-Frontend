@@ -79,9 +79,6 @@ const BaseChart: React.FC<BaseChartProps> = ({initChart, chartClassName}) => {
     const handleNodeClickInFilterSidebar = (node: Node) => {
         if (!currentGraph) return;
 
-/*
-        const pathToNode = searchChartNodesByName(currentGraph, node.nodeName) ?? "Path not found";
-*/
         // Set data for ChartSidebar based on the node clicked
         setChartSidebarData({
             name: node.nodeName,
