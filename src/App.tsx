@@ -1,5 +1,5 @@
 import * as React from "react";
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import WelcomePage from './welcome/WelcomePage';
 import DragAndDropPage from "./file_handling/drag_n_drop/DragAndDropPage.tsx";
 import ToSPage from "./legal_notice/tos/ToSPage.tsx";
@@ -14,7 +14,6 @@ import {ThemeProviderComponent} from "./themes_and_colors/ThemeContext.tsx";
 
 const App: React.FC = () => {
     return (
-        <Router>
             <ThemeProviderComponent>
                 <ResponsiveAppBar/>
                 <Routes>
@@ -24,12 +23,10 @@ const App: React.FC = () => {
                     <Route path="/privacy-policy" element={<PrivacyPolicyPage/>}/>
                     <Route path="/normal-dependencies-chart" element={<ChartInit/>}/>
                     <Route path="/help" element={<HelpPage/>}/>
-                    {/*TODO Other routes*/}
                 </Routes>
                 <CookieConsent/>
                 <StickyNoteComponent/>
             </ThemeProviderComponent>
-        </Router>
     );
 };
 
