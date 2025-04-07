@@ -1,30 +1,31 @@
-# React + TypeScript + Vite
+# Technical Lag Calculator UI Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository provides a user-friendly UI frontend for the [Technical Lag Calculator](https://github.com/fraunhofer-iem/technical-lag-calculator).
 
-Currently, two official plugins are available:
+This tool helps you analyse the technical lag in all your projects in a user-friendly way. It's designed to improve your workflow and make your life easier. 
+The Technical Lag Analyzer displays your project structure in a dependency tree to better visualise areas for improvement.
+The user can choose to update all dependencies or only specific dependencies to the next most recent version. 
+The application allows upgrades to the latest major or minor updates, or just the latest patch updates, in a safe and easy way.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Getting Started
 
-## Expanding the ESLint configuration
+To run the UI frontend on your local machine, follow the steps below.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- [ ] TODO
 
-- Configure the top-level `parserOptions` property like this:
+### Prerequisites
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+Before running this project, make sure you have the following installed:
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- [ ] TODO
+
+### Usage
+
+- [ ] TODO
+
+### License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Maintainer
+- Matija Kopschek
