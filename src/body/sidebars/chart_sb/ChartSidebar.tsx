@@ -43,9 +43,9 @@ const ChartSidebar: React.FC<SidebarProps> = ({
                                                   pathToNode
                                               }) => {
     // Convert milliseconds to a Date object
-    const formattedReleaseDate = !isNaN(parseInt(releaseDate))
-        ? new Date(parseInt(releaseDate)).toLocaleString()
-        : 'Invalid Date';
+    const formattedReleaseDate = releaseDate && !isNaN(+releaseDate)
+        ? new Date(+releaseDate).toLocaleString()
+        : 'Unknown';
 
     const formatNumber = (num: number | undefined) => {
         if (num === undefined) return '0.00';
@@ -138,10 +138,10 @@ const ChartSidebar: React.FC<SidebarProps> = ({
         }
     };
 
-    const renderStats = () => {
-        const lagData = getLagData(versionType);
-        const childrenData = getChildrenData(versionType);
+    const lagData = React.useMemo(() => getLagData(versionType), [stats, versionType]);
+    const childrenData = React.useMemo(() => getChildrenData(versionType), [stats, versionType]);
 
+    const renderStats = () => {
         return (
             <Box>
                 <Divider sx={{borderBottomWidth: 3, marginTop: '20px', marginBottom: '15px'}}/>
